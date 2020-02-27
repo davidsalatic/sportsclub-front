@@ -24,6 +24,6 @@ export class MemberGroupService {
 
     public addGroup(memberGroup:MemberGroup)
     {
-        this.httpClient.post(this.GROUPS_URL,memberGroup).subscribe();
+        return this.httpClient.post(this.GROUPS_URL, memberGroup);
     }
 }

@@ -23,19 +23,27 @@ export class MemberGroupsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadGroups();
+  }
+
+  loadGroups()
+  {
     this.memberGroupService.getAllGroups().subscribe(data => {
       this.dataSource.data=data;
-      console.log("ng on init started");
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
+
   addGroup(groupName:string)
   {
     let memberGroup = new MemberGroup();
     memberGroup.name=groupName;
-    this.memberGroupService.addGroup(memberGroup);
-    location.reload();
-  }
+
+    this.memberGroupService.addGroup(memberGroup).subscribe(response=>{
+      console.log(this.loadGroups());
+      this.loadGroups();
+    });   
+}
 }
