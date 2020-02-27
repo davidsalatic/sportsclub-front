@@ -4,15 +4,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
-import { MembersComponent } from './members.component';
+import { MemberGroupsComponent } from './member-groups.component';
 
-describe('MembersComponent', () => {
-  let component: MembersComponent;
-  let fixture: ComponentFixture<MembersComponent>;
+describe('MemberGroupsComponent', () => {
+  let component: MemberGroupsComponent;
+  let fixture: ComponentFixture<MemberGroupsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MembersComponent ],
+      declarations: [ MemberGroupsComponent ],
       imports: [
         NoopAnimationsModule,
         MatPaginatorModule,
@@ -23,7 +23,7 @@ describe('MembersComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MembersComponent);
+    fixture = TestBed.createComponent(MemberGroupsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

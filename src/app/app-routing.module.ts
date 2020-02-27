@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MembersComponent } from './members/members.component';
-
+import { MemberGroupsComponent } from './member-groups/member-groups.component';
 
 const routes: Routes = [
-  {path: 'members', component: MembersComponent}
+  {path: 'members', component: MemberGroupsComponent}
 ];
 
 @NgModule({
