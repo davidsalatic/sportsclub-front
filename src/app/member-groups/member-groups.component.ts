@@ -13,7 +13,7 @@ import { MemberGroupService } from '../services/member-group-service';
 export class MemberGroupsComponent implements OnInit {
 
   displayedColumns = ['id', 'name','actions'];
-  dataSource: MatTableDataSource<MemberGroup>;
+  dataSource: MatTableDataSource<MemberGroup> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -23,9 +23,8 @@ export class MemberGroupsComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.memberGroupService.getAllGroups().subscribe(data => {
-      this.dataSource = new MatTableDataSource(data);
+      this.dataSource.data=data;
       console.log("ng on init started");
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -37,6 +36,6 @@ export class MemberGroupsComponent implements OnInit {
     let memberGroup = new MemberGroup();
     memberGroup.name=groupName;
     this.memberGroupService.addGroup(memberGroup);
-    this.ngOnInit();
+    location.reload();
   }
 }
