@@ -3,7 +3,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { MembersDataSource, MembersItem } from './members-datasource';
-import { MemberGroupService } from '../services/member-group-service';
 
 @Component({
   selector: 'app-members',
@@ -18,9 +17,6 @@ export class MembersComponent implements AfterViewInit, OnInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name'];
-
-  constructor( public memberGroupService: MemberGroupService) {
-  }
 
   ngOnInit() {
     this.dataSource = new MembersDataSource();
