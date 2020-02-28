@@ -1,7 +1,6 @@
 <div class="mat-elevation-z8">
 
-  <input #groupName type ="text" name="groupName" placeholder="Group name">
-  <button type="button" (click)="addGroup(groupName.value)">Add group</button>
+  <button type="button" (click)="openDialog()">Add group</button>
 
   <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Elements">
     <!-- Id Column -->

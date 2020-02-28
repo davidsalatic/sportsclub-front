@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>New group</h2>
+
+<mat-dialog-content>
+
+    <div class="form">
+    <mat-form-field>
+        <input #groupName type="text" matInput placeholder="Group name">
+      </mat-form-field>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button" (click)="close()">Close</button>
+    &nbsp;
+    <button class="mat-raised-button" (click)="save(groupName.value)">Save</button>
+</mat-dialog-actions>

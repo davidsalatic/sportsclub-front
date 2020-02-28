@@ -16,11 +16,21 @@ import { MatSortModule } from '@angular/material/sort';
 import { MemberGroupsComponent } from './member-groups/member-groups.component';
 import { MemberGroupService } from './services/member-group-service';
 import { HttpClientModule } from '@angular/common/http';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatDialogModule} from "@angular/material/dialog";
+import { AddMemberGroupDialogComponent } from './add-member-group-dialog/add-member-group-dialog.component';
+import { EditMemberGroupDialogComponent } from './edit-member-group-dialog/edit-member-group-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MemberGroupsComponent
+    MemberGroupsComponent,
+    AddMemberGroupDialogComponent,
+    EditMemberGroupDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
+    MatDialogModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -35,7 +46,12 @@ import { HttpClientModule } from '@angular/common/http';
     MatListModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule
   ],
   providers: [MemberGroupService],
   bootstrap: [AppComponent]
