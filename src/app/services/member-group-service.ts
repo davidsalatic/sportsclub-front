@@ -9,7 +9,7 @@ export class MemberGroupService {
     private readonly GROUPS_URL = 'http://localhost:8080/groups/';
 
     dataChange: BehaviorSubject<MemberGroup[]> = new BehaviorSubject<MemberGroup[]>([]);
-    
+
     constructor(public httpClient: HttpClient){ }
 
     public getAllGroups(): Observable<MemberGroup[]>{
@@ -20,6 +20,11 @@ export class MemberGroupService {
             console.log(error.name + ' ' + error.message);
         });
         return this.dataChange.asObservable();
+    }
+
+    public getGroupById(id:number)
+    {
+        return this.httpClient.get(this.GROUPS_URL+id   );
     }
 
     public addGroup(memberGroup:MemberGroup)

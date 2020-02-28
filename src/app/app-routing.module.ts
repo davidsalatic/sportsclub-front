@@ -4,8 +4,7 @@ import { MemberGroupsComponent } from './components/member-groups/member-groups.
 import { AppUsersComponent } from './components/app-users/app-users.component';
 
 const routes: Routes = [
-  {path: 'members', component: MemberGroupsComponent},
-  {path: 'users',component: AppUsersComponent}
+  {path: 'members', component: MemberGroupsComponent}
 ];
 
 @NgModule({

@@ -16,9 +16,13 @@ export class MemberGroupsComponent implements OnInit {
 
   displayedColumns = ['id', 'name','actions'];
   dataSource: MatTableDataSource<MemberGroup> = new MatTableDataSource();
+  selectedGroup:MemberGroup;
+
+  isOpen:boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
 
   constructor(private memberGroupService:MemberGroupService, private matDialog:MatDialog)
   {
@@ -56,7 +60,11 @@ export class MemberGroupsComponent implements OnInit {
         this.loadGroups();
       })
     }
+  }
 
+  selectGroup(memberGroup:MemberGroup)
+  {
+    this.selectedGroup=memberGroup;
   }
 
   openDialog()

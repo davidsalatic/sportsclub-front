@@ -15,6 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MemberGroupsComponent } from './components/member-groups/member-groups.component';
 import { MemberGroupService } from './services/member-group-service';
+import {AppUserService} from './services/app-user-service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -24,14 +25,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatDialogModule} from "@angular/material/dialog";
 import { AddMemberGroupDialogComponent } from './components/dialogs/add-member-group-dialog/add-member-group-dialog.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
-
+import { AddAppUserDialogComponent } from './components/dialogs/add-app-user-dialog/add-app-user-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MemberGroupsComponent,
     AddMemberGroupDialogComponent,
-    AppUsersComponent
+    AppUsersComponent,
+    AddAppUserDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,7 @@ import { AppUsersComponent } from './components/app-users/app-users.component';
     MatCardModule,
     ReactiveFormsModule
   ],
-  providers: [MemberGroupService],
+  providers: [MemberGroupService,AppUserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
