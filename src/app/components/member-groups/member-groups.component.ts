@@ -2,11 +2,10 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MemberGroup } from '../models/member-group';
-import { MemberGroupService } from '../services/member-group-service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AddMemberGroupDialogComponent } from '../add-member-group-dialog/add-member-group-dialog.component';
-import { group } from '@angular/animations';
+import { MemberGroup } from 'src/app/models/member-group';
+import { MemberGroupService } from 'src/app/services/member-group-service';
+import { AddMemberGroupDialogComponent } from '../dialogs/add-member-group-dialog/add-member-group-dialog.component';
 
 @Component({
   selector: 'app-member-groups',
@@ -48,6 +47,16 @@ export class MemberGroupsComponent implements OnInit {
         this.loadGroups();
       });   
     }
+  }
+
+  deleteGroup(memberGroup:MemberGroup)
+  {
+    if(confirm("Delete group '"+memberGroup.name+"'?")) {
+      this.memberGroupService.deleteGroup(memberGroup).subscribe(response=>{
+        this.loadGroups();
+      })
+    }
+
   }
 
   openDialog()

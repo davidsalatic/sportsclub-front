@@ -26,4 +26,8 @@ export class MemberGroupService {
     {
         return this.httpClient.post(this.GROUPS_URL, memberGroup);
     }
+
+    deleteGroup(memberGroup: MemberGroup) {
+        return this.httpClient.delete(this.GROUPS_URL+memberGroup.id);
+      }
 }

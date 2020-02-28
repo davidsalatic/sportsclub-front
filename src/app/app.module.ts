@@ -13,7 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { MemberGroupsComponent } from './member-groups/member-groups.component';
+import { MemberGroupsComponent } from './components/member-groups/member-groups.component';
 import { MemberGroupService } from './services/member-group-service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
@@ -22,15 +22,16 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatDialogModule} from "@angular/material/dialog";
-import { AddMemberGroupDialogComponent } from './add-member-group-dialog/add-member-group-dialog.component';
-import { EditMemberGroupDialogComponent } from './edit-member-group-dialog/edit-member-group-dialog.component';
+import { AddMemberGroupDialogComponent } from './components/dialogs/add-member-group-dialog/add-member-group-dialog.component';
+import { AppUsersComponent } from './components/app-users/app-users.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     MemberGroupsComponent,
     AddMemberGroupDialogComponent,
-    EditMemberGroupDialogComponent
+    AppUsersComponent
   ],
   imports: [
     BrowserModule,
