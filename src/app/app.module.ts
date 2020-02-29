@@ -26,6 +26,8 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { AddMemberGroupDialogComponent } from './components/dialogs/add-member-group-dialog/add-member-group-dialog.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
 import { AddAppUserDialogComponent } from './components/dialogs/add-app-user-dialog/add-app-user-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { AddAppUserDialogComponent } from './components/dialogs/add-app-user-dia
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [MemberGroupService,AppUserService],
   bootstrap: [AppComponent]

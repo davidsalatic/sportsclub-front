@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddAppUserDialogComponent implements OnInit {
 
+  dateJoined:Date;
+
   constructor() { }
 
   ngOnInit(): void {
   }
+
+  save()
+  {
+    console.log(this.dateJoined);
+  }
+
+  
 
 }

@@ -7,6 +7,7 @@ import { AppUserService } from 'src/app/services/app-user-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddAppUserDialogComponent } from '../dialogs/add-app-user-dialog/add-app-user-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-app-users',
@@ -18,26 +19,22 @@ export class AppUsersComponent implements OnInit {
   displayedColumns = ['id', 'name','surname','actions'];
   dataSource: MatTableDataSource<AppUser> = new MatTableDataSource();
 
-  @Input() selectedGroup:MemberGroup;
+  groupId : number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
 
-  constructor(private appUsersService:AppUserService, private matDialog:MatDialog){
+  constructor(private appUsersService:AppUserService, private matDialog:MatDialog, private route:ActivatedRoute){
   }
 
   ngOnInit() {
+    this.groupId = this.route.snapshot.params['id'];
+    this.loadUsersInGroup(this.groupId);
   }
 
-  ngOnChanges() {
-    if (this.selectedGroup.id) {
-      this.loadUsersInGroup();
-    }
-  }
-
-  loadUsersInGroup() {
-    this.appUsersService.getAllUsersInGroup(this.selectedGroup.id).subscribe(data => {
+  loadUsersInGroup(groupId:number) {
+    this.appUsersService.getAllUsersInGroup(groupId).subscribe(data => {
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
