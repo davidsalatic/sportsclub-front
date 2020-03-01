@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppUser } from 'src/app/models/app-user';
 
 @Component({
   selector: 'app-add-app-user-dialog',
@@ -7,16 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddAppUserDialogComponent implements OnInit {
 
-  dateJoined:Date;
-
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  
   save()
   {
-    console.log(this.dateJoined);
+
   }
 
   

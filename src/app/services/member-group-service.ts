@@ -22,9 +22,9 @@ export class MemberGroupService {
         return this.dataChange.asObservable();
     }
 
-    public getGroupById(id:number)
+    public getGroupById(id:number) : Observable<MemberGroup>
     {
-        return this.httpClient.get(this.GROUPS_URL+id   );
+        return this.httpClient.get<MemberGroup>(this.GROUPS_URL+id);
     }
 
     public addGroup(memberGroup:MemberGroup)
@@ -32,7 +32,12 @@ export class MemberGroupService {
         return this.httpClient.post(this.GROUPS_URL, memberGroup);
     }
 
+    public updateGroup(memberGroup: MemberGroup)
+    {
+        return this.httpClient.put(this.GROUPS_URL,memberGroup);
+    }
+
     deleteGroup(memberGroup: MemberGroup) {
         return this.httpClient.delete(this.GROUPS_URL+memberGroup.id);
-      }
+    }
 }

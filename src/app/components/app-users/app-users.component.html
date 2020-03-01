@@ -1,5 +1,12 @@
 <button type="button" (click)="openDialog();" >Add member</button>
 
+<div>
+  <mat-form-field>
+    <input #groupName type="text" matInput placeholder="Group Name" value="{{memberGroup.name}}">
+  </mat-form-field>
+  <button type="button" (click)="rename(groupName.value);" >Rename</button>
+</div>
+
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Elements">
     <!-- Id Column -->
@@ -25,8 +32,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
       <td mat-cell *matCellDef="let row">
         <button md-raised-button >Edit</button>
-        <button md-raised-button >Remove from group</button>
-        <button md-raised-button >Delete</button> </td>
+        <button md-raised-button (click)="deleteUser(row);">Delete</button> </td>
     </ng-container> 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

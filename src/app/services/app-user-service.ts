@@ -21,4 +21,8 @@ export class AppUserService{
         });
         return this.dataChange.asObservable();
     }
+
+    deleteUser(appUser: AppUser) {
+        return this.httpClient.delete(this.APP_USERS_URL+appUser.id);
+    }
 }

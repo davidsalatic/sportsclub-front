@@ -7,7 +7,8 @@ import { AppUserService } from 'src/app/services/app-user-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddAppUserDialogComponent } from '../dialogs/add-app-user-dialog/add-app-user-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MemberGroupService } from 'src/app/services/member-group-service';
 
 @Component({
   selector: 'app-app-users',
@@ -19,26 +20,56 @@ export class AppUsersComponent implements OnInit {
   displayedColumns = ['id', 'name','surname','actions'];
   dataSource: MatTableDataSource<AppUser> = new MatTableDataSource();
 
-  groupId : number;
+  memberGroup: MemberGroup;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  idPathVariable : number;
 
-  constructor(private appUsersService:AppUserService, private matDialog:MatDialog, private route:ActivatedRoute){
+  constructor(private appUsersService:AppUserService,private memberGroupService:MemberGroupService, 
+    private matDialog:MatDialog, private route:ActivatedRoute,private router:Router){
   }
 
   ngOnInit() {
-    this.groupId = this.route.snapshot.params['id'];
-    this.loadUsersInGroup(this.groupId);
+    this.idPathVariable=this.route.snapshot.params['id'];
+    this.loadGroup();
+    this.loadUsersInGroup();
   }
 
-  loadUsersInGroup(groupId:number) {
-    this.appUsersService.getAllUsersInGroup(groupId).subscribe(data => {
+  loadUsersInGroup() {
+    this.appUsersService.getAllUsersInGroup(this.idPathVariable).subscribe(data => {
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  loadGroup()
+  {
+    this.memberGroupService.getGroupById(this.idPathVariable).subscribe(data=>{
+      this.memberGroup=data;
+    })
+  }
+
+  rename(newGroupName: string)
+  {
+    if(newGroupName)
+    {
+      this.memberGroup.name=newGroupName;
+      this.memberGroupService.updateGroup(this.memberGroup).subscribe(response=>{
+      this.router.navigate(['/members']);
+      });
+    }
+  }
+
+  deleteUser(appUser:AppUser)
+  {
+    if(confirm("Delete user '"+appUser.name+" "+ appUser.surname+" ?")) {
+      this.appUsersService.deleteUser(appUser).subscribe(response=>{
+        this.loadUsersInGroup();
+      })
+    }
   }
 
   openDialog()
