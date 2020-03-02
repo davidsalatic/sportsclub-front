@@ -20,7 +20,7 @@ export class AddAppUserFormComponent implements OnInit {
   appUserForm = new FormGroup({
     name: new FormControl('',Validators.required),
     surname: new FormControl('',Validators.required),
-    jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13)])),
+    jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
     username: new FormControl(''),
@@ -30,7 +30,6 @@ export class AddAppUserFormComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private router:Router,
      private appUserService : AppUserService, private memberGroupService : MemberGroupService) { 
-    
   }
 
   ngOnInit(): void {
@@ -59,7 +58,7 @@ export class AddAppUserFormComponent implements OnInit {
     appUser.name=this.appUserForm.get('name').value;
     appUser.surname=this.appUserForm.get('surname').value;
     appUser.jmbg=this.appUserForm.get('jmbg').value;
-    appUser.adress=this.appUserForm.get('adress').value;
+    appUser.address=this.appUserForm.get('adress').value;
     appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
     appUser.dateJoined=this.appUserForm.get('dateJoined').value;
     appUser.memberGroup=this.memberGroup;

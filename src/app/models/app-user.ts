@@ -7,7 +7,7 @@ export class AppUser{
     name:string;
     surname:string;
     jmbg:string;
-    adress:string;
+    address:string;
     phoneNumber:string;
     dateJoined:Date;
     memberGroup:MemberGroup;

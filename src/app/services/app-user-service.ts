@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AppUser } from '../models/app-user';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { MemberGroup } from '../models/member-group';
 
 @Injectable()
 export class AppUserService{
@@ -22,10 +23,20 @@ export class AppUserService{
         return this.dataChange.asObservable();
     }
 
+    public getUserById(id:number) : Observable<AppUser>
+    {
+        return this.httpClient.get<AppUser>(this.APP_USERS_URL+id);
+    }
+
     addUser(appUser: AppUser)
     {
         console.log(appUser);
         return this.httpClient.post(this.APP_USERS_URL,appUser);
+    }
+    
+    public updateUser(appUser: AppUser)
+    {
+        return this.httpClient.put(this.APP_USERS_URL,appUser);
     }
 
     deleteUser(appUser: AppUser) {

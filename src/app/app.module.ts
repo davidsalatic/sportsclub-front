@@ -29,6 +29,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AddAppUserFormComponent } from './components/add-app-user-form/add-app-user-form.component';
+import { EditAppUserFormComponent } from './components/edit-app-user-form/edit-app-user-form.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AddAppUserFormComponent } from './components/add-app-user-form/add-app-
     MemberGroupsComponent,
     AddMemberGroupDialogComponent,
     AppUsersComponent,
-    AddAppUserFormComponent
+    AddAppUserFormComponent,
+    EditAppUserFormComponent
   ],
   imports: [
     BrowserModule,
