@@ -22,6 +22,12 @@ export class AppUserService{
         return this.dataChange.asObservable();
     }
 
+    addUser(appUser: AppUser)
+    {
+        console.log(appUser);
+        return this.httpClient.post(this.APP_USERS_URL,appUser);
+    }
+
     deleteUser(appUser: AppUser) {
         return this.httpClient.delete(this.APP_USERS_URL+appUser.id);
     }

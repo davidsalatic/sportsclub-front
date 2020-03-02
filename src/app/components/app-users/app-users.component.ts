@@ -5,8 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { MemberGroup } from 'src/app/models/member-group';
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { AddAppUserDialogComponent } from '../dialogs/add-app-user-dialog/add-app-user-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 
@@ -17,7 +16,7 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 })
 export class AppUsersComponent implements OnInit {
 
-  displayedColumns = ['id', 'name','surname','actions'];
+  displayedColumns = ['name','surname','actions'];
   dataSource: MatTableDataSource<AppUser> = new MatTableDataSource();
 
   memberGroup: MemberGroup;
@@ -34,7 +33,6 @@ export class AppUsersComponent implements OnInit {
   ngOnInit() {
     this.idPathVariable=this.route.snapshot.params['id'];
     this.loadGroup();
-    this.loadUsersInGroup();
   }
 
   loadUsersInGroup() {
@@ -48,7 +46,8 @@ export class AppUsersComponent implements OnInit {
   loadGroup()
   {
     this.memberGroupService.getGroupById(this.idPathVariable).subscribe(data=>{
-      this.memberGroup=data;
+    this.memberGroup=data;
+    this.loadUsersInGroup();
     })
   }
 
@@ -67,17 +66,8 @@ export class AppUsersComponent implements OnInit {
   {
     if(confirm("Delete user '"+appUser.name+" "+ appUser.surname+" ?")) {
       this.appUsersService.deleteUser(appUser).subscribe(response=>{
-        this.loadUsersInGroup();
+        this.loadGroup();
       })
     }
-  }
-
-  openDialog()
-  {
-    const dialogConfig = new MatDialogConfig();
-    let dialogRef = this.matDialog.open(AddAppUserDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(groupName=>{
-      //ADD MEMBER
-    })
   }
 }

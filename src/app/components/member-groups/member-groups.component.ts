@@ -14,7 +14,7 @@ import { AddMemberGroupDialogComponent } from '../dialogs/add-member-group-dialo
 })
 export class MemberGroupsComponent implements OnInit {
 
-  displayedColumns = ['id', 'name','actions'];
+  displayedColumns = ['name','actions'];
   dataSource: MatTableDataSource<MemberGroup> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
