@@ -30,7 +30,6 @@ export class AppUserService{
 
     addUser(appUser: AppUser)
     {
-        console.log(appUser);
         return this.httpClient.post(this.APP_USERS_URL,appUser);
     }
     

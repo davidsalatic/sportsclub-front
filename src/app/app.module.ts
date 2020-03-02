@@ -19,17 +19,16 @@ import {AppUserService} from './services/app-user-service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatDialogModule} from "@angular/material/dialog";
 import { AddMemberGroupDialogComponent } from './components/dialogs/add-member-group-dialog/add-member-group-dialog.component';
 import { AppUsersComponent } from './components/app-users/app-users.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { AddAppUserFormComponent } from './components/add-app-user-form/add-app-user-form.component';
-import { EditAppUserFormComponent } from './components/edit-app-user-form/edit-app-user-form.component';
+import { MembershipsComponent } from './components/memberships/memberships.component';
+import { EditAppUserFormComponent } from './components/forms/edit-app-user-form/edit-app-user-form.component';
+import { AddAppUserFormComponent } from './components/forms/add-app-user-form/add-app-user-form.component';
+import { MembershipService } from './services/membership-service';
 
 @NgModule({
   declarations: [
@@ -38,7 +37,8 @@ import { EditAppUserFormComponent } from './components/edit-app-user-form/edit-a
     AddMemberGroupDialogComponent,
     AppUsersComponent,
     AddAppUserFormComponent,
-    EditAppUserFormComponent
+    EditAppUserFormComponent,
+    MembershipsComponent
   ],
   imports: [
     BrowserModule,
@@ -57,14 +57,11 @@ import { EditAppUserFormComponent } from './components/edit-app-user-form/edit-a
     MatSortModule,
     MatInputModule,
     MatSelectModule,
-    MatRadioModule,
-    MatCardModule,
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    
   ],
-  providers: [MemberGroupService,AppUserService],
+  providers: [MemberGroupService,AppUserService,MembershipService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

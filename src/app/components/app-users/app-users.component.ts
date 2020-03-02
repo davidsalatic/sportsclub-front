@@ -16,7 +16,7 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 })
 export class AppUsersComponent implements OnInit {
 
-  displayedColumns = ['name','surname','actions'];
+  displayedColumns = ['name','actions'];
   dataSource: MatTableDataSource<AppUser> = new MatTableDataSource();
 
   memberGroup: MemberGroup;

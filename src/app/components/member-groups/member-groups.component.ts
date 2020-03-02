@@ -6,6 +6,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { AddMemberGroupDialogComponent } from '../dialogs/add-member-group-dialog/add-member-group-dialog.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-member-groups',
