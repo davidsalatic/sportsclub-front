@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Membership } from '../models/membership';
-import { MembershipPrice } from '../models/price';
+
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { MembershipPrice } from '../models/membership-price';
 
 @Injectable()
 export class MembershipService
 {
 
     private readonly MEMBERSHIPS_URL='http://localhost:8080/memberships/';
-    private readonly PRICE_URL='http://localhost:8080/membership-price"';
 
     constructor(public httpClient: HttpClient){ }
 
@@ -41,14 +41,13 @@ export class MembershipService
         return this.httpClient.post(this.MEMBERSHIPS_URL,membership);
     }
 
-    setMembershipPrice(price:MembershipPrice)
+    setMembershipPrice(membershipPrice:MembershipPrice)
     {
-        console.log(price);
-        return this.httpClient.post(this.PRICE_URL,price);
+        return this.httpClient.post(this.MEMBERSHIPS_URL+"price",membershipPrice);
     }
 
-    public getMembershipPrice()
+    public getMembershipPrice() 
     {
-        return this.httpClient.get<number>(this.PRICE_URL);
+        return this.httpClient.get<MembershipPrice>(this.MEMBERSHIPS_URL+"price");
     }
 }

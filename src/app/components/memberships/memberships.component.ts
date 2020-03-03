@@ -6,7 +6,7 @@ import { Membership } from 'src/app/models/membership';
 import { MembershipService } from 'src/app/services/membership-service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { ChangeMembershipPriceDialogComponent } from '../dialogs/change-membership-price-dialog/change-membership-price-dialog.component';
-import { MembershipPrice } from 'src/app/models/price';
+import { MembershipPrice } from 'src/app/models/membership-price';
 
 @Component({
   selector: 'app-memberships',
@@ -19,7 +19,7 @@ export class MembershipsComponent implements OnInit {
 
   dataSource: MatTableDataSource<Membership> = new MatTableDataSource();
 
-  price:number=0;
+  membershipPrice:MembershipPrice;
 
   displayedColumns = ['month','actions'];
 
@@ -29,11 +29,10 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
 }
 
   ngOnInit() {
-    this.membershipService.getMembershipPrice().subscribe(price=>{
-      if(price)
-        this.price=price;
+    this.membershipService.getMembershipPrice().subscribe(data=>{
+        this.membershipPrice=data;
+        this.createMembershipForCurrentMonthAndLoadAll();
     });
-    this.createMembershipForCurrentMonthAndLoadAll();
   }
 
   createMembershipForCurrentMonthAndLoadAll() {
@@ -47,11 +46,13 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
         let membership:Membership = new Membership();
         membership.month=date.getMonth()+1;
         membership.year=date.getFullYear();
+        membership.price=this.membershipPrice.price;
         this.membershipService.addMembership(membership).subscribe(response=>{
           this.loadMemberships();
         });
       }
-      this.loadMemberships();
+      else
+        this.loadMemberships();
     })
   }
   
@@ -60,10 +61,13 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
     const dialogConfig = new MatDialogConfig();
     let dialogRef = this.matDialog.open(ChangeMembershipPriceDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(price=>{
-      this.price=price;
-      let membPrice : MembershipPrice = new MembershipPrice();
-      membPrice.price=this.price;
-      this.membershipService.setMembershipPrice(membPrice);
+      if(price)
+      {
+        this.membershipPrice.price=price;
+        this.membershipService.setMembershipPrice(this.membershipPrice).subscribe(response=>{
+          this.loadMemberships();
+        });
+      }
     })
   }
 
