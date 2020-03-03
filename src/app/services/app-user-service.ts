@@ -13,6 +13,16 @@ export class AppUserService{
     
     constructor(public httpClient: HttpClient){ }
 
+    public getAllUsers(): Observable<AppUser[]>{
+        this.httpClient.get<AppUser[]>(this.APP_USERS_URL).subscribe(data =>{
+            this.dataChange.next(data);
+        },
+        (error: HttpErrorResponse) => {
+            console.log(error.name + ' ' + error.message);
+        });
+        return this.dataChange.asObservable();
+    }
+
     public getAllUsersInGroup(id:number): Observable<AppUser[]>{
         this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"group/"+id).subscribe(data =>{
             this.dataChange.next(data);

@@ -29,6 +29,10 @@ import { MembershipsComponent } from './components/memberships/memberships.compo
 import { EditAppUserFormComponent } from './components/forms/edit-app-user-form/edit-app-user-form.component';
 import { AddAppUserFormComponent } from './components/forms/add-app-user-form/add-app-user-form.component';
 import { MembershipService } from './services/membership-service';
+import { AppUsersInMembershipComponent } from './components/app-users-in-membership/app-users-in-membership.component';
+import { PaymentsForMembershipByAppUserComponent } from './components/payments-for-membership-by-app-user/payments-for-membership-by-app-user.component';
+import { PaymentService } from './services/payment-service';
+import { ChangeMembershipPriceDialogComponent } from './components/dialogs/change-membership-price-dialog/change-membership-price-dialog.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,10 @@ import { MembershipService } from './services/membership-service';
     AppUsersComponent,
     AddAppUserFormComponent,
     EditAppUserFormComponent,
-    MembershipsComponent
+    MembershipsComponent,
+    AppUsersInMembershipComponent,
+    PaymentsForMembershipByAppUserComponent,
+    ChangeMembershipPriceDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +68,7 @@ import { MembershipService } from './services/membership-service';
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  providers: [MemberGroupService,AppUserService,MembershipService],
+  providers: [MemberGroupService,AppUserService,MembershipService,PaymentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
