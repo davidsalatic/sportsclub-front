@@ -8,9 +8,10 @@ import { AddAppUserFormComponent } from './components/forms/add-app-user-form/ad
 import { AppUsersInMembershipComponent } from './components/app-users-in-membership/app-users-in-membership.component';
 import { PaymentsForMembershipByAppUserComponent } from './components/payments-for-membership-by-app-user/payments-for-membership-by-app-user.component';
 import { AddPaymentComponent } from './components/forms/add-payment/add-payment.component';
+import { SessionsComponent } from './components/sessions/sessions.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/members', pathMatch:'full'},
+  {path: '', redirectTo: '/sessions', pathMatch:'full'},
   {path: 'members', component: MemberGroupsComponent},
   {path: 'members/:id', component: AppUsersComponent},
   {path: 'add-member/:id', component: AddAppUserFormComponent},
@@ -18,7 +19,8 @@ const routes: Routes = [
   {path: 'memberships', component:MembershipsComponent},
   {path: 'memberships/:id',component:AppUsersInMembershipComponent},
   {path: 'payments/membership/:membershipId/user/:appUserId',component:PaymentsForMembershipByAppUserComponent},
-  {path: 'payments/membership/:membershipId/user/:appUserId/add',component:AddPaymentComponent}
+  {path: 'payments/membership/:membershipId/user/:appUserId/add',component:AddPaymentComponent},
+  {path: 'sessions',component:SessionsComponent}
 ];
 
 @NgModule({
