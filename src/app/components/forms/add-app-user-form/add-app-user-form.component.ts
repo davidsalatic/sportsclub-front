@@ -23,7 +23,7 @@ export class AddAppUserFormComponent implements OnInit {
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
-    username: new FormControl(''),
+    username: new FormControl('',Validators.required),
     dateJoined: new FormControl('',Validators.required,)
   });
 
@@ -46,9 +46,31 @@ export class AddAppUserFormComponent implements OnInit {
 
   onSubmit() {
     let appUser = this.generateUserFromForm();
-    this.appUserService.addUser(appUser).subscribe(response=>{
-      this.router.navigate(['/members/'+this.idPathVariable]);
-    });
+    console.log(appUser)
+    this.appUserService.getByUsername(appUser.username).subscribe(data=>{
+
+      if(data.length>0)
+      {
+        console.log("username exists")
+        //EXISTS USERNAME
+      }
+      else{
+        this.appUserService.getByJmbg(appUser.jmbg).subscribe(data=>{
+          console.log(data);
+          if(data.length>0)
+          {
+            console.log("jmbg exists")
+            //EXISTS JMBG
+          }
+          else
+          {
+            this.appUserService.addUser(appUser).subscribe(response=>{
+              this.router.navigate(['/members/'+this.idPathVariable]);
+            });
+          }
+        })
+      }
+    })
   }
 
   generateUserFromForm() : AppUser
@@ -60,7 +82,11 @@ export class AddAppUserFormComponent implements OnInit {
     appUser.jmbg=this.appUserForm.get('jmbg').value;
     appUser.address=this.appUserForm.get('adress').value;
     appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
-    appUser.dateJoined=this.appUserForm.get('dateJoined').value;
+
+    let formDate : Date =this.appUserForm.get('dateJoined').value;
+    formDate.setDate(formDate.getDate()+1);
+
+    appUser.dateJoined=formDate;
     appUser.memberGroup=this.memberGroup;
     //PASSWORD CREATED BY JMBG VALUE, USER SHOULD BE ABLE TO CHANGE IT LATER
     appUser.password=appUser.jmbg;

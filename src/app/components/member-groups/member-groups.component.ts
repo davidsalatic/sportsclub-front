@@ -41,7 +41,7 @@ export class MemberGroupsComponent implements OnInit {
 
   addGroup(groupName:string)
   {
-    if(groupName.trim().length>0)
+    if(groupName && groupName.trim().length>0)
     {
       let memberGroup = new MemberGroup();
       memberGroup.name=groupName;

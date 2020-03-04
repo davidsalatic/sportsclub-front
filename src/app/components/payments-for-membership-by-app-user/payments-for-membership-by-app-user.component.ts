@@ -56,4 +56,14 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
       }
     })
   }
+
+  deletePayment(payment:Payment)
+  {
+    if(confirm("Delete payment?")) {
+      this.paymentService.deletePayment(payment).subscribe(response=>{
+        this.loadPayments(this.membership.id,this.appUser.id);
+      })
+    }
+  }
+
 }

@@ -84,7 +84,9 @@ export class EditAppUserFormComponent implements OnInit {
     this.appUser.jmbg=this.appUserForm.get('jmbg').value;
     this.appUser.address=this.appUserForm.get('adress').value;
     this.appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
+
     this.appUser.dateJoined=this.appUserForm.get('dateJoined').value;
+    
     this.appUser.username = this.appUserForm.get('username').value;
     this.appUserService.updateUser(this.appUser).subscribe(response=>{
     this.router.navigate(['/members/'+this.idOfOriginalGroup]);

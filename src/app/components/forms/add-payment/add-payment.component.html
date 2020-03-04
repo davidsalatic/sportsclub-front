@@ -1,0 +1,16 @@
+<form [formGroup]="addPaymentForm" (ngSubmit)="onSubmit()">
+    <div>
+      <mat-form-field>
+        <input formControlName="amount" type="number" matInput placeholder="Amount"  required  minlength="1">
+      </mat-form-field>
+    </div>
+    <div>
+      <input formControlName="dateOfPayment" readonly [matDatepicker]="dateOfPayment"required>
+      <mat-datepicker-toggle [for]="dateOfPayment">
+      </mat-datepicker-toggle>
+      <mat-datepicker #dateOfPayment></mat-datepicker>
+    </div>
+    <div>
+      <button type="submit" [disabled]="!addPaymentForm.valid">Submit</button>
+    </div>
+  </form>

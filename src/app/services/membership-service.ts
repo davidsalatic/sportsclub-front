@@ -41,6 +41,12 @@ export class MembershipService
         return this.httpClient.post(this.MEMBERSHIPS_URL,membership);
     }
 
+    public updateMembership(membership: Membership)
+    {
+        return this.httpClient.put(this.MEMBERSHIPS_URL,membership);
+    }
+
+
     setMembershipPrice(membershipPrice:MembershipPrice)
     {
         return this.httpClient.post(this.MEMBERSHIPS_URL+"price",membershipPrice);

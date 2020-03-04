@@ -1,7 +1,7 @@
 <a [routerLink]="['/add-member', idPathVariable]"><button md-raised-button>Add Member</button></a>
-<div>
+<div *ngIf =memberGroup>
   <mat-form-field>
-    <input #groupName type="text" matInput placeholder="Group Name" value="{{memberGroup.name}}">
+    <input #groupName type="text" matInput placeholder="Group Name"  value="{{memberGroup.name}}">
   </mat-form-field>
   <button type="button" (click)="rename(groupName.value);" >Rename</button>
 </div>

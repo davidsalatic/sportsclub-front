@@ -33,6 +33,7 @@ import { AppUsersInMembershipComponent } from './components/app-users-in-members
 import { PaymentsForMembershipByAppUserComponent } from './components/payments-for-membership-by-app-user/payments-for-membership-by-app-user.component';
 import { PaymentService } from './services/payment-service';
 import { ChangeMembershipPriceDialogComponent } from './components/dialogs/change-membership-price-dialog/change-membership-price-dialog.component';
+import { AddPaymentComponent } from './components/forms/add-payment/add-payment.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ChangeMembershipPriceDialogComponent } from './components/dialogs/chang
     MembershipsComponent,
     AppUsersInMembershipComponent,
     PaymentsForMembershipByAppUserComponent,
-    ChangeMembershipPriceDialogComponent
+    ChangeMembershipPriceDialogComponent,
+    AddPaymentComponent
   ],
   imports: [
     BrowserModule,
