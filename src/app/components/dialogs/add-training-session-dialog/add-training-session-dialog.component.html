@@ -4,7 +4,7 @@
     <div>
         <mat-form-field>
             <mat-label>Date</mat-label>
-            <input type="date" #inputDate matInput readonly required [matDatepicker]="date">
+            <input  #inputDate matInput readonly required [matDatepicker]="date">
             <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
             <mat-datepicker #date></mat-datepicker>
         </mat-form-field>
