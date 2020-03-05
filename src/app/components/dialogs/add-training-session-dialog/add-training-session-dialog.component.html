@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>New session</h2>
+
+<mat-dialog-content>
+    <div>
+        <mat-form-field>
+            <mat-label>Date</mat-label>
+            <input type="date" #inputDate matInput readonly required [matDatepicker]="date">
+            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+        </mat-form-field>
+        </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button" (click)="close()">Close</button>
+    &nbsp;
+    <button class="mat-raised-button" (click)="save(inputDate.value)">Save</button>
+</mat-dialog-actions>

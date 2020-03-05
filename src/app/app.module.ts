@@ -36,6 +36,8 @@ import { ChangeMembershipPriceDialogComponent } from './components/dialogs/chang
 import { AddPaymentComponent } from './components/forms/add-payment/add-payment.component';
 import { SessionsComponent } from './components/sessions/sessions.component';
 import { TrainingSessionService } from './services/training-session-service';
+import { SessionsGroupComponent } from './components/sessions-group/sessions-group.component';
+import { AddTrainingSessionDialogComponent } from './components/dialogs/add-training-session-dialog/add-training-session-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { TrainingSessionService } from './services/training-session-service';
     PaymentsForMembershipByAppUserComponent,
     ChangeMembershipPriceDialogComponent,
     AddPaymentComponent,
-    SessionsComponent
+    SessionsComponent,
+    SessionsGroupComponent,
+    AddTrainingSessionDialogComponent
   ],
   imports: [
     BrowserModule,

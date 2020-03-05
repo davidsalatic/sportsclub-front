@@ -4,12 +4,16 @@
         <input formControlName="amount" type="number" matInput placeholder="Amount"  required  minlength="1">
       </mat-form-field>
     </div>
+
     <div>
-      <input formControlName="dateOfPayment" readonly [matDatepicker]="dateOfPayment"required>
-      <mat-datepicker-toggle [for]="dateOfPayment">
-      </mat-datepicker-toggle>
-      <mat-datepicker #dateOfPayment></mat-datepicker>
+      <mat-form-field>
+        <mat-label>Payment Date</mat-label>
+        <input formControlName="dateOfPayment" matInput readonly required [matDatepicker]="dateOfPayment">
+        <mat-datepicker-toggle matSuffix [for]="dateOfPayment"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfPayment></mat-datepicker>
+      </mat-form-field>
     </div>
+
     <div>
       <button type="submit" [disabled]="!addPaymentForm.valid">Submit</button>
     </div>

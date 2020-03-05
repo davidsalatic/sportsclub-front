@@ -85,7 +85,14 @@ export class EditAppUserFormComponent implements OnInit {
     this.appUser.address=this.appUserForm.get('adress').value;
     this.appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
 
-    this.appUser.dateJoined=this.appUserForm.get('dateJoined').value;
+    let formDate : Date =this.appUserForm.get('dateJoined').value;
+    if(formDate!=this.appUser.dateJoined)
+    {
+      formDate.setDate(formDate.getDate()+1);
+      this.appUser.dateJoined=formDate;
+    }
+    else
+      this.appUser.dateJoined=this.appUserForm.get('dateJoined').value;
     
     this.appUser.username = this.appUserForm.get('username').value;
     this.appUserService.updateUser(this.appUser).subscribe(response=>{

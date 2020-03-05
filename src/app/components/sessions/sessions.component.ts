@@ -16,8 +16,9 @@ export class SessionsComponent implements  OnInit {
   @ViewChild(MatSort) sort: MatSort;
   dataSource: MatTableDataSource<MemberGroup> = new MatTableDataSource();
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['name','actions'];
+  currentMonth:number = new Date().getMonth()+1;
+  currentYear:number = new Date().getFullYear();
 
   constructor(private memberGroupService:MemberGroupService){}
 
