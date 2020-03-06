@@ -64,7 +64,7 @@ export class AppUsersComponent implements OnInit {
 
   deleteUser(appUser:AppUser)
   {
-    if(confirm("Delete user '"+appUser.name+" "+ appUser.surname+" ?")) {
+    if(confirm("Delete user '"+appUser.name+" "+ appUser.surname+" and all payments and attendances connected?")) {
       this.appUsersService.deleteUser(appUser).subscribe(response=>{
         this.loadGroup();
       })

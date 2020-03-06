@@ -65,4 +65,13 @@ export class SessionsGroupComponent implements OnInit {
       }
     })
   }
+
+  deleteTrainingSession(trainingSession:TrainingSession)
+  {
+    if(confirm("Delete training session and all connected attendances?")) {
+      this.trainingSessionService.deleteTrainingSession(trainingSession).subscribe(response=>{
+        this.loadTrainingSessionsInGroup();
+      })
+    }
+  }
 }

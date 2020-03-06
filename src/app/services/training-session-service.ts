@@ -27,4 +27,8 @@ export class TrainingSessionService{
     {
         return this.httpClient.post(this.SESSIONS_URL, trainingSession);
     }
+
+    deleteTrainingSession(trainingSession: TrainingSession) {
+        return this.httpClient.delete(this.SESSIONS_URL+trainingSession.id);
+    }
 }
