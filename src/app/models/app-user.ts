@@ -11,8 +11,4 @@ export class AppUser{
     phoneNumber:string;
     dateJoined:Date;
     memberGroup:MemberGroup;
-    
-    getMemberGroupName():string{
-        return this.memberGroup.name;
-    }
 }

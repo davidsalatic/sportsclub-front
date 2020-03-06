@@ -31,7 +31,7 @@ export class AppUsersInMembershipComponent implements OnInit {
 
   }
 
-  displayedColumns = [ 'name','actions'];
+  displayedColumns = [ 'name','group','actions'];
 
   ngOnInit() {
     this.idPathVariable=this.route.snapshot.params['id'];
@@ -48,6 +48,11 @@ export class AppUsersInMembershipComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
+  }
+
+  getGroup(appUser:AppUser):string
+  {
+    return appUser.memberGroup.name;
   }
 
   openDialog()
