@@ -13,18 +13,8 @@ export class MembershipService
 
     constructor(public httpClient: HttpClient){ }
 
-    dataChange: BehaviorSubject<Membership[]> = new BehaviorSubject<Membership[]>([]);
-
-    _dataChange: BehaviorSubject<Membership[]> = new BehaviorSubject<Membership[]>([]);
-
     public getAllMemberships(): Observable<Membership[]>{
-        this.httpClient.get<Membership[]>(this.MEMBERSHIPS_URL).subscribe(data =>{
-            this.dataChange.next(data);
-        },
-        (error: HttpErrorResponse) => {
-            console.log(error.name + ' ' + error.message);
-        });
-        return this.dataChange.asObservable();
+        return this.httpClient.get<Membership[]>(this.MEMBERSHIPS_URL);
     }
 
     public getMembershipById(id:number) : Observable<Membership>

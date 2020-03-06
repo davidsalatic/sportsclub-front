@@ -8,18 +8,11 @@ export class MemberGroupService {
 
     private readonly GROUPS_URL = 'http://localhost:8080/groups/';
 
-    dataChange: BehaviorSubject<MemberGroup[]> = new BehaviorSubject<MemberGroup[]>([]);
 
     constructor(public httpClient: HttpClient){ }
 
     public getAllGroups(): Observable<MemberGroup[]>{
-        this.httpClient.get<MemberGroup[]>(this.GROUPS_URL).subscribe(data =>{
-            this.dataChange.next(data);
-        },
-        (error: HttpErrorResponse) => {
-            console.log(error.name + ' ' + error.message);
-        });
-        return this.dataChange.asObservable();
+        return this.httpClient.get<MemberGroup[]>(this.GROUPS_URL);
     }
 
     public getGroupById(id:number) : Observable<MemberGroup>

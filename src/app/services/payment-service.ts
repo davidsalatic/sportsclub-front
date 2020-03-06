@@ -8,18 +8,11 @@ export class PaymentService{
 
     private readonly PAYMENTS_URL = 'http://localhost:8080/payments/';
 
-    dataChange: BehaviorSubject<Payment[]> = new BehaviorSubject<Payment[]>([]);
     
     constructor(public httpClient: HttpClient){ }
 
     public getAllPaymentsForMembershipByUser(membershipId:number,appUserId:number): Observable<Payment[]>{
-        this.httpClient.get<Payment[]>(this.PAYMENTS_URL+"membership/"+membershipId+"/user/"+appUserId).subscribe(data =>{
-            this.dataChange.next(data);
-        },
-        (error: HttpErrorResponse) => {
-            console.log(error.name + ' ' + error.message);
-        });
-        return this.dataChange.asObservable();
+        return this.httpClient.get<Payment[]>(this.PAYMENTS_URL+"membership/"+membershipId+"/user/"+appUserId);
     }
 
     public getById(id:number) : Observable<Payment>

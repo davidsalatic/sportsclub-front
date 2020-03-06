@@ -8,7 +8,6 @@ export class AppUserService{
 
     private readonly APP_USERS_URL = 'http://localhost:8080/users/';
 
-    dataChange: BehaviorSubject<AppUser[]> = new BehaviorSubject<AppUser[]>([]);
     
     constructor(public httpClient: HttpClient,private http: HttpClient){ }
 

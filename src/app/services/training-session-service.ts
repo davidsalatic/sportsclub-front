@@ -8,21 +8,13 @@ import { MemberGroup } from '../models/member-group';
 export class TrainingSessionService{
 
     private readonly SESSIONS_URL = 'http://localhost:8080/sessions/';
-
-    dataChange: BehaviorSubject<TrainingSession[]> = new BehaviorSubject<TrainingSession[]>([]);
     
     constructor(public httpClient: HttpClient){ }
 
     public getAllTrainingSessionsByGroup(memberGroupId:number): Observable<TrainingSession[]>{
-        this.httpClient.get<TrainingSession[]>(this.SESSIONS_URL+"group/"+memberGroupId).subscribe(data =>{
-            this.dataChange.next(data);
-        },
-        (error: HttpErrorResponse) => {
-            console.log(error.name + ' ' + error.message);
-        });
-        return this.dataChange.asObservable();
+        return this.httpClient.get<TrainingSession[]>(this.SESSIONS_URL+"group/"+memberGroupId);
     }
-
+    
     public getById(id:number) : Observable<TrainingSession>
     {
         return this.httpClient.get<TrainingSession>(this.SESSIONS_URL+id);

@@ -9,7 +9,6 @@ export class AttendanceService{
 
     private readonly ATTENDANCES_URL = 'http://localhost:8080/attendances/';
 
-    dataChange: BehaviorSubject<Attendance[]> = new BehaviorSubject<Attendance[]>([]);
 
     constructor(public httpClient: HttpClient){ }
 
