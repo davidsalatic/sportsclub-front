@@ -23,6 +23,11 @@ export class TrainingSessionService{
         return this.dataChange.asObservable();
     }
 
+    public getById(id:number) : Observable<TrainingSession>
+    {
+        return this.httpClient.get<TrainingSession>(this.SESSIONS_URL+id);
+    }
+
     public addTrainingSession(trainingSession:TrainingSession)
     {
         return this.httpClient.post(this.SESSIONS_URL, trainingSession);

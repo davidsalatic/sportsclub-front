@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { MemberGroup } from 'src/app/models/member-group';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 
@@ -27,7 +26,7 @@ export class AppUsersComponent implements OnInit {
   idPathVariable : number;
 
   constructor(private appUsersService:AppUserService,private memberGroupService:MemberGroupService, 
-    private matDialog:MatDialog, private route:ActivatedRoute,private router:Router){
+     private route:ActivatedRoute,private router:Router){
   }
 
   ngOnInit() {

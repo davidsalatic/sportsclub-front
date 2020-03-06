@@ -38,6 +38,9 @@ import { SessionsComponent } from './components/sessions/sessions.component';
 import { TrainingSessionService } from './services/training-session-service';
 import { SessionsGroupComponent } from './components/sessions-group/sessions-group.component';
 import { AddTrainingSessionDialogComponent } from './components/dialogs/add-training-session-dialog/add-training-session-dialog.component';
+import { AttendancesComponent } from './components/attendances/attendances.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { AttendanceService } from './services/attendance-service';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,8 @@ import { AddTrainingSessionDialogComponent } from './components/dialogs/add-trai
     AddPaymentComponent,
     SessionsComponent,
     SessionsGroupComponent,
-    AddTrainingSessionDialogComponent
+    AddTrainingSessionDialogComponent,
+    AttendancesComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +74,7 @@ import { AddTrainingSessionDialogComponent } from './components/dialogs/add-trai
     MatListModule,
     MatTableModule,
     MatPaginatorModule,
+    MatCheckboxModule,
     MatSortModule,
     MatInputModule,
     MatSelectModule,
@@ -77,7 +82,7 @@ import { AddTrainingSessionDialogComponent } from './components/dialogs/add-trai
     MatDatepickerModule,
     MatNativeDateModule
   ],
-  providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,TrainingSessionService],
+  providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,TrainingSessionService,AttendanceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,6 +10,7 @@ import { PaymentsForMembershipByAppUserComponent } from './components/payments-f
 import { AddPaymentComponent } from './components/forms/add-payment/add-payment.component';
 import { SessionsComponent } from './components/sessions/sessions.component';
 import { SessionsGroupComponent } from './components/sessions-group/sessions-group.component';
+import { AttendancesComponent } from './components/attendances/attendances.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/sessions', pathMatch:'full'},
@@ -22,7 +23,8 @@ const routes: Routes = [
   {path: 'payments/membership/:membershipId/user/:appUserId',component:PaymentsForMembershipByAppUserComponent},
   {path: 'payments/membership/:membershipId/user/:appUserId/add',component:AddPaymentComponent},
   {path: 'sessions',component:SessionsComponent},
-  {path: 'sessions/group/:groupId',component:SessionsGroupComponent}
+  {path: 'sessions/group/:groupId',component:SessionsGroupComponent},
+  {path: 'sessions/:id/group/:groupId/attendances',component:AttendancesComponent}
 ];
 
 @NgModule({
