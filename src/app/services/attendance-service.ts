@@ -14,23 +14,7 @@ export class AttendanceService{
     constructor(public httpClient: HttpClient){ }
 
     public getAllAttendancesForTraining(trainingId:number): Observable<Attendance[]>{
-        this.httpClient.get<Attendance[]>(this.ATTENDANCES_URL).subscribe(data =>{
-            this.dataChange.next(data);
-        },
-        (error: HttpErrorResponse) => {
-            console.log(error.name + ' ' + error.message);
-        });
-        return this.dataChange.asObservable();
-    }
-
-    public getAllAttendancesForUser(appUserId:number): Observable<Attendance[]>{
-        this.httpClient.get<Attendance[]>(this.ATTENDANCES_URL).subscribe(data =>{
-            this.dataChange.next(data);
-        },
-        (error: HttpErrorResponse) => {
-            console.log(error.name + ' ' + error.message);
-        });
-        return this.dataChange.asObservable();
+        return this.httpClient.get<Attendance[]>(this.ATTENDANCES_URL+"training/"+trainingId);
     }
 
     getByTrainingSessionAndAppUser(trainingSessionId:number,appUserId:number)

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { isNumber } from 'util';
+import { MatDialogRef,MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
+import {Component, OnInit, Output, EventEmitter, Inject} from '@angular/core';
 
 @Component({
   selector: 'app-change-membership-price-dialog',
@@ -9,9 +8,20 @@ import { isNumber } from 'util';
 })
 export class ChangeMembershipPriceDialogComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<ChangeMembershipPriceDialogComponent>) { }
+  price:number
+
+  constructor(private dialogRef: MatDialogRef<ChangeMembershipPriceDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data:number) { 
+      this.price=data;
+    }
 
   ngOnInit(): void {
+
+  }
+
+  getPrice()
+  {
+    return this.price;
   }
 
   close()

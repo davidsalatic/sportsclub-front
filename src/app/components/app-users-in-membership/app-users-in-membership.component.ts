@@ -43,7 +43,7 @@ export class AppUsersInMembershipComponent implements OnInit {
 
   loadAppUsers()
   {
-    this.appUserService.getAllUsers().subscribe(data=>{
+    this.appUserService.getAllMembers().subscribe(data=>{
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -53,6 +53,7 @@ export class AppUsersInMembershipComponent implements OnInit {
   openDialog()
   {
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.data=this.membership.price;
     let dialogRef = this.matDialog.open(ChangeMembershipPriceDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(price=>{
       if(price)

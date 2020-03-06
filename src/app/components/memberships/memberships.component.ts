@@ -59,6 +59,7 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
   openDialog()
   {
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.data=this.membershipPrice.price;
     let dialogRef = this.matDialog.open(ChangeMembershipPriceDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(price=>{
       if(price)

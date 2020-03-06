@@ -37,18 +37,21 @@ export class AttendancesComponent implements  OnInit {
   ngOnInit() {
     let trainingId=this.route.snapshot.params['id'];
     let memberGroupId = this.route.snapshot.params['groupId'];
+
     this.trainingSessionService.getById(trainingId).subscribe(training=>{
       this.trainingSession=training;
       this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
         this.memberGroup=group;
-        this.appUserService.getAllUsersInGroup(memberGroupId).subscribe(data=>{
-          this.dataSource.data=data;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.getAllAttendancesForTraining(trainingId);
-        })
+        
       })
     })
+    this.appUserService.getAllUsersInGroup(memberGroupId)
+    .subscribe( data => {
+      this.dataSource.data=data;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    })
+    this.getAllAttendancesForTraining(trainingId);
   }
 
   getAllAttendancesForTraining(trainingId:number)
@@ -80,7 +83,7 @@ export class AttendancesComponent implements  OnInit {
   }
 
   isPresent(appUser:AppUser)
-  {
+  { 
     for(let attendance of this.attendances)
     {
       if(attendance.appUser.id===appUser.id && attendance.trainingSession.id===this.trainingSession.id)
@@ -90,7 +93,4 @@ export class AttendancesComponent implements  OnInit {
     }
     return false;
   }
-  
-
-  
 }
