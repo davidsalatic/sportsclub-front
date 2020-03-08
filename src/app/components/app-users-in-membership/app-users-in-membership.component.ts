@@ -10,6 +10,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ChangeMembershipPriceDialogComponent } from '../dialogs/change-membership-price-dialog/change-membership-price-dialog.component';
 import { MembershipService } from 'src/app/services/membership-service';
 import { Membership } from 'src/app/models/membership';
+import { Payment } from 'src/app/models/payment';
 
 @Component({
   selector: 'app-app-users-in-membership',
@@ -24,6 +25,8 @@ export class AppUsersInMembershipComponent implements OnInit {
   dataSource: MatTableDataSource<AppUser>= new MatTableDataSource();
   idPathVariable:number;
   membership:Membership;
+
+  displayedColumns = [ 'name','group','settled','actions'];
   
 
   constructor(private route:ActivatedRoute, private appUserService : AppUserService,
@@ -31,8 +34,6 @@ export class AppUsersInMembershipComponent implements OnInit {
   {
 
   }
-
-  displayedColumns = [ 'name','group','actions'];
 
   ngOnInit() {
     this.idPathVariable=this.route.snapshot.params['id'];
@@ -75,5 +76,10 @@ export class AppUsersInMembershipComponent implements OnInit {
     this.membershipService.updateMembership(this.membership).subscribe(response=>{
       
     })
+  }
+
+  isSettled(appUser:AppUser)
+  {
+    
   }
 }

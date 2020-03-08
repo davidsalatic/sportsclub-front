@@ -28,6 +28,7 @@ export class AttendancesComponent implements  OnInit {
   trainingSession:TrainingSession;
   memberGroup:MemberGroup;
   attendances:Attendance[];
+  
 
   constructor(private route:ActivatedRoute,private appUserService:AppUserService
     ,private attendanceService:AttendanceService,
