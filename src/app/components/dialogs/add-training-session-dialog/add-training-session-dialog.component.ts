@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-training-session-dialog',
@@ -8,7 +8,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class AddTrainingSessionDialogComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<AddTrainingSessionDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<AddTrainingSessionDialogComponent>){}
 
   ngOnInit(): void {
   }
@@ -25,5 +25,4 @@ export class AddTrainingSessionDialogComponent implements OnInit {
       this.dialogRef.close(date);
     }
   }
-
 }
