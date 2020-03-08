@@ -1,4 +1,4 @@
-import{AppUser} from './app-user'
+import { AppUser } from '../app-user';
 
 export class AttendanceModel{
 

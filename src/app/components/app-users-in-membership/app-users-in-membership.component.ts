@@ -25,6 +25,7 @@ export class AppUsersInMembershipComponent implements OnInit {
   dataSource: MatTableDataSource<AppUser>= new MatTableDataSource();
   idPathVariable:number;
   membership:Membership;
+  
 
   displayedColumns = [ 'name','group','settled','actions'];
   
@@ -52,11 +53,6 @@ export class AppUsersInMembershipComponent implements OnInit {
     })
   }
 
-  getGroup(appUser:AppUser):string
-  {
-    return appUser.memberGroup.name;
-  }
-
   openDialog()
   {
     const dialogConfig = new MatDialogConfig();
@@ -76,10 +72,5 @@ export class AppUsersInMembershipComponent implements OnInit {
     this.membershipService.updateMembership(this.membership).subscribe(response=>{
       
     })
-  }
-
-  isSettled(appUser:AppUser)
-  {
-    
   }
 }
