@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { Payment } from 'src/app/models/payment';
 import { PaymentService } from 'src/app/services/payment-service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +9,7 @@ import { MembershipService } from 'src/app/services/membership-service';
 import { Membership } from 'src/app/models/membership';
 import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-payments-for-membership-by-app-user',
@@ -28,33 +29,48 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
   total:number=0;
 
   constructor(private paymentService:PaymentService,private membershipService:MembershipService,
-    private appUserService:AppUserService, private route:ActivatedRoute){}
+    private appUserService:AppUserService, private route:ActivatedRoute,private snackBar:MatSnackBar){}
 
   ngOnInit() {
     let membershipId=this.route.snapshot.params['membershipId'];
     let appUserId = this.route.snapshot.params['appUserId'];
-    this.membershipService.getMembershipById(membershipId).subscribe(data=>{
-      this.membership=data;
-      this.appUserService.getUserById(appUserId).subscribe(data=>{
-        this.appUser=data;
-      })
-    })
+    this.loadMembership(membershipId);
+    this.loadAppUser(appUserId);
     this.loadPayments(membershipId,appUserId);
+  }
 
+  loadMembership(membershipId:number)
+  {
+    this.membershipService.getMembershipById(membershipId).subscribe(membership=>{
+      this.membership=membership;
+    })
+  }
+
+  loadAppUser(appUserId:number)
+  {
+    this.appUserService.getUserById(appUserId).subscribe(appUser=>{
+      this.appUser=appUser;
+    })
   }
 
   loadPayments(membershipId:number,appUserId:number)
   {
-    this.paymentService.getAllPaymentsForMembershipByUser(membershipId,appUserId).subscribe(data=>{
-      this.dataSource.data=data;
+    this.paymentService.getAllPaymentsForMembershipByUser(membershipId,appUserId).subscribe(payments=>{
+      this.dataSource.data=payments;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.total=0;
-      for(let payment of data)
-      {
-        this.total+=payment.amount
-      }
+
+      this.generateTotalAmount(payments);
     })
+  }
+
+  generateTotalAmount(payments:Payment[])
+  {
+    this.total=0;
+    for(let payment of payments)
+    {
+      this.total+=payment.amount
+    }
   }
 
   deletePayment(payment:Payment)
@@ -62,8 +78,15 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
     if(confirm("Delete payment?")) {
       this.paymentService.deletePayment(payment).subscribe(response=>{
         this.loadPayments(this.membership.id,this.appUser.id);
+        this.showSnackbar("Payment deleted.")
       })
     }
   }
 
+  showSnackbar(message:string)
+  {
+    this.snackBar.open(message, "X",{
+      duration: 1500
+    })
+  }
 }

@@ -9,17 +9,17 @@ export class AppUserService{
     private readonly APP_USERS_URL = 'http://localhost:8080/users/';
 
     
-    constructor(public httpClient: HttpClient,private http: HttpClient){ }
+    constructor(private httpClient: HttpClient,private http: HttpClient){ }
 
-    public getAllMembers(): Observable<AppUser[]>{
+    getAllMembers(): Observable<AppUser[]>{
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"members");
     }
 
-    public getAllUsersInGroup(id:number): Observable<AppUser[]>{
+    getAllUsersInGroup(id:number): Observable<AppUser[]>{
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"group/"+id);
     }
 
-    public getUserById(id:number) : Observable<AppUser>
+    getUserById(id:number) : Observable<AppUser>
     {
         return this.httpClient.get<AppUser>(this.APP_USERS_URL+id);
     }
@@ -29,19 +29,19 @@ export class AppUserService{
         return this.httpClient.post(this.APP_USERS_URL,appUser);
     }
     
-    public updateUser(appUser: AppUser)
+    updateUser(appUser: AppUser)
     {
         return this.httpClient.put(this.APP_USERS_URL,appUser);
     }
 
-    public getByUsername(username:string)
+    getByUsername(username:string)
     {
         let params = new HttpParams();
         params = params.append('username', username);
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"search/username", {params: params})
     }
 
-    public getByJmbg(jmbg:string)
+    getByJmbg(jmbg:string)
     {
         let params = new HttpParams();
         params = params.append('jmbg', jmbg);

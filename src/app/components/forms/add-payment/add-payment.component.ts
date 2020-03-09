@@ -7,6 +7,7 @@ import { AppUserService } from 'src/app/services/app-user-service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PaymentService } from 'src/app/services/payment-service';
 import { Payment } from 'src/app/models/payment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-payment',
@@ -16,7 +17,7 @@ import { Payment } from 'src/app/models/payment';
 export class AddPaymentComponent implements OnInit {
 
   constructor(private route:ActivatedRoute,private membershipService:MembershipService,
-    private appUserService:AppUserService,private paymentService: PaymentService,private router:Router) { }
+    private appUserService:AppUserService,private paymentService: PaymentService,private router:Router,private snackBar:MatSnackBar) { }
 
   membership:Membership;
   appUser:AppUser;
@@ -29,16 +30,21 @@ export class AddPaymentComponent implements OnInit {
   ngOnInit(): void {
     let membershipId=this.route.snapshot.params['membershipId'];
     let appUserId=this.route.snapshot.params['appUserId'];
-    this.loadMembershipAndAppUser(membershipId,appUserId);
+    this.loadMembership(membershipId);
+    this.loadAppUser(appUserId);
   }
 
-  loadMembershipAndAppUser(membershipId:number,appUserId:number)
+  loadMembership(membershipId:number)
   {
     this.membershipService.getMembershipById(membershipId).subscribe(membership=>{
       this.membership=membership;
-      this.appUserService.getUserById(appUserId).subscribe(appUser=>{
-        this.appUser=appUser;
-      })
+    })
+  }
+
+  loadAppUser(appUserId:number)
+  {
+    this.appUserService.getUserById(appUserId).subscribe(appUser=>{
+      this.appUser=appUser;
     })
   }
 
@@ -47,6 +53,7 @@ export class AddPaymentComponent implements OnInit {
     
     this.paymentService.addPayment(payment).subscribe(response=>{
       this.router.navigate(['/payments/membership/'+this.membership.id+"/user/"+this.appUser.id]);
+      this.showSnackbar("Payment added.")
     });
   }
 
@@ -63,5 +70,12 @@ export class AddPaymentComponent implements OnInit {
     payment.membership=this.membership;
     payment.appUser=this.appUser;
     return payment;
+  }
+
+  showSnackbar(message:string)
+  {
+    this.snackBar.open(message, "X",{
+      duration: 1500
+    })
   }
 }

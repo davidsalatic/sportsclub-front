@@ -14,8 +14,8 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 export class SessionsComponent implements  OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource: MatTableDataSource<MemberGroup> = new MatTableDataSource();
 
+  dataSource: MatTableDataSource<MemberGroup> = new MatTableDataSource();
   displayedColumns = ['name','actions'];
   currentMonth:number = new Date().getMonth()+1;
   currentYear:number = new Date().getFullYear();
@@ -24,7 +24,6 @@ export class SessionsComponent implements  OnInit {
 
   ngOnInit() {
     this.loadGroups();
-
   }
 
   loadGroups()

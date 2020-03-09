@@ -41,6 +41,7 @@ import { AddTrainingSessionDialogComponent } from './components/dialogs/add-trai
 import { AttendancesComponent } from './components/attendances/attendances.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { AttendanceService } from './services/attendance-service';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { AttendanceService } from './services/attendance-service';
     MatSelectModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,TrainingSessionService,AttendanceService],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Payment } from '../models/payment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -9,17 +9,17 @@ export class PaymentService{
     private readonly PAYMENTS_URL = 'http://localhost:8080/payments/';
 
     
-    constructor(public httpClient: HttpClient){ }
+    constructor(private httpClient: HttpClient){ }
 
-    public getAllPaymentsForMembershipByUser(membershipId:number,appUserId:number): Observable<Payment[]>{
+    getAllPaymentsForMembershipByUser(membershipId:number,appUserId:number): Observable<Payment[]>{
         return this.httpClient.get<Payment[]>(this.PAYMENTS_URL+"membership/"+membershipId+"/user/"+appUserId);
     }
 
-    public getAllPaymentsForMembership(membershipId:number): Observable<Payment[]>{
+    getAllPaymentsForMembership(membershipId:number): Observable<Payment[]>{
         return this.httpClient.get<Payment[]>(this.PAYMENTS_URL+"membership/"+membershipId);
     }
 
-    public getById(id:number) : Observable<Payment>
+    getById(id:number) : Observable<Payment>
     {
         return this.httpClient.get<Payment>(this.PAYMENTS_URL+id);
     }

@@ -9,6 +9,8 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddTrainingSessionDialogComponent } from '../dialogs/add-training-session-dialog/add-training-session-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-sessions-group',
@@ -22,27 +24,27 @@ export class SessionsGroupComponent implements OnInit {
   dataSource: MatTableDataSource<TrainingSession>= new MatTableDataSource();
 
   displayedColumns = ['date','actions'];
-
-  constructor(private trainingSessionService: TrainingSessionService,private route:ActivatedRoute
-    ,private memberGroupService:MemberGroupService, private matDialog:MatDialog){}
-
-  month:number;
-  year:number;
   memberGroup:MemberGroup;
 
+  constructor(private trainingSessionService: TrainingSessionService,private route:ActivatedRoute
+    ,private memberGroupService:MemberGroupService, private matDialog:MatDialog,private snackBar:MatSnackBar){}
+
   ngOnInit() {
-    this.month=this.route.snapshot.params['month'];
-    this.year=this.route.snapshot.params['year'];
     let memberGroupId = this.route.snapshot.params['groupId'];
+    this.loadMemberGroup(memberGroupId);
+    this.loadTrainingSessionsInGroup(memberGroupId);
+  }
+
+  loadMemberGroup(memberGroupId:number)
+  {
     this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
       this.memberGroup=group;
-      this.loadTrainingSessionsInGroup();
     })
   }
   
-  loadTrainingSessionsInGroup()
+  loadTrainingSessionsInGroup(memberGroupId:number)
   {
-    this.trainingSessionService.getAllTrainingSessionsByGroup(this.memberGroup.id).subscribe(data=>{
+    this.trainingSessionService.getAllTrainingSessionsByGroup(memberGroupId).subscribe(data=>{
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -53,26 +55,37 @@ export class SessionsGroupComponent implements OnInit {
   {
     const dialogConfig = new MatDialogConfig();
     let dialogRef = this.matDialog.open(AddTrainingSessionDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(date=>{
-      if(date)
-      {
-        let trainingSession : TrainingSession = new TrainingSession();
-        trainingSession.dateHeld=date;
-        trainingSession.memberGroup=this.memberGroup;
-        this.trainingSessionService.addTrainingSession(trainingSession).subscribe(response=>{
-          this.loadTrainingSessionsInGroup();
-        })
-      }
+    dialogRef.afterClosed().subscribe(inputDate=>{
+      if(inputDate)
+        this.addTrainingSession(inputDate);
     })
   }
 
+  addTrainingSession(dateHeld:Date)
+  {
+    let trainingSession : TrainingSession = new TrainingSession();
+    trainingSession.dateHeld=dateHeld;
+    trainingSession.memberGroup=this.memberGroup;
+    this.trainingSessionService.addTrainingSession(trainingSession).subscribe(response=>{
+      this.loadTrainingSessionsInGroup(this.memberGroup.id);
+      this.showSnackbar("Training session created.")
+    })
+  }
 
   deleteTrainingSession(trainingSession:TrainingSession)
   {
     if(confirm("Delete training session and all connected attendances?")) {
       this.trainingSessionService.deleteTrainingSession(trainingSession).subscribe(response=>{
-        this.loadTrainingSessionsInGroup();
+        this.loadTrainingSessionsInGroup(this.memberGroup.id);
+        this.showSnackbar("Training session deleted.")
       })
     }
+  }
+
+  showSnackbar(message:string)
+  {
+    this.snackBar.open(message, "X",{
+      duration: 1500
+    })
   }
 }

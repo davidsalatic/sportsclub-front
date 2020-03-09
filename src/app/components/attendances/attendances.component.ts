@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { Attendance } from 'src/app/models/attendance';
 import { TrainingSessionService } from 'src/app/services/training-session-service';
 import { TrainingSession } from 'src/app/models/training-session';
@@ -12,6 +12,7 @@ import { MemberGroup } from 'src/app/models/member-group';
 import { AppUser } from 'src/app/models/app-user';
 import { AttendanceService } from 'src/app/services/attendance-service';
 import { AppUserCondition } from 'src/app/models/helpers/user-condition';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-attendances',
@@ -26,81 +27,114 @@ export class AttendancesComponent implements  OnInit {
 
   displayedColumns = [ 'name','present'];
 
+  trainingId:number;
   trainingSession:TrainingSession;
   memberGroup:MemberGroup;
-  attendances:AppUserCondition[] = new Array();
+  //helper class just for showing users with condition on UI
+  usersWithCondition:AppUserCondition[] = new Array();
   appUsers:AppUser[];
   
 
   constructor(private route:ActivatedRoute,private appUserService:AppUserService
     ,private attendanceService:AttendanceService,
-    private trainingSessionService:TrainingSessionService,private memberGroupService:MemberGroupService)
+    private trainingSessionService:TrainingSessionService,private memberGroupService:MemberGroupService,
+    private snackBar:MatSnackBar)
   {}
 
   ngOnInit() {
-    let trainingId=this.route.snapshot.params['id'];
+    this.trainingId=this.route.snapshot.params['id'];
     let memberGroupId = this.route.snapshot.params['groupId'];
 
+    this.loadTrainingSession(this.trainingId);
+    this.loadAppUsersInMemberGroup(memberGroupId);
+  }
+
+  loadTrainingSession(trainingId:number)
+  {
     this.trainingSessionService.getById(trainingId).subscribe(training=>{
       this.trainingSession=training;
-      this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
-        this.memberGroup=group;
-        this.appUserService.getAllUsersInGroup(memberGroupId)
-        .subscribe( data => {
-          this.appUsers=data;
-          this.getAllAttendancesForTraining(trainingId);
-        })
-      })
     })
   }
 
-  getAllAttendancesForTraining(trainingId:number)
+  loadAppUsersInMemberGroup(memberGroupId:number)
+  {
+    this.appUserService.getAllUsersInGroup(memberGroupId)
+    .subscribe( data => {
+      this.appUsers=data;
+      this.loadAttendancesForTrainingSession(this.trainingId);
+    })
+  }
+
+  loadAttendancesForTrainingSession(trainingId:number)
   {
     this.attendanceService.getAllAttendancesForTraining(trainingId).subscribe(data=>{
       let trainingAttendances:Attendance[] = data;
       for(let i=0;i<this.appUsers.length;i++)
       {
-        let isPresent:boolean=false;
+        let present:boolean=false;
         for(let j=0;j<trainingAttendances.length;j++)
         {
-          if(this.appUsers[i].id===trainingAttendances[j].appUser.id)
+          if(this.userIsPresentAtTrainingSession(this.appUsers[i],trainingAttendances[j]))
           {
-            isPresent=true;
+            present=true;
             break;
           }
         }
-        let attendance : AppUserCondition = new AppUserCondition();
-        attendance.appUser=this.appUsers[i];
-        if(isPresent)
-          attendance.condition=true;
-        else
-          attendance.condition=false;
-        this.attendances.push(attendance);
+        this.createNewUserWithConditionForTable(this.appUsers[i],present);
       }
-      this.dataSource.data=this.attendances;
+      this.dataSource.data=this.usersWithCondition;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
   }
 
+  userIsPresentAtTrainingSession(appUser:AppUser,attendance:Attendance)
+  {
+    return appUser.id===attendance.appUser.id;
+  }
+
+  createNewUserWithConditionForTable(appUser:AppUser,present:boolean)
+  {
+    let attendance : AppUserCondition = new AppUserCondition();
+    attendance.appUser=appUser;
+    if(present)
+      attendance.condition=true;
+    else
+      attendance.condition=false;
+    this.usersWithCondition.push(attendance);
+  }
+
   presentClick(checked:boolean,attendanceClicked:AppUserCondition)
   {
     if(checked)
-    {
-      let attendance:Attendance= new Attendance();
-      attendance.appUser=attendanceClicked.appUser;
-      attendance.trainingSession=this.trainingSession;
-      this.attendanceService.addAttendance(attendance).subscribe(response=>{
-        
-      })
-    }
+      this.addAttendance(attendanceClicked)
     else
-    {
-      this.attendanceService.getByTrainingSessionAndAppUser(this.trainingSession.id,attendanceClicked.appUser.id).subscribe(attend=>{
-        this.attendanceService.deleteAttendance(attend).subscribe(response=>{
+      this.deleteAttendance(attendanceClicked);
+  }
 
-        })
+  addAttendance(attendanceClicked:AppUserCondition)
+  {
+    let attendance:Attendance= new Attendance();
+    attendance.appUser=attendanceClicked.appUser;
+    attendance.trainingSession=this.trainingSession;
+    this.attendanceService.addAttendance(attendance).subscribe(response=>{
+      //attendance created in db
+    })
+  }
+
+  deleteAttendance(attendanceClicked:AppUserCondition)
+  {
+    this.attendanceService.getByTrainingSessionAndAppUser(this.trainingSession.id,attendanceClicked.appUser.id).subscribe(attend=>{
+      this.attendanceService.deleteAttendance(attend).subscribe(response=>{
+        //attendance deleted in db
       })
-    }
+    })
+  }
+
+  showSnackbar(message:string)
+  {
+    this.snackBar.open(message, "X",{
+      duration: 1500
+    })
   }
 }

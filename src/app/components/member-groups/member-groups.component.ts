@@ -6,7 +6,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { AddMemberGroupDialogComponent } from '../dialogs/add-member-group-dialog/add-member-group-dialog.component';
-import { Title } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-member-groups',
@@ -21,10 +21,8 @@ export class MemberGroupsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-
-  constructor(private memberGroupService:MemberGroupService, private matDialog:MatDialog)
-  {
-  }
+  constructor(private memberGroupService:MemberGroupService, private matDialog:MatDialog,private snackBar:MatSnackBar)
+  {}
 
   ngOnInit() {
     this.loadGroups();
@@ -39,16 +37,31 @@ export class MemberGroupsComponent implements OnInit {
     });
   }
 
+  openDialog()
+  {
+    const dialogConfig = new MatDialogConfig();
+    let dialogRef = this.matDialog.open(AddMemberGroupDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(groupName=>{
+      this.addGroup(groupName)
+    })
+  }
+
   addGroup(groupName:string)
   {
-    if(groupName && groupName.trim().length>0)
+    if(this.isValidInput(groupName))
     {
       let memberGroup = new MemberGroup();
       memberGroup.name=groupName;
       this.memberGroupService.addGroup(memberGroup).subscribe(response=>{
         this.loadGroups();
+        this.showSnackbar("Group "+memberGroup.name+" created.");
       });   
     }
+  }
+
+  isValidInput(groupName:string)
+  {
+    return groupName && groupName.trim().length>0;
   }
 
   deleteGroup(memberGroup:MemberGroup)
@@ -56,16 +69,15 @@ export class MemberGroupsComponent implements OnInit {
     if(confirm("Delete group '"+memberGroup.name+"'?")) {
       this.memberGroupService.deleteGroup(memberGroup).subscribe(response=>{
         this.loadGroups();
+        this.showSnackbar("Group "+memberGroup.name+" deleted.")
       })
     }
   }
-  
-  openDialog()
+
+  showSnackbar(message:string)
   {
-    const dialogConfig = new MatDialogConfig();
-    let dialogRef = this.matDialog.open(AddMemberGroupDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(groupName=>{
-      this.addGroup(groupName)
+    this.snackBar.open(message, "X",{
+      duration: 1500
     })
   }
 }

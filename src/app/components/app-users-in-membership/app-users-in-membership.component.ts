@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,23 +24,25 @@ export class AppUsersInMembershipComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   dataSource: MatTableDataSource<AppUserCondition>= new MatTableDataSource();
-  idPathVariable:number;
+
   membership:Membership;
   appUsers:AppUser[];
-  payments:AppUserCondition[]= new Array();
+  usersWithCondition:AppUserCondition[]= new Array();
 
   displayedColumns = [ 'name','group','settled','actions'];
   
-
   constructor(private route:ActivatedRoute, private appUserService : AppUserService,
     private paymentService:PaymentService,private matDialog:MatDialog,private membershipService:MembershipService)
-  {
-
-  }
+  {}
 
   ngOnInit() {
-    this.idPathVariable=this.route.snapshot.params['id'];
-    this.membershipService.getMembershipById(this.idPathVariable).subscribe(membership=>{
+    let membershipId=this.route.snapshot.params['id'];
+    this.loadMembershipAndUsers(membershipId);
+  }
+
+  loadMembershipAndUsers(membershipId:number)
+  {
+    this.membershipService.getMembershipById(membershipId).subscribe(membership=>{
       this.membership=membership;
       this.loadAppUsers();
     })
@@ -51,32 +53,38 @@ export class AppUsersInMembershipComponent implements OnInit {
     this.appUserService.getAllMembers().subscribe(data=>{
       this.appUsers=data;
       
-      this.paymentService.getAllPaymentsForMembership(this.membership.id).subscribe(data=>{
-        let paymentsForMembership:Payment[] = data;
-
+      this.paymentService.getAllPaymentsForMembership(this.membership.id).subscribe(paymentsForMembership=>{
         for(let i=0;i<this.appUsers.length;i++)
         {
-          let total=0;
+          let totalAmount=0;
           for(let j=0;j<paymentsForMembership.length;j++)
           {
-            if(this.appUsers[i].id===paymentsForMembership[j].appUser.id)
-            {
-              total+=paymentsForMembership[j].amount;
-            }
+            if(this.paymentFoundForUser(this.appUsers[i],paymentsForMembership[j]))
+              totalAmount+=paymentsForMembership[j].amount;
           }
-          let appUserCondition:AppUserCondition = new AppUserCondition();
-          appUserCondition.appUser=this.appUsers[i];
-          if(total>=this.membership.price)
-            appUserCondition.condition=true;//total payments settled the membership debt
-          else
-            appUserCondition.condition=false;//total payments of user are not enough for membership debt
-          this.payments.push(appUserCondition);
+          this.createNewUserWithConditionForTable(this.appUsers[i],totalAmount);
         }
-        this.dataSource.data=this.payments;
+        this.dataSource.data=this.usersWithCondition;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       })
     })
+  }
+
+  paymentFoundForUser(appUser:AppUser,payment:Payment)
+  {
+    return appUser.id===payment.appUser.id;
+  }
+
+  createNewUserWithConditionForTable(appUser:AppUser,totalAmount:number)
+  {
+    let appUserCondition:AppUserCondition = new AppUserCondition();
+    appUserCondition.appUser=appUser;
+    if(totalAmount>=this.membership.price)
+      appUserCondition.condition=true;//total payments settled the membership debt
+    else
+      appUserCondition.condition=false;//total payments of user are not enough for membership debt
+    this.usersWithCondition.push(appUserCondition);
   }
 
   openDialog()
@@ -86,9 +94,7 @@ export class AppUsersInMembershipComponent implements OnInit {
     let dialogRef = this.matDialog.open(ChangeMembershipPriceDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(price=>{
       if(price)
-      {
         this.changeThisMembershipPrice(price);
-      }
     })
   }
 
@@ -96,8 +102,9 @@ export class AppUsersInMembershipComponent implements OnInit {
   {
     this.membership.price=price;
     this.membershipService.updateMembership(this.membership).subscribe(response=>{
-      //LOAD USERS AGAIN!
-      //TODO
+      //empties the array on the UI, then populates it again with refreshed data
+      this.usersWithCondition.length=0;
+      this.loadAppUsers();
     })
   }
 }

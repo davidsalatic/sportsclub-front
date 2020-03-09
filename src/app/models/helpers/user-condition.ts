@@ -4,5 +4,4 @@ export class AppUserCondition{
 
     appUser:AppUser;
     condition:boolean;
-
 }

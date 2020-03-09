@@ -23,6 +23,7 @@
     "@angular/router": "~9.0.2",
     "@material/checkbox": "^5.1.0",
     "@material/select": "^5.1.0",
+    "@material/snackbar": "^5.1.0",
     "@ng-bootstrap/ng-bootstrap": "^6.0.0",
     "angular-calendar": "^0.28.5",
     "angular-material-datepicker": "^1.0.2",

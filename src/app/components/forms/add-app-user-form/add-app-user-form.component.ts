@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { AppUserService } from 'src/app/services/app-user-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-app-user-form',
@@ -14,7 +15,6 @@ import { AppUserService } from 'src/app/services/app-user-service';
 })
 export class AddAppUserFormComponent implements OnInit {
 
-  idPathVariable:number;
   memberGroup : MemberGroup;
 
   appUserForm = new FormGroup({
@@ -27,49 +27,25 @@ export class AddAppUserFormComponent implements OnInit {
     dateJoined: new FormControl('',Validators.required,)
   });
 
-
   constructor(private route:ActivatedRoute, private router:Router,
-     private appUserService : AppUserService, private memberGroupService : MemberGroupService) { 
-  }
+     private appUserService : AppUserService, private memberGroupService : MemberGroupService,
+     private snackBar:MatSnackBar) {}
 
   ngOnInit(): void {
-    this.idPathVariable=this.route.snapshot.params['id'];
-    this.loadGroup();
+    let memberGroupId=this.route.snapshot.params['id'];
+    this.loadMemberGroup(memberGroupId);
   }
 
-  loadGroup()
+  loadMemberGroup(memberGroupId:number)
   {
-    this.memberGroupService.getGroupById(this.idPathVariable).subscribe(data=>{
+    this.memberGroupService.getGroupById(memberGroupId).subscribe(data=>{
       this.memberGroup=data;
     })
   }
 
   onSubmit() {
     let appUser = this.generateUserFromForm();
-    this.appUserService.getByUsername(appUser.username).subscribe(data=>{
-
-      if(data.length>0)
-      {
-        console.log("username exists")
-        //EXISTS USERNAME
-      }
-      else{
-        this.appUserService.getByJmbg(appUser.jmbg).subscribe(data=>{
-          console.log(data);
-          if(data.length>0)
-          {
-            console.log("jmbg exists")
-            //EXISTS JMBG
-          }
-          else
-          {
-            this.appUserService.addUser(appUser).subscribe(response=>{
-              this.router.navigate(['/members/'+this.idPathVariable]);
-            });
-          }
-        })
-      }
-    })
+    this.addAppUserIfNotExists(appUser);
   }
 
   generateUserFromForm() : AppUser
@@ -90,5 +66,35 @@ export class AddAppUserFormComponent implements OnInit {
     //PASSWORD CREATED BY JMBG VALUE, USER SHOULD BE ABLE TO CHANGE IT LATER
     appUser.password=appUser.jmbg;
     return appUser;
+  }
+
+  addAppUserIfNotExists(appUser:AppUser)
+  {
+    this.appUserService.getByUsername(appUser.username).subscribe(data=>{
+      if(data.length>0)
+        this.showSnackbar("A user with that username already exists!")
+      else
+        this.appUserService.getByJmbg(appUser.jmbg).subscribe(data=>{
+          if(data.length>0)
+            this.showSnackbar("A user with that JMBG already exists!");
+          else
+            this.addAppUser(appUser);
+        })
+    })
+  }
+
+  addAppUser(appUser:AppUser)
+  {
+    this.appUserService.addUser(appUser).subscribe(response=>{
+      this.router.navigate(['/members/'+this.memberGroup.id]);
+      this.showSnackbar("User "+appUser.name+ " "+appUser.surname+" created")
+    });
+  }
+
+  showSnackbar(message:string)
+  {
+    this.snackBar.open(message, "X",{
+      duration: 1500
+    })
   }
 }

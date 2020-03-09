@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Membership } from '../models/membership';
 
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MembershipPrice } from '../models/membership-price';
 
 @Injectable()
@@ -11,18 +11,18 @@ export class MembershipService
 
     private readonly MEMBERSHIPS_URL='http://localhost:8080/memberships/';
 
-    constructor(public httpClient: HttpClient){ }
+    constructor(private httpClient: HttpClient){ }
 
-    public getAllMemberships(): Observable<Membership[]>{
+    getAllMemberships(): Observable<Membership[]>{
         return this.httpClient.get<Membership[]>(this.MEMBERSHIPS_URL);
     }
 
-    public getMembershipById(id:number) : Observable<Membership>
+    getMembershipById(id:number) : Observable<Membership>
     {
         return this.httpClient.get<Membership>(this.MEMBERSHIPS_URL+id);
     }
 
-    public getAllByMonthAndYear(month:number,year:number){
+    getAllByMonthAndYear(month:number,year:number){
         return this.httpClient.get<Membership>(this.MEMBERSHIPS_URL+month+"/"+year);
     }
 
@@ -31,7 +31,7 @@ export class MembershipService
         return this.httpClient.post(this.MEMBERSHIPS_URL,membership);
     }
 
-    public updateMembership(membership: Membership)
+    updateMembership(membership: Membership)
     {
         return this.httpClient.put(this.MEMBERSHIPS_URL,membership);
     }
@@ -42,7 +42,7 @@ export class MembershipService
         return this.httpClient.post(this.MEMBERSHIPS_URL+"price",membershipPrice);
     }
 
-    public getMembershipPrice() 
+    getMembershipPrice() 
     {
         return this.httpClient.get<MembershipPrice>(this.MEMBERSHIPS_URL+"price");
     }

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Attendance } from '../models/attendance';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AppUser } from '../models/app-user';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AttendanceService{
@@ -10,9 +9,9 @@ export class AttendanceService{
     private readonly ATTENDANCES_URL = 'http://localhost:8080/attendances/';
 
 
-    constructor(public httpClient: HttpClient){ }
+    constructor(private httpClient: HttpClient){ }
 
-    public getAllAttendancesForTraining(trainingId:number): Observable<Attendance[]>{
+    getAllAttendancesForTraining(trainingId:number): Observable<Attendance[]>{
         return this.httpClient.get<Attendance[]>(this.ATTENDANCES_URL+"training/"+trainingId);
     }
 
