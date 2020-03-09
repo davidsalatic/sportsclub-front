@@ -15,6 +15,10 @@ export class PaymentService{
         return this.httpClient.get<Payment[]>(this.PAYMENTS_URL+"membership/"+membershipId+"/user/"+appUserId);
     }
 
+    public getAllPaymentsForMembership(membershipId:number): Observable<Payment[]>{
+        return this.httpClient.get<Payment[]>(this.PAYMENTS_URL+"membership/"+membershipId);
+    }
+
     public getById(id:number) : Observable<Payment>
     {
         return this.httpClient.get<Payment>(this.PAYMENTS_URL+id);

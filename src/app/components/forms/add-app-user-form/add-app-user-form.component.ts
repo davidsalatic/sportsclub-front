@@ -46,7 +46,6 @@ export class AddAppUserFormComponent implements OnInit {
 
   onSubmit() {
     let appUser = this.generateUserFromForm();
-    console.log(appUser)
     this.appUserService.getByUsername(appUser.username).subscribe(data=>{
 
       if(data.length>0)

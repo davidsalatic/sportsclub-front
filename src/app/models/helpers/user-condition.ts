@@ -1,8 +1,8 @@
 import { AppUser } from '../app-user';
 
-export class AttendanceModel{
+export class AppUserCondition{
 
     appUser:AppUser;
-    present:boolean;
+    condition:boolean;
 
 }

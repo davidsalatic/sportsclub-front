@@ -11,7 +11,7 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { AppUser } from 'src/app/models/app-user';
 import { AttendanceService } from 'src/app/services/attendance-service';
-import { AttendanceModel } from 'src/app/models/helpers/attendance-model';
+import { AppUserCondition } from 'src/app/models/helpers/user-condition';
 
 @Component({
   selector: 'app-attendances',
@@ -22,13 +22,13 @@ export class AttendancesComponent implements  OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  dataSource: MatTableDataSource<AttendanceModel> = new MatTableDataSource();
+  dataSource: MatTableDataSource<AppUserCondition> = new MatTableDataSource();
 
   displayedColumns = [ 'name','present'];
 
   trainingSession:TrainingSession;
   memberGroup:MemberGroup;
-  attendanceModels:AttendanceModel[] = new Array();
+  attendances:AppUserCondition[] = new Array();
   appUsers:AppUser[];
   
 
@@ -45,51 +45,50 @@ export class AttendancesComponent implements  OnInit {
       this.trainingSession=training;
       this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
         this.memberGroup=group;
-        
+        this.appUserService.getAllUsersInGroup(memberGroupId)
+        .subscribe( data => {
+          this.appUsers=data;
+          this.getAllAttendancesForTraining(trainingId);
+        })
       })
     })
-    this.appUserService.getAllUsersInGroup(memberGroupId)
-    .subscribe( data => {
-      this.appUsers=data;
-    })
-    this.getAllAttendancesForTraining(trainingId);
   }
 
   getAllAttendancesForTraining(trainingId:number)
   {
     this.attendanceService.getAllAttendancesForTraining(trainingId).subscribe(data=>{
-      let attendances:Attendance[] = data;
+      let trainingAttendances:Attendance[] = data;
       for(let i=0;i<this.appUsers.length;i++)
       {
         let isPresent:boolean=false;
-        for(let j=0;j<attendances.length;j++)
+        for(let j=0;j<trainingAttendances.length;j++)
         {
-          if(this.appUsers[i].id===attendances[i].appUser.id)
+          if(this.appUsers[i].id===trainingAttendances[j].appUser.id)
           {
             isPresent=true;
             break;
           }
         }
-        let attendanceModel : AttendanceModel = new AttendanceModel();
-        attendanceModel.appUser=this.appUsers[i];
+        let attendance : AppUserCondition = new AppUserCondition();
+        attendance.appUser=this.appUsers[i];
         if(isPresent)
-          attendanceModel.present=true;
+          attendance.condition=true;
         else
-          attendanceModel.present=false;
-        this.attendanceModels.push(attendanceModel);
+          attendance.condition=false;
+        this.attendances.push(attendance);
       }
-      this.dataSource.data=this.attendanceModels;
+      this.dataSource.data=this.attendances;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
   }
 
-  presentClick(checked:boolean,attendanceModel:AttendanceModel)
+  presentClick(checked:boolean,attendanceClicked:AppUserCondition)
   {
     if(checked)
     {
       let attendance:Attendance= new Attendance();
-      attendance.appUser=attendanceModel.appUser;
+      attendance.appUser=attendanceClicked.appUser;
       attendance.trainingSession=this.trainingSession;
       this.attendanceService.addAttendance(attendance).subscribe(response=>{
         
@@ -97,7 +96,7 @@ export class AttendancesComponent implements  OnInit {
     }
     else
     {
-      this.attendanceService.getByTrainingSessionAndAppUser(this.trainingSession.id,attendanceModel.appUser.id).subscribe(attend=>{
+      this.attendanceService.getByTrainingSessionAndAppUser(this.trainingSession.id,attendanceClicked.appUser.id).subscribe(attend=>{
         this.attendanceService.deleteAttendance(attend).subscribe(response=>{
 
         })

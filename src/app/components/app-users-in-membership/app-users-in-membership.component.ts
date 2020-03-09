@@ -11,6 +11,7 @@ import { ChangeMembershipPriceDialogComponent } from '../dialogs/change-membersh
 import { MembershipService } from 'src/app/services/membership-service';
 import { Membership } from 'src/app/models/membership';
 import { Payment } from 'src/app/models/payment';
+import { AppUserCondition } from 'src/app/models/helpers/user-condition';
 
 @Component({
   selector: 'app-app-users-in-membership',
@@ -22,10 +23,11 @@ export class AppUsersInMembershipComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  dataSource: MatTableDataSource<AppUser>= new MatTableDataSource();
+  dataSource: MatTableDataSource<AppUserCondition>= new MatTableDataSource();
   idPathVariable:number;
   membership:Membership;
-  
+  appUsers:AppUser[];
+  payments:AppUserCondition[]= new Array();
 
   displayedColumns = [ 'name','group','settled','actions'];
   
@@ -47,9 +49,33 @@ export class AppUsersInMembershipComponent implements OnInit {
   loadAppUsers()
   {
     this.appUserService.getAllMembers().subscribe(data=>{
-      this.dataSource.data=data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.appUsers=data;
+      
+      this.paymentService.getAllPaymentsForMembership(this.membership.id).subscribe(data=>{
+        let paymentsForMembership:Payment[] = data;
+
+        for(let i=0;i<this.appUsers.length;i++)
+        {
+          let total=0;
+          for(let j=0;j<paymentsForMembership.length;j++)
+          {
+            if(this.appUsers[i].id===paymentsForMembership[j].appUser.id)
+            {
+              total+=paymentsForMembership[j].amount;
+            }
+          }
+          let appUserCondition:AppUserCondition = new AppUserCondition();
+          appUserCondition.appUser=this.appUsers[i];
+          if(total>=this.membership.price)
+            appUserCondition.condition=true;//total payments settled the membership debt
+          else
+            appUserCondition.condition=false;//total payments of user are not enough for membership debt
+          this.payments.push(appUserCondition);
+        }
+        this.dataSource.data=this.payments;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      })
     })
   }
 
@@ -70,7 +96,8 @@ export class AppUsersInMembershipComponent implements OnInit {
   {
     this.membership.price=price;
     this.membershipService.updateMembership(this.membership).subscribe(response=>{
-      
+      //LOAD USERS AGAIN!
+      //TODO
     })
   }
 }
