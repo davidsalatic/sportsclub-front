@@ -1,4 +1,5 @@
 import { MemberGroup } from './member-group';
+import { Role } from './role';
 
 export class AppUser{
     id:number;
@@ -11,4 +12,5 @@ export class AppUser{
     phoneNumber:string;
     dateJoined:Date;
     memberGroup:MemberGroup;
+    role:Role;
 }

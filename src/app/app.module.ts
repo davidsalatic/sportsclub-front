@@ -39,10 +39,15 @@ import { TrainingSessionService } from './services/training-session-service';
 import { SessionsGroupComponent } from './components/sessions-group/sessions-group.component';
 import { AddTrainingSessionDialogComponent } from './components/dialogs/add-training-session-dialog/add-training-session-dialog.component';
 import { AttendancesComponent } from './components/attendances/attendances.component';
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import { MatCheckboxModule} from "@angular/material/checkbox";
 import { AttendanceService } from './services/attendance-service';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-users.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { AuthComponent } from './auth/auth.component';
+import { AuthService } from './services/auth-service';
+import { RoleService } from './services/role-service';
 
 @NgModule({
   declarations: [
@@ -61,7 +66,8 @@ import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-
     SessionsGroupComponent,
     AddTrainingSessionDialogComponent,
     AttendancesComponent,
-    UngroupedUsersComponent
+    UngroupedUsersComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -84,9 +90,12 @@ import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatRadioModule,
+    MatCardModule
   ],
-  providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,TrainingSessionService,AttendanceService],
+  providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
+    TrainingSessionService,AttendanceService,AuthService,RoleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

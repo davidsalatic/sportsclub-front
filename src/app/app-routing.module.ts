@@ -12,6 +12,7 @@ import { SessionsComponent } from './components/sessions/sessions.component';
 import { SessionsGroupComponent } from './components/sessions-group/sessions-group.component';
 import { AttendancesComponent } from './components/attendances/attendances.component';
 import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-users.component';
+import { AuthComponent } from './auth/auth.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/sessions', pathMatch:'full'},
@@ -26,7 +27,8 @@ const routes: Routes = [
   {path: 'payments/membership/:membershipId/user/:appUserId/add',component:AddPaymentComponent},
   {path: 'sessions',component:SessionsComponent},
   {path: 'sessions/group/:groupId',component:SessionsGroupComponent},
-  {path: 'sessions/:id/group/:groupId/attendances',component:AttendancesComponent}
+  {path: 'sessions/:id/group/:groupId/attendances',component:AttendancesComponent},
+  {path:'login', component:AuthComponent}
 ];
 
 @NgModule({

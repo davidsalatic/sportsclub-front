@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AppUser } from '../models/app-user';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class AppUserService{
@@ -13,6 +13,10 @@ export class AppUserService{
 
     getAllMembers(): Observable<AppUser[]>{
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"members");
+    }
+
+    getAllUsers(): Observable<AppUser[]>{
+        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL);
     }
 
     getUngroupedMembers() {
@@ -28,16 +32,6 @@ export class AppUserService{
         return this.httpClient.get<AppUser>(this.APP_USERS_URL+id);
     }
 
-    addUser(appUser: AppUser)
-    {
-        return this.httpClient.post(this.APP_USERS_URL,appUser);
-    }
-    
-    updateUser(appUser: AppUser)
-    {
-        return this.httpClient.put(this.APP_USERS_URL,appUser);
-    }
-
     getByUsername(username:string)
     {
         let params = new HttpParams();
@@ -50,6 +44,16 @@ export class AppUserService{
         let params = new HttpParams();
         params = params.append('jmbg', jmbg);
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"search/jmbg", {params: params})
+    }
+
+    addUser(appUser: AppUser)
+    {
+        return this.httpClient.post(this.APP_USERS_URL,appUser);
+    }
+    
+    updateUser(appUser: AppUser)
+    {
+        return this.httpClient.put(this.APP_USERS_URL,appUser);
     }
 
     deleteUser(appUser: AppUser) {

@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-ungrouped-users',
@@ -18,7 +19,7 @@ export class UngroupedUsersComponent implements OnInit {
 
   displayedColumns = ['name','actions'];
 
-  constructor(private appUserService:AppUserService){}
+  constructor(private appUserService:AppUserService,private snackBar:MatSnackBar){}
 
   ngOnInit() {
     this.loadAppUsers();
@@ -35,6 +36,17 @@ export class UngroupedUsersComponent implements OnInit {
 
   deleteUser(appUser:AppUser)
   {
-    
+    if(confirm("Delete user '"+appUser.name+" "+ appUser.surname+" and all payments and attendances connected?"))
+    this.appUserService.deleteUser(appUser).subscribe(response=>{
+      this.loadAppUsers();
+      this.showSnackbar("User "+appUser.name+" "+appUser.surname+" deleted.");
+    })
+  }
+
+  showSnackbar(message:string)
+  {
+    this.snackBar.open(message, "X",{
+      duration: 1500
+    })
   }
 }

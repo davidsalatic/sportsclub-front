@@ -69,7 +69,7 @@ export class AppUsersComponent implements OnInit {
      if(confirm("Delete user '"+appUser.name+" "+ appUser.surname+" and all payments and attendances connected?"))
        this.appUsersService.deleteUser(appUser).subscribe(response=>{
          this.loadUsersInGroup(this.memberGroup.id);
-         this.showSnackbar("User" +appUser.name+" "+appUser.surname+" deleted.");
+         this.showSnackbar("User "+appUser.name+" "+appUser.surname+" deleted.");
        })
   }
 
