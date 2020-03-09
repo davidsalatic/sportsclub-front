@@ -44,7 +44,8 @@ export class EditAppUserFormComponent implements OnInit {
   {
     this.appUserService.getUserById(appUserId).subscribe(appUser=>{
       this.appUser=appUser;
-      this.idOfOriginalGroup=this.appUser.memberGroup.id;
+      if(appUser.memberGroup!=null)
+        this.idOfOriginalGroup=this.appUser.memberGroup.id;
       this.updateFormWithUserData(this.appUser);
       this.populateMemberGroupDropDown();
     })
@@ -67,16 +68,17 @@ export class EditAppUserFormComponent implements OnInit {
   {
     this.memberGroupService.getAllGroups().subscribe(data=>{
       this.memberGroups=data;
-      for(let i=0;i<this.memberGroups.length;i++)
-      {
-        if(this.memberGroupIsUsersGroup(this.memberGroups[i],this.appUser))
+      if(this.appUser.memberGroup!=null)
+        for(let i=0;i<this.memberGroups.length;i++)
         {
-          let temp:MemberGroup= this.memberGroups[0]
-          this.memberGroups[0]=this.memberGroups[i];
-          this.memberGroups[i]=temp;
-          break;
+          if(this.memberGroupIsUsersGroup(this.memberGroups[i],this.appUser))
+          {
+            let temp:MemberGroup= this.memberGroups[0]
+            this.memberGroups[0]=this.memberGroups[i];
+            this.memberGroups[i]=temp;
+            break;
+          }
         }
-      }
     })
   }
 
@@ -107,7 +109,10 @@ export class EditAppUserFormComponent implements OnInit {
     
     this.appUser.username = this.appUserForm.get('username').value;
     this.appUserService.updateUser(this.appUser).subscribe(response=>{
-      this.router.navigate(['/members/'+this.idOfOriginalGroup]);
+      if(this.idOfOriginalGroup!=null)
+        this.router.navigate(['/members/'+this.idOfOriginalGroup]);
+      else
+        this.router.navigate(['/members/users/ungrouped']);
       this.showSnackbar("User edited.")
     });
   }

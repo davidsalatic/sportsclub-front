@@ -15,6 +15,10 @@ export class AppUserService{
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"members");
     }
 
+    getUngroupedMembers() {
+        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"members/ungrouped");
+    }
+
     getAllUsersInGroup(id:number): Observable<AppUser[]>{
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"group/"+id);
     }

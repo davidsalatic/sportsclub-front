@@ -1,11 +1,5 @@
 <div class="mat-elevation-z8">
-
-  <div>
-    <button type="button" (click)="openDialog()">Add group</button>
-  </div>
-
-  <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Elements">
-    
+  <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
@@ -16,17 +10,13 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
       <td mat-cell *matCellDef="let row">
-        <a [routerLink]="['/members', row.id]"><button md-raised-button>Edit</button></a>
-        <button md-raised-button (click)="deleteGroup(row);" >Delete</button> </td>
+        <a [routerLink]="['/members/user', row.id,'edit']"><button md-raised-button>Edit</button></a>
+        <button md-raised-button (click)="deleteUser(row);">Delete</button> </td>
     </ng-container> 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <div id="ungrouped">
-    <a [routerLink]="['/members/users/ungrouped']">Ungrouped</a>
-  </div>
 
   <mat-paginator #paginator
       [length]="dataSource?.data.length"

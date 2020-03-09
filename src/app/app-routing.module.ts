@@ -11,11 +11,13 @@ import { AddPaymentComponent } from './components/forms/add-payment/add-payment.
 import { SessionsComponent } from './components/sessions/sessions.component';
 import { SessionsGroupComponent } from './components/sessions-group/sessions-group.component';
 import { AttendancesComponent } from './components/attendances/attendances.component';
+import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-users.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/sessions', pathMatch:'full'},
   {path: 'members', component: MemberGroupsComponent},
   {path: 'members/:id', component: AppUsersComponent},
+  {path: 'members/users/ungrouped',component:UngroupedUsersComponent},
   {path: 'members/group/:id/add', component: AddAppUserFormComponent},
   {path: 'members/user/:id/edit', component: EditAppUserFormComponent},
   {path: 'memberships', component:MembershipsComponent},

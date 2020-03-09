@@ -42,6 +42,7 @@ import { AttendancesComponent } from './components/attendances/attendances.compo
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { AttendanceService } from './services/attendance-service';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-users.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     SessionsComponent,
     SessionsGroupComponent,
     AddTrainingSessionDialogComponent,
-    AttendancesComponent
+    AttendancesComponent,
+    UngroupedUsersComponent
   ],
   imports: [
     BrowserModule,
