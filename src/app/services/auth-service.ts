@@ -11,7 +11,7 @@ export class AuthService{
 
     authenticate(appUser:AppUser)
     {
-        return this.httpClient.post(this.AUTH_URL,appUser);
+        return this.httpClient.post<string>(this.AUTH_URL,appUser);
     }
 
 }

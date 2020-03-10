@@ -15,7 +15,7 @@ import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-
 import { AuthComponent } from './auth/auth.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/sessions', pathMatch:'full'},
+  {path: '', redirectTo: '/login', pathMatch:'full'},
   {path: 'members', component: MemberGroupsComponent},
   {path: 'members/:id', component: AppUsersComponent},
   {path: 'members/users/ungrouped',component:UngroupedUsersComponent},

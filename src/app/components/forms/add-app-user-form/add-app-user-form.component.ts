@@ -77,11 +77,11 @@ export class AddAppUserFormComponent implements OnInit {
   addAppUserIfNotExists(appUser:AppUser)
   {
     this.appUserService.getByUsername(appUser.username).subscribe(data=>{
-      if(data.length>0)
+      if(data)
         this.showSnackbar("A user with that username already exists!")
       else
         this.appUserService.getByJmbg(appUser.jmbg).subscribe(data=>{
-          if(data.length>0)
+          if(data)
             this.showSnackbar("A user with that JMBG already exists!");
           else
             this.addAppUser(appUser);

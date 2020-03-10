@@ -36,14 +36,14 @@ export class AppUserService{
     {
         let params = new HttpParams();
         params = params.append('username', username);
-        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"search/username", {params: params})
+        return this.httpClient.get<AppUser>(this.APP_USERS_URL+"search/username", {params: params})
     }
 
     getByJmbg(jmbg:string)
     {
         let params = new HttpParams();
         params = params.append('jmbg', jmbg);
-        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"search/jmbg", {params: params})
+        return this.httpClient.get<AppUser>(this.APP_USERS_URL+"search/jmbg", {params: params})
     }
 
     addUser(appUser: AppUser)

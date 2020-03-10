@@ -31,6 +31,7 @@ export class AuthComponent {
       if(user)
       {
         this.showSnackbar("Logged in.") 
+        // console.log(""+user.toString());
       }
       else
         this.showSnackbar("Incorrect username or password.")
