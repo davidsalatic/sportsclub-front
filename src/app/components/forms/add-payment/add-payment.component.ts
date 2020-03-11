@@ -52,6 +52,7 @@ export class AddPaymentComponent implements OnInit {
     let payment = this.generatePaymentFromForm();
     
     this.paymentService.addPayment(payment).subscribe(response=>{
+      console.log(payment);
       this.router.navigate(['/payments/membership/'+this.membership.id+"/user/"+this.appUser.id]);
       this.showSnackbar("Payment added.")
     });

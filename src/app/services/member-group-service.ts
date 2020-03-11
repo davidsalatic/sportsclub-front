@@ -6,7 +6,7 @@ import { MemberGroup } from '../models/member-group';
 @Injectable()
 export class MemberGroupService {
 
-    private readonly GROUPS_URL = 'http://localhost:8080/groups/';
+    private readonly GROUPS_URL = 'http://localhost:8080/groups';
 
 
     constructor(private httpClient: HttpClient){ }
@@ -17,7 +17,7 @@ export class MemberGroupService {
 
     getGroupById(id:number) : Observable<MemberGroup>
     {
-        return this.httpClient.get<MemberGroup>(this.GROUPS_URL+id);
+        return this.httpClient.get<MemberGroup>(this.GROUPS_URL+"/"+id);
     }
 
     addGroup(memberGroup:MemberGroup)
@@ -31,6 +31,6 @@ export class MemberGroupService {
     }
 
     deleteGroup(memberGroup: MemberGroup) {
-        return this.httpClient.delete(this.GROUPS_URL+memberGroup.id);
+        return this.httpClient.delete(this.GROUPS_URL+"/"+memberGroup.id);
     }
 }

@@ -27,11 +27,12 @@ export class AuthComponent {
 
   authenticate(appUser:AppUser)
   {
-    this.authService.authenticate(appUser).subscribe(user=>{
-      if(user)
+    console.log(appUser);
+    this.authService.authenticate(appUser).subscribe(token=>{
+      if(token)
       {
         this.showSnackbar("Logged in.") 
-        // console.log(""+user.toString());
+        console.log(""+token.toString());
       }
       else
         this.showSnackbar("Incorrect username or password.")
@@ -45,5 +46,4 @@ export class AuthComponent {
       duration: 1500
     })
   }
-
 }

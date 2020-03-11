@@ -9,7 +9,7 @@ import { MembershipPrice } from '../models/membership-price';
 export class MembershipService
 {
 
-    private readonly MEMBERSHIPS_URL='http://localhost:8080/memberships/';
+    private readonly MEMBERSHIPS_URL='http://localhost:8080/memberships';
 
     constructor(private httpClient: HttpClient){ }
 
@@ -19,11 +19,11 @@ export class MembershipService
 
     getMembershipById(id:number) : Observable<Membership>
     {
-        return this.httpClient.get<Membership>(this.MEMBERSHIPS_URL+id);
+        return this.httpClient.get<Membership>(this.MEMBERSHIPS_URL+"/"+id);
     }
 
     getAllByMonthAndYear(month:number,year:number){
-        return this.httpClient.get<Membership>(this.MEMBERSHIPS_URL+month+"/"+year);
+        return this.httpClient.get<Membership>(this.MEMBERSHIPS_URL+"/"+month+"/"+year);
     }
 
     addMembership(membership: Membership)
@@ -39,11 +39,11 @@ export class MembershipService
 
     setMembershipPrice(membershipPrice:MembershipPrice)
     {
-        return this.httpClient.post(this.MEMBERSHIPS_URL+"price",membershipPrice);
+        return this.httpClient.post(this.MEMBERSHIPS_URL+"/price",membershipPrice);
     }
 
     getMembershipPrice() 
     {
-        return this.httpClient.get<MembershipPrice>(this.MEMBERSHIPS_URL+"price");
+        return this.httpClient.get<MembershipPrice>(this.MEMBERSHIPS_URL+"/price");
     }
 }
