@@ -14,6 +14,11 @@ export class AppUserService{
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"members");
     }
 
+    getStaff()
+    {
+        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"staff");
+    }
+
     getAllUsers(): Observable<AppUser[]>{
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL);
     }

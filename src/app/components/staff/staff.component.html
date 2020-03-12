@@ -1,0 +1,29 @@
+<div class="mat-elevation-z8">
+    <a [routerLink]="['/members/']"><button md-raised-button>Add Staff Member</button></a>
+  <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let row">{{row.name}} {{row.surname}}</td>
+    </ng-container>
+
+    <!-- Actions colums-->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+      <td mat-cell *matCellDef="let row">
+        <a><button md-raised-button>Edit</button></a>
+        <button *ngIf="!(row.username===usernameOfLoggedInStaff)" md-raised-button>Delete</button> </td>
+    </ng-container> 
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource?.data.length"
+      [pageIndex]="0"
+      [pageSize]="50"
+      [pageSizeOptions]="[25, 50, 100, 250]">
+  </mat-paginator>
+</div>

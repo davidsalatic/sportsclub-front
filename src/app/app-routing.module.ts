@@ -13,9 +13,11 @@ import { SessionsGroupComponent } from './components/sessions-group/sessions-gro
 import { AttendancesComponent } from './components/attendances/attendances.component';
 import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-users.component';
 import { HomeComponent } from './components/home/home.component';
+import { StaffComponent } from './components/staff/staff.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
+  {path: 'home',component:HomeComponent},
   {path: 'members', component: MemberGroupsComponent},
   {path: 'members/:id', component: AppUsersComponent},
   {path: 'members/users/ungrouped',component:UngroupedUsersComponent},
@@ -28,7 +30,7 @@ const routes: Routes = [
   {path: 'sessions',component:SessionsComponent},
   {path: 'sessions/group/:groupId',component:SessionsGroupComponent},
   {path: 'sessions/:id/group/:groupId/attendances',component:AttendancesComponent},
-  {path: 'home',component:HomeComponent}
+  {path: 'staff',component:StaffComponent}
 ];
 
 @NgModule({

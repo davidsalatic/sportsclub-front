@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   showTrainingSessions:boolean=false;
   showMemberships:boolean=false;
   showMembers:boolean=false;
+  showStaff:boolean=false;
   
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -29,7 +30,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("app component oinit")
     this.authService.getToken().subscribe(token=>{
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims.role===Roles.MEMBER)
@@ -37,24 +37,28 @@ export class AppComponent implements OnInit {
           this.showTrainingSessions=false;
           this.showMemberships=false;
           this.showMembers=false;
+          this.showStaff=false;
         }
         else if(claims.role===Roles.COACH)
         {
           this.showTrainingSessions=true;
           this.showMemberships=false;
           this.showMembers=true;
+          this.showStaff=false;
         }
         else if(claims.role===Roles.MANAGER)
         {
           this.showTrainingSessions=true;
           this.showMembers=true;
           this.showMemberships=true;
+          this.showStaff=true;
         }
         else
         {
           this.showTrainingSessions=false;
           this.showMembers=false;
           this.showMemberships=false;
+          this.showStaff=false;
         }
       })
     })

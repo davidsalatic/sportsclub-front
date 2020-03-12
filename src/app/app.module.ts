@@ -48,6 +48,8 @@ import { MatCardModule } from '@angular/material/card';
 import { AuthService } from './services/auth-service';
 import { RoleService } from './services/role-service';
 import { HomeComponent } from './components/home/home.component';
+import { StaffComponent } from './components/staff/staff.component';
+import { AddStaffMemberFormComponent } from './components/forms/add-staff-member-form/add-staff-member-form.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { HomeComponent } from './components/home/home.component';
     AddTrainingSessionDialogComponent,
     AttendancesComponent,
     UngroupedUsersComponent,
-    HomeComponent
+    HomeComponent,
+    StaffComponent,
+    AddStaffMemberFormComponent
   ],
   imports: [
     BrowserModule,
