@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from 'src/app/services/payment-service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ChangeMembershipPriceDialogComponent } from '../dialogs/change-membership-price-dialog/change-membership-price-dialog.component';
@@ -12,6 +12,9 @@ import { MembershipService } from 'src/app/services/membership-service';
 import { Membership } from 'src/app/models/membership';
 import { Payment } from 'src/app/models/payment';
 import { AppUserCondition } from 'src/app/models/helpers/user-condition';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-app-users-in-membership',
@@ -29,15 +32,35 @@ export class AppUsersInMembershipComponent implements OnInit {
   appUsers:AppUser[];
   usersWithCondition:AppUserCondition[]= new Array();
 
-  displayedColumns = [ 'name','group','settled','actions'];
+  displayedColumns = [ 'name','settled','actions'];
   
   constructor(private route:ActivatedRoute, private appUserService : AppUserService,
-    private paymentService:PaymentService,private matDialog:MatDialog,private membershipService:MembershipService)
+    private paymentService:PaymentService,private matDialog:MatDialog,
+    private membershipService:MembershipService,private router:Router,private authService:AuthService)
   {}
 
   ngOnInit() {
-    let membershipId=this.route.snapshot.params['id'];
-    this.loadMembershipAndUsers(membershipId);
+    this.loadPageIfValidRole();
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+            {
+              let membershipId=this.route.snapshot.params['id'];
+              this.loadMembershipAndUsers(membershipId);
+            }
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.MANAGER
   }
 
   loadMembershipAndUsers(membershipId:number)

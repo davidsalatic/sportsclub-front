@@ -5,14 +5,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Attendance } from 'src/app/models/attendance';
 import { TrainingSessionService } from 'src/app/services/training-session-service';
 import { TrainingSession } from 'src/app/models/training-session';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
-import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { AppUser } from 'src/app/models/app-user';
 import { AttendanceService } from 'src/app/services/attendance-service';
 import { AppUserCondition } from 'src/app/models/helpers/user-condition';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-attendances',
@@ -37,16 +39,34 @@ export class AttendancesComponent implements  OnInit {
 
   constructor(private route:ActivatedRoute,private appUserService:AppUserService
     ,private attendanceService:AttendanceService,
-    private trainingSessionService:TrainingSessionService,private memberGroupService:MemberGroupService,
-    private snackBar:MatSnackBar)
+    private trainingSessionService:TrainingSessionService,
+    private snackBar:MatSnackBar,private router:Router,private authService:AuthService)
   {}
 
   ngOnInit() {
-    this.trainingId=this.route.snapshot.params['id'];
-    let memberGroupId = this.route.snapshot.params['groupId'];
+    this.loadPageIfValidRole();
+  }
 
-    this.loadTrainingSession(this.trainingId);
-    this.loadAppUsersInMemberGroup(memberGroupId);
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+          {
+            this.trainingId=this.route.snapshot.params['id'];
+            let memberGroupId = this.route.snapshot.params['groupId'];
+            this.loadTrainingSession(this.trainingId);
+            this.loadAppUsersInMemberGroup(memberGroupId);
+          }
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
   loadTrainingSession(trainingId:number)
@@ -69,6 +89,7 @@ export class AttendancesComponent implements  OnInit {
   {
     this.attendanceService.getAllAttendancesForTraining(trainingId).subscribe(data=>{
       let trainingAttendances:Attendance[] = data;
+
       for(let i=0;i<this.appUsers.length;i++)
       {
         let present:boolean=false;
@@ -114,11 +135,12 @@ export class AttendancesComponent implements  OnInit {
 
   addAttendance(attendanceClicked:AppUserCondition)
   {
-    let attendance:Attendance= new Attendance();
-    attendance.appUser=attendanceClicked.appUser;
-    attendance.trainingSession=this.trainingSession;
-    this.attendanceService.addAttendance(attendance).subscribe(response=>{
-      //attendance created in db
+    this.appUserService.getUserById(attendanceClicked.appUser.id).subscribe(user=>{
+      let attendance:Attendance= new Attendance();
+      attendance.appUser=attendanceClicked.appUser;
+      attendance.trainingSession=this.trainingSession;
+      this.attendanceService.addAttendance(attendance).subscribe(response=>{
+      })
     })
   }
 

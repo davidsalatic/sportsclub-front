@@ -45,9 +45,9 @@ import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-users.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
-import { AuthComponent } from './auth/auth.component';
 import { AuthService } from './services/auth-service';
 import { RoleService } from './services/role-service';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +67,7 @@ import { RoleService } from './services/role-service';
     AddTrainingSessionDialogComponent,
     AttendancesComponent,
     UngroupedUsersComponent,
-    AuthComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,

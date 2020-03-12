@@ -4,12 +4,15 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Payment } from 'src/app/models/payment';
 import { PaymentService } from 'src/app/services/payment-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MembershipService } from 'src/app/services/membership-service';
 import { Membership } from 'src/app/models/membership';
 import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-payments-for-membership-by-app-user',
@@ -29,14 +32,34 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
   total:number=0;
 
   constructor(private paymentService:PaymentService,private membershipService:MembershipService,
-    private appUserService:AppUserService, private route:ActivatedRoute,private snackBar:MatSnackBar){}
+    private appUserService:AppUserService, private route:ActivatedRoute,
+    private snackBar:MatSnackBar,private authService:AuthService,private router:Router){}
 
   ngOnInit() {
-    let membershipId=this.route.snapshot.params['membershipId'];
-    let appUserId = this.route.snapshot.params['appUserId'];
-    this.loadMembership(membershipId);
-    this.loadAppUser(appUserId);
-    this.loadPayments(membershipId,appUserId);
+    this.loadPageIfValidRole();
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+            {
+              let membershipId=this.route.snapshot.params['membershipId'];
+              let appUserId = this.route.snapshot.params['appUserId'];
+              this.loadMembership(membershipId);
+              this.loadAppUser(appUserId);
+              this.loadPayments(membershipId,appUserId);
+            }
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.MANAGER
   }
 
   loadMembership(membershipId:number)

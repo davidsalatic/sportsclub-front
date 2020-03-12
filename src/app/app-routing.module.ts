@@ -12,10 +12,10 @@ import { SessionsComponent } from './components/sessions/sessions.component';
 import { SessionsGroupComponent } from './components/sessions-group/sessions-group.component';
 import { AttendancesComponent } from './components/attendances/attendances.component';
 import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-users.component';
-import { AuthComponent } from './auth/auth.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/localhost:8080/login', pathMatch:'full'},
+  {path: '', redirectTo: 'home', pathMatch:'full'},
   {path: 'members', component: MemberGroupsComponent},
   {path: 'members/:id', component: AppUsersComponent},
   {path: 'members/users/ungrouped',component:UngroupedUsersComponent},
@@ -28,7 +28,7 @@ const routes: Routes = [
   {path: 'sessions',component:SessionsComponent},
   {path: 'sessions/group/:groupId',component:SessionsGroupComponent},
   {path: 'sessions/:id/group/:groupId/attendances',component:AttendancesComponent},
-  {path:'login', component:AuthComponent}
+  {path: 'home',component:HomeComponent}
 ];
 
 @NgModule({

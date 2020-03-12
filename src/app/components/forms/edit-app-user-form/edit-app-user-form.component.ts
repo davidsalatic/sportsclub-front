@@ -6,6 +6,9 @@ import { AppUserService } from 'src/app/services/app-user-service';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-edit-app-user-form',
@@ -31,13 +34,33 @@ export class EditAppUserFormComponent implements OnInit {
   });
 
   constructor(private route:ActivatedRoute, private router:Router,
-    private appUserService : AppUserService, private memberGroupService: MemberGroupService,private snackBar:MatSnackBar) { 
+    private appUserService : AppUserService, private authService:AuthService,
+    private memberGroupService: MemberGroupService,private snackBar:MatSnackBar) { 
     
  }
 
   ngOnInit(): void {
-    let appUserId=this.route.snapshot.params['id'];
-    this.loadAppUser(appUserId);
+    this.loadPageIfValidRole();
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+          {
+            let appUserId=this.route.snapshot.params['id'];
+            this.loadAppUser(appUserId);
+          }
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
   loadAppUser(appUserId:number)
@@ -108,6 +131,28 @@ export class EditAppUserFormComponent implements OnInit {
       this.appUser.dateJoined=this.appUserForm.get('dateJoined').value;
     
     this.appUser.username = this.appUserForm.get('username').value;
+
+    this.updateAppUserIfNotExists(this.appUser);
+
+  }
+
+  updateAppUserIfNotExists(appUser:AppUser)
+  {
+    this.appUserService.getByUsername(appUser.username).subscribe(data=>{
+      if(data && data.username!=this.appUser.username)
+        this.showSnackbar("A user with that username already exists!")
+      else
+        this.appUserService.getByJmbg(appUser.jmbg).subscribe(data=>{
+          if(data && data.jmbg!=this.appUser.jmbg)
+            this.showSnackbar("A user with that JMBG already exists!");
+          else
+              this.updateUserAndGoToRoute();
+        })
+    })
+  }
+
+  updateUserAndGoToRoute()
+  {
     this.appUserService.updateUser(this.appUser).subscribe(response=>{
       if(this.idOfOriginalGroup!=null)
         this.router.navigate(['/members/'+this.idOfOriginalGroup]);

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Attendance } from '../models/attendance';
 import { HttpClient } from '@angular/common/http';
+import { AppUser } from '../models/app-user';
+import { AppUserService } from './app-user-service';
 
 @Injectable()
 export class AttendanceService{
@@ -22,11 +24,10 @@ export class AttendanceService{
 
     addAttendance(attendance:Attendance)
     {
-        console.log(JSON.stringify(attendance.appUser));
-        return this.httpClient.post(this.ATTENDANCES_URL, attendance);
+        return this.httpClient.post<Attendance>(this.ATTENDANCES_URL, attendance);
     }
 
     deleteAttendance(attendance: Attendance) {
-        return this.httpClient.delete(this.ATTENDANCES_URL+attendance.id);
+        return this.httpClient.delete(this.ATTENDANCES_URL+"/"+attendance.id);
     }
 }

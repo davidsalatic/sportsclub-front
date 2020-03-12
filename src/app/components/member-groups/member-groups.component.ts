@@ -7,6 +7,10 @@ import { MemberGroup } from 'src/app/models/member-group';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { AddMemberGroupDialogComponent } from '../dialogs/add-member-group-dialog/add-member-group-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-member-groups',
@@ -21,11 +25,29 @@ export class MemberGroupsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private memberGroupService:MemberGroupService, private matDialog:MatDialog,private snackBar:MatSnackBar)
+  constructor(private memberGroupService:MemberGroupService, 
+    private matDialog:MatDialog,private snackBar:MatSnackBar,private authService:AuthService,private router:Router)
   {}
 
   ngOnInit() {
-    this.loadGroups();
+    this.loadPageIfValidRole();
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+          this.loadGroups();
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
   loadGroups()

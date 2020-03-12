@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppUser } from '../models/app-user';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class AppUserService{
 
     private readonly APP_USERS_URL = 'http://localhost:8080/users/';
-
     
     constructor(private httpClient: HttpClient,private http: HttpClient){ }
 

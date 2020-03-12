@@ -4,12 +4,15 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TrainingSession } from 'src/app/models/training-session';
 import { TrainingSessionService } from 'src/app/services/training-session-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddTrainingSessionDialogComponent } from '../dialogs/add-training-session-dialog/add-training-session-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 
 @Component({
@@ -27,12 +30,32 @@ export class SessionsGroupComponent implements OnInit {
   memberGroup:MemberGroup;
 
   constructor(private trainingSessionService: TrainingSessionService,private route:ActivatedRoute
-    ,private memberGroupService:MemberGroupService, private matDialog:MatDialog,private snackBar:MatSnackBar){}
+    ,private memberGroupService:MemberGroupService, private matDialog:MatDialog,
+    private snackBar:MatSnackBar,private authService:AuthService,private router:Router){}
 
   ngOnInit() {
-    let memberGroupId = this.route.snapshot.params['groupId'];
-    this.loadMemberGroup(memberGroupId);
-    this.loadTrainingSessionsInGroup(memberGroupId);
+    this.loadPageIfValidRole();
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+          {
+            let memberGroupId = this.route.snapshot.params['groupId'];
+            this.loadMemberGroup(memberGroupId);
+            this.loadTrainingSessionsInGroup(memberGroupId);
+          }
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
   loadMemberGroup(memberGroupId:number)

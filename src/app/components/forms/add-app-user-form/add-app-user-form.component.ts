@@ -9,6 +9,8 @@ import { AppUserService } from 'src/app/services/app-user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleService } from 'src/app/services/role-service';
 import { Roles } from 'src/app/const/role-const';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
 
 @Component({
   selector: 'app-add-app-user-form',
@@ -31,11 +33,30 @@ export class AddAppUserFormComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private router:Router,
      private appUserService : AppUserService, private memberGroupService : MemberGroupService,
-     private snackBar:MatSnackBar,private roleService:RoleService) {}
+     private snackBar:MatSnackBar,private roleService:RoleService,private authService:AuthService) {}
 
   ngOnInit(): void {
-    let memberGroupId=this.route.snapshot.params['id'];
-    this.loadMemberGroup(memberGroupId);
+    this.loadPageIfValidRole()
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+          {
+            let memberGroupId=this.route.snapshot.params['id'];
+            this.loadMemberGroup(memberGroupId);
+          }
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
   loadMemberGroup(memberGroupId:number)

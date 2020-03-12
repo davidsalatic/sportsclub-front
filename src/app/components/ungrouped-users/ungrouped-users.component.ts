@@ -5,6 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth-service';
 
 @Component({
   selector: 'app-ungrouped-users',
@@ -19,10 +23,29 @@ export class UngroupedUsersComponent implements OnInit {
 
   displayedColumns = ['name','actions'];
 
-  constructor(private appUserService:AppUserService,private snackBar:MatSnackBar){}
+  constructor(private appUserService:AppUserService,private snackBar:MatSnackBar,
+    private router:Router,private authService:AuthService){}
 
   ngOnInit() {
-    this.loadAppUsers();
+    this.loadPageIfValidRole();
+  }
+
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+          this.loadAppUsers();
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
   loadAppUsers()

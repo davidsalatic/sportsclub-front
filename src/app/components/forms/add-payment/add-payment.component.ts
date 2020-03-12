@@ -8,6 +8,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PaymentService } from 'src/app/services/payment-service';
 import { Payment } from 'src/app/models/payment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-add-payment',
@@ -17,7 +20,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AddPaymentComponent implements OnInit {
 
   constructor(private route:ActivatedRoute,private membershipService:MembershipService,
-    private appUserService:AppUserService,private paymentService: PaymentService,private router:Router,private snackBar:MatSnackBar) { }
+    private appUserService:AppUserService,private paymentService: PaymentService,
+    private router:Router,private snackBar:MatSnackBar,private authService:AuthService) { }
 
   membership:Membership;
   appUser:AppUser;
@@ -28,10 +32,29 @@ export class AddPaymentComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    let membershipId=this.route.snapshot.params['membershipId'];
-    let appUserId=this.route.snapshot.params['appUserId'];
-    this.loadMembership(membershipId);
-    this.loadAppUser(appUserId);
+    this.loadPageIfValidRole();
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+            {
+              let membershipId=this.route.snapshot.params['membershipId'];
+              let appUserId=this.route.snapshot.params['appUserId'];
+              this.loadMembership(membershipId);
+              this.loadAppUser(appUserId);
+            }
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.MANAGER
   }
 
   loadMembership(membershipId:number)
@@ -52,7 +75,6 @@ export class AddPaymentComponent implements OnInit {
     let payment = this.generatePaymentFromForm();
     
     this.paymentService.addPayment(payment).subscribe(response=>{
-      console.log(payment);
       this.router.navigate(['/payments/membership/'+this.membership.id+"/user/"+this.appUser.id]);
       this.showSnackbar("Payment added.")
     });

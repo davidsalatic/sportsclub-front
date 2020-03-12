@@ -4,6 +4,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MemberGroupService } from 'src/app/services/member-group-service';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-sessions',
@@ -20,10 +24,28 @@ export class SessionsComponent implements  OnInit {
   currentMonth:number = new Date().getMonth()+1;
   currentYear:number = new Date().getFullYear();
 
-  constructor(private memberGroupService:MemberGroupService){}
+  constructor(private memberGroupService:MemberGroupService,private router:Router,
+    private authService:AuthService){}
 
   ngOnInit() {
-    this.loadGroups();
+    this.loadPageIfValidRole();
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+          this.loadGroups();
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
   loadGroups()

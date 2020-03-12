@@ -8,6 +8,10 @@ import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { ChangeMembershipPriceDialogComponent } from '../dialogs/change-membership-price-dialog/change-membership-price-dialog.component';
 import { MembershipPrice } from 'src/app/models/membership-price';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service';
+import { Router } from '@angular/router';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-memberships',
@@ -24,18 +28,36 @@ export class MembershipsComponent implements OnInit {
 
   displayedColumns = ['month','actions'];
 
-constructor(private membershipService:MembershipService,private matDialog:MatDialog,private snackBar:MatSnackBar)
+constructor(private membershipService:MembershipService,private matDialog:MatDialog,
+  private snackBar:MatSnackBar,private authService:AuthService,private router:Router)
 {}
 
   ngOnInit() {
-    this.loadDefaultMembershipPrice();
-    this.createMembershipForCurrentMonthAndLoadAll();
+    this.loadPageIfValidRole();
   }
 
-  loadDefaultMembershipPrice()
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+            this.loadDefaultMembershipPriceAndCreateMembershipIfNotExist();
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.MANAGER
+  }
+
+  loadDefaultMembershipPriceAndCreateMembershipIfNotExist()
   {
     this.membershipService.getMembershipPrice().subscribe(data=>{
       this.defaultMembershipPrice=data;
+      this.createMembershipForCurrentMonthAndLoadAll();
   });
   }
 

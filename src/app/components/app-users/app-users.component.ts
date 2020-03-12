@@ -8,6 +8,9 @@ import { MemberGroup } from 'src/app/models/member-group';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service';
+import { Claims } from 'src/app/models/helpers/claims';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-app-users',
@@ -25,13 +28,32 @@ export class AppUsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private appUsersService:AppUserService,private memberGroupService:MemberGroupService, 
-     private route:ActivatedRoute,private router:Router,private snackBar:MatSnackBar){
+     private route:ActivatedRoute,private router:Router,private snackBar:MatSnackBar,private authService:AuthService){
   }
 
   ngOnInit() {
-    let memberGroupId=this.route.snapshot.params['id'];
-    this.loadMemberGroup(memberGroupId);
-    this.loadUsersInGroup(memberGroupId)
+    this.loadPageIfValidRole()
+  }
+
+  loadPageIfValidRole()
+  {
+    this.authService.getToken().subscribe(token=>{
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims && this.roleIsValid(claims))
+          {
+            let memberGroupId=this.route.snapshot.params['id'];
+            this.loadMemberGroup(memberGroupId);
+            this.loadUsersInGroup(memberGroupId)
+          }
+        else
+          this.router.navigate(['home']);
+      })
+    })
+  }
+
+  roleIsValid(claims:Claims) : boolean
+  {
+    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
   loadMemberGroup(memberGroupId:number)
