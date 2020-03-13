@@ -7,7 +7,7 @@ export class RoleService{
 
     private readonly ROLES_URL = 'http://localhost:8080/roles/';
 
-    constructor(private httpClient: HttpClient,private http: HttpClient){ }
+    constructor(private httpClient: HttpClient){ }
 
     getByName(name:string)
     {

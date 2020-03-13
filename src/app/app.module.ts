@@ -55,6 +55,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { EditProfileFormComponent } from './components/forms/edit-profile-form/edit-profile-form.component';
 import { EditPasswordDialogComponent } from './components/dialogs/edit-password-dialog/edit-password-dialog.component';
 import { MyAttendancesComponent } from './components/my-attendances/my-attendances.component';
+import { TermsComponent } from './components/terms/terms.component';
+import { TermService } from './services/term-service';
 
 @NgModule({
   declarations: [
@@ -81,7 +83,8 @@ import { MyAttendancesComponent } from './components/my-attendances/my-attendanc
     ProfileComponent,
     EditProfileFormComponent,
     EditPasswordDialogComponent,
-    MyAttendancesComponent
+    MyAttendancesComponent,
+    TermsComponent
   ],
   imports: [
     BrowserModule,
@@ -109,7 +112,7 @@ import { MyAttendancesComponent } from './components/my-attendances/my-attendanc
     MatCardModule
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
-    TrainingSessionService,AttendanceService,AuthService,RoleService],
+    TrainingSessionService,AttendanceService,AuthService,RoleService,TermService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

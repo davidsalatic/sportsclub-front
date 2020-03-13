@@ -19,6 +19,7 @@ import { EditStaffMemberFormComponent } from './components/forms/edit-staff-memb
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditProfileFormComponent } from './components/forms/edit-profile-form/edit-profile-form.component';
 import { MyAttendancesComponent } from './components/my-attendances/my-attendances.component';
+import { TermsComponent } from './components/terms/terms.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -40,7 +41,8 @@ const routes: Routes = [
   {path: 'staff/:id/edit',component:EditStaffMemberFormComponent},
   {path: 'profile',component:ProfileComponent},
   {path: 'profile/edit',component:EditProfileFormComponent},
-  {path: 'my-attendances',component:MyAttendancesComponent}
+  {path: 'my-attendances',component:MyAttendancesComponent},
+  {path: 'terms',component:TermsComponent}
 ];
 
 @NgModule({
