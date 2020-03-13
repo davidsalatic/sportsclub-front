@@ -42,6 +42,7 @@ export class AppUsersComponent implements OnInit {
         if(claims && this.roleIsValid(claims))
           {
             let memberGroupId=this.route.snapshot.params['id'];
+            this.loadMemberGroup(memberGroupId);
             this.loadUsersInGroup(memberGroupId)
           }
         else
@@ -53,6 +54,13 @@ export class AppUsersComponent implements OnInit {
   roleIsValid(claims:Claims) : boolean
   {
     return claims.role===Roles.COACH || claims.role===Roles.MANAGER
+  }
+
+  loadMemberGroup(memberGroupId:number)
+  {
+    this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
+      this.memberGroup=group;
+    })
   }
 
   loadUsersInGroup(memberGroupId:number) {

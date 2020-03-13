@@ -1,5 +1,5 @@
 <div class="mat-elevation-z8">
-    <a [routerLink]="['/members/']"><button md-raised-button>Add Staff Member</button></a>
+    <a [routerLink]="['/staff/add']"><button md-raised-button>Add Staff Member</button></a>
   <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">
 
     <!-- Name Column -->
@@ -12,8 +12,8 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
       <td mat-cell *matCellDef="let row">
-        <a><button md-raised-button>Edit</button></a>
-        <button *ngIf="!(row.username===usernameOfLoggedInStaff)" md-raised-button>Delete</button> </td>
+        <a [routerLink]="['/staff', row.id,'edit']"><button md-raised-button>Edit</button></a>
+        <button *ngIf="!(row.username===usernameOfLoggedInStaff)" (click)="deleteUser(row)" md-raised-button>Delete</button> </td>
     </ng-container> 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

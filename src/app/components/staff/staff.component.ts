@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
 import { AppUserService } from 'src/app/services/app-user-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-staff',
@@ -24,7 +25,8 @@ export class StaffComponent implements OnInit {
 
   usernameOfLoggedInStaff :string;
 
-  constructor(private authService:AuthService,private router:Router,private appUserService:AppUserService){}
+  constructor(private authService:AuthService,private router:Router,
+    private appUserService:AppUserService,private snackBar:MatSnackBar){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -58,4 +60,20 @@ export class StaffComponent implements OnInit {
       this.dataSource.sort = this.sort;
     })
   }
+
+  deleteUser(appUser:AppUser)
+  {
+    if(confirm("Delete staff member '"+appUser.name+" "+ appUser.surname+"?"))
+      this.appUserService.deleteUser(appUser).subscribe(response=>{
+        this.loadStaff();
+        this.showSnackbar("User "+appUser.name+" "+appUser.surname+" deleted.");
+      })
+ }
+
+ showSnackbar(message:string)
+ {
+   this.snackBar.open(message, "X",{
+     duration: 1500
+   })
+ }
 }

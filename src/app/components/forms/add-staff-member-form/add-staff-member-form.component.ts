@@ -18,13 +18,14 @@ import { AppUser } from 'src/app/models/app-user';
 export class AddStaffMemberFormComponent implements OnInit {
 
 
-  appUserForm = new FormGroup({
+  addStaffUserForm = new FormGroup({
     name: new FormControl('',Validators.required),
     surname: new FormControl('',Validators.required),
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
-    username: new FormControl('',Validators.required)
+    username: new FormControl('',Validators.required),
+    role: new FormControl('', Validators.required)
   });
 
   constructor(private route:ActivatedRoute, private router:Router,
@@ -60,24 +61,19 @@ export class AddStaffMemberFormComponent implements OnInit {
 
   generateUserFromForm()
   {
-    this.roleService.getByName(Roles.MEMBER).subscribe(role=>{
-      let appUser = new AppUser();
-      appUser.role=role;
-      appUser.username=this.appUserForm.get('username').value;
-      appUser.name=this.appUserForm.get('name').value;
-      appUser.surname=this.appUserForm.get('surname').value;
-      appUser.jmbg=this.appUserForm.get('jmbg').value;
-      appUser.address=this.appUserForm.get('adress').value;
-      appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
-  
-      let formDate : Date =this.appUserForm.get('dateJoined').value;
-      formDate.setDate(formDate.getDate()+1);
-  
-      appUser.dateJoined=formDate;
+    let role:string = this.addStaffUserForm.get('role').value;
+    this.roleService.getByName(role).subscribe(dbRole=>{
+      let staffMember = new AppUser();
+      staffMember.role=dbRole;
+      staffMember.username=this.addStaffUserForm.get('username').value;
+      staffMember.name=this.addStaffUserForm.get('name').value;
+      staffMember.surname=this.addStaffUserForm.get('surname').value;
+      staffMember.jmbg=this.addStaffUserForm.get('jmbg').value;
+      staffMember.address=this.addStaffUserForm.get('adress').value;
+      staffMember.phoneNumber=this.addStaffUserForm.get('phoneNumber').value;
       //PASSWORD CREATED BY JMBG VALUE, USER SHOULD BE ABLE TO CHANGE IT LATER
-      appUser.password=appUser.jmbg;
-      
-      this.addAppUserIfNotExists(appUser);
+      staffMember.password=staffMember.jmbg;
+      this.addAppUserIfNotExists(staffMember);
     })
  
   }
@@ -101,6 +97,7 @@ export class AddStaffMemberFormComponent implements OnInit {
   {
     this.appUserService.addUser(appUser).subscribe(response=>{
       this.showSnackbar("User "+appUser.name+ " "+appUser.surname+" created")
+      this.router.navigate(['/staff']);
     });
   }
 

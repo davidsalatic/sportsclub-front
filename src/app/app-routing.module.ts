@@ -14,6 +14,8 @@ import { AttendancesComponent } from './components/attendances/attendances.compo
 import { UngroupedUsersComponent } from './components/ungrouped-users/ungrouped-users.component';
 import { HomeComponent } from './components/home/home.component';
 import { StaffComponent } from './components/staff/staff.component';
+import { AddStaffMemberFormComponent } from './components/forms/add-staff-member-form/add-staff-member-form.component';
+import { EditStaffMemberFormComponent } from './components/forms/edit-staff-member-form/edit-staff-member-form.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -30,7 +32,9 @@ const routes: Routes = [
   {path: 'sessions',component:SessionsComponent},
   {path: 'sessions/group/:groupId',component:SessionsGroupComponent},
   {path: 'sessions/:id/group/:groupId/attendances',component:AttendancesComponent},
-  {path: 'staff',component:StaffComponent}
+  {path: 'staff',component:StaffComponent},
+  {path: 'staff/add',component:AddStaffMemberFormComponent},
+  {path: 'staff/:id/edit',component:EditStaffMemberFormComponent}
 ];
 
 @NgModule({

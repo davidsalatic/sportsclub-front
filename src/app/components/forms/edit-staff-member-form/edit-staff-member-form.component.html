@@ -1,8 +1,4 @@
-<form [formGroup]="addStaffUserForm" (ngSubmit)="onSubmit()">
-    <div>
-      <input type="radio" value='COACH' formControlName="role" >COACH
-      <input type="radio" value='MANAGER' formControlName="role">MANAGER
-    </div>
+<form [formGroup]="staffMemberForm" (ngSubmit)="onSubmit()">
     <div>
       <mat-form-field>
         <input formControlName="username" type="text" matInput placeholder="Username" required>
@@ -20,7 +16,7 @@
     </div>
     <div>
       <mat-form-field>
-        <input formControlName="jmbg" type="text" matInput placeholder="Jmbg"  pattern="[0-9 ]*"required  minlength="13" maxlength="13">
+        <input formControlName="jmbg" type="text" matInput placeholder="Jmbg" pattern="[0-9 ]*" required minlength="13" maxlength="13">
       </mat-form-field>
     </div>
     <div>
@@ -33,7 +29,8 @@
         <input formControlName="phoneNumber" type="text" matInput placeholder="Phone number">
       </mat-form-field>
     </div>
+    
     <div>
-      <button type="submit" [disabled]="!addStaffUserForm.valid">Submit</button>
+      <button type="submit" [disabled]="!staffMemberForm.valid">Submit</button>
     </div>
   </form>

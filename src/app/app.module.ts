@@ -50,6 +50,7 @@ import { RoleService } from './services/role-service';
 import { HomeComponent } from './components/home/home.component';
 import { StaffComponent } from './components/staff/staff.component';
 import { AddStaffMemberFormComponent } from './components/forms/add-staff-member-form/add-staff-member-form.component';
+import { EditStaffMemberFormComponent } from './components/forms/edit-staff-member-form/edit-staff-member-form.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { AddStaffMemberFormComponent } from './components/forms/add-staff-member
     UngroupedUsersComponent,
     HomeComponent,
     StaffComponent,
-    AddStaffMemberFormComponent
+    AddStaffMemberFormComponent,
+    EditStaffMemberFormComponent
   ],
   imports: [
     BrowserModule,
