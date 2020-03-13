@@ -11,6 +11,8 @@
         <a *ngIf=showMemberships mat-list-item [routerLink]="['memberships']">Memberships</a>
         <a *ngIf=showMembers mat-list-item [routerLink]="['members']">Members</a>
         <a *ngIf=showStaff mat-list-item [routerLink]="['staff']">Staff</a>
+        <a mat-list-item [routerLink]="['profile']">My profile</a>
+        <a mat-list-item href="http://localhost:8080/logout">Logout</a>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>

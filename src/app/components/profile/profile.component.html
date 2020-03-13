@@ -1,0 +1,9 @@
+<div>
+    <a [routerLink]="['/profile/edit']"><button md-raised-button>Edit info</button></a>
+</div>
+<div>
+  <button md-raised-button (click)="openDialog()">Edit password</button>
+</div>
+<div *ngIf="appUser && appUser.role.name==='MEMBER'">
+  <a><button md-raised-button [routerLink]="['/my-attendances']">My Attendances</button></a>
+</div>

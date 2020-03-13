@@ -12,8 +12,8 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
       <td mat-cell *matCellDef="let row">
-        <a [routerLink]="['/staff', row.id,'edit']"><button md-raised-button>Edit</button></a>
-        <button *ngIf="!(row.username===usernameOfLoggedInStaff)" (click)="deleteUser(row)" md-raised-button>Delete</button> </td>
+        <a [routerLink]="['/staff', row.id,'edit']" *ngIf="row.role.name==='COACH'"><button md-raised-button>Edit</button></a>
+        <button *ngIf="row.role.name==='COACH'" (click)="deleteUser(row)" md-raised-button>Delete</button> </td>
     </ng-container> 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

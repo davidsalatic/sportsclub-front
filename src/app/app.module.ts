@@ -51,6 +51,10 @@ import { HomeComponent } from './components/home/home.component';
 import { StaffComponent } from './components/staff/staff.component';
 import { AddStaffMemberFormComponent } from './components/forms/add-staff-member-form/add-staff-member-form.component';
 import { EditStaffMemberFormComponent } from './components/forms/edit-staff-member-form/edit-staff-member-form.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { EditProfileFormComponent } from './components/forms/edit-profile-form/edit-profile-form.component';
+import { EditPasswordDialogComponent } from './components/dialogs/edit-password-dialog/edit-password-dialog.component';
+import { MyAttendancesComponent } from './components/my-attendances/my-attendances.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +77,11 @@ import { EditStaffMemberFormComponent } from './components/forms/edit-staff-memb
     HomeComponent,
     StaffComponent,
     AddStaffMemberFormComponent,
-    EditStaffMemberFormComponent
+    EditStaffMemberFormComponent,
+    ProfileComponent,
+    EditProfileFormComponent,
+    EditPasswordDialogComponent,
+    MyAttendancesComponent
   ],
   imports: [
     BrowserModule,

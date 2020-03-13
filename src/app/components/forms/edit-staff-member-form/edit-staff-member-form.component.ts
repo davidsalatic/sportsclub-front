@@ -20,7 +20,8 @@ export class EditStaffMemberFormComponent implements OnInit {
   appUser : AppUser;
 
   staffMemberForm = new FormGroup({
-    username: new FormControl('',Validators.required),
+    // username: new FormControl('',Validators.required),
+    username: new FormControl ({value: '', disabled: true}, Validators.required),
     name: new FormControl('',Validators.required),
     surname: new FormControl('',Validators.required),
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),

@@ -22,6 +22,11 @@ export class AttendanceService{
         return this.httpClient.get<Attendance>(this.ATTENDANCES_URL+"/session/"+trainingSessionId+"/user/"+appUserId);
     }
 
+    getByAppUser(appUser:AppUser)
+    {
+        return this.httpClient.get<Attendance[]>(this.ATTENDANCES_URL+"/member/"+appUser.id);
+    }
+
     addAttendance(attendance:Attendance)
     {
         return this.httpClient.post<Attendance>(this.ATTENDANCES_URL, attendance);

@@ -60,6 +60,11 @@ export class AppUserService{
         return this.httpClient.put(this.APP_USERS_URL,appUser);
     }
 
+    updateSelf(appUser:AppUser)
+    {
+        return this.httpClient.put(this.APP_USERS_URL+"update-self",appUser);
+    }
+
     deleteUser(appUser: AppUser) {
         return this.httpClient.delete(this.APP_USERS_URL+appUser.id);
     }
