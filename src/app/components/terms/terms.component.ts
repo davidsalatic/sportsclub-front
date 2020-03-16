@@ -9,6 +9,7 @@ import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
 import { TermService } from 'src/app/services/term-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MemberGroupService } from 'src/app/services/member-group-service';
 
 @Component({
   selector: 'app-terms',
@@ -25,8 +26,11 @@ export class TermsComponent implements OnInit {
 
   displayedColumns = ['day','time','actions'];
 
+  memberGroupId:number;
+
   constructor(private authService:AuthService,private route:ActivatedRoute,
-    private router:Router,private termService:TermService,private snackBar:MatSnackBar){}
+    private router:Router,private termService:TermService,private snackBar:MatSnackBar,
+    private memberGroupService:MemberGroupService){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -38,8 +42,8 @@ export class TermsComponent implements OnInit {
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims && this.roleIsValid(claims))
         {
-          let memberGroupId=this.route.snapshot.params['groupId'];
-          this.loadTermsInGroup(memberGroupId);
+          this.memberGroupId=this.route.snapshot.params['groupId'];
+          this.loadTermsInGroup(this.memberGroupId);
         }
         else
           this.router.navigate(['home']);
@@ -65,7 +69,7 @@ export class TermsComponent implements OnInit {
   {
     if(confirm("Delete term on '"+this.daysOfWeek[term.dayOfWeek]+" "+ term.startTime))
     this.termService.deleteTerm(term).subscribe(response=>{
-      // this.loadTerms()
+      this.loadTermsInGroup(this.memberGroupId);
       this.showSnackbar("Term deleted.");
     })
   }

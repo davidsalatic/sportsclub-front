@@ -44,7 +44,7 @@ const routes: Routes = [
   {path: 'profile/edit',component:EditProfileFormComponent},
   {path: 'my-attendances',component:MyAttendancesComponent},
   {path: 'terms/group/:groupId',component:TermsComponent},
-  {path: 'terms/add',component:AddTermFormComponent}
+  {path: 'terms/group/:groupId/add',component:AddTermFormComponent}
 ];
 
 @NgModule({

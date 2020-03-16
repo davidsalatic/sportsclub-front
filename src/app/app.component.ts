@@ -31,12 +31,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getToken().subscribe(token=>{
+      if(token)
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims.role===Roles.MEMBER)
         {
           this.showTrainingSessions=false;
           this.showMemberships=false;
-          this.showMembers=false;
+            this.showMembers=false;
           this.showStaff=false;
         }
         else if(claims.role===Roles.COACH)

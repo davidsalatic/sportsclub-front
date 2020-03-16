@@ -11,7 +11,7 @@ export class TermService{
 
     getAllTermsByMemberGroup(memberGroupId:number)
     {
-        return this.httpClient.get<Term[]>(this.TERMS_URL+"/"+memberGroupId);
+        return this.httpClient.get<Term[]>(this.TERMS_URL+"/group/"+memberGroupId);
     }
 
     addTerm(term:Term)

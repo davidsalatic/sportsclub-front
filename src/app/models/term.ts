@@ -6,4 +6,5 @@ export class Term{
     startTime:Date;
     durationMinutes:number;
     dayOfWeek:number;
+    memberGroup:MemberGroup;
 }
