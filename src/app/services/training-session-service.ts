@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TrainingSession } from '../models/training-session';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Term } from '../models/term';
 
 @Injectable()
 export class TrainingSessionService{
@@ -22,6 +23,11 @@ export class TrainingSessionService{
     addTrainingSession(trainingSession:TrainingSession)
     {
         return this.httpClient.post(this.SESSIONS_URL, trainingSession);
+    }
+
+    generateTrainingSessionsInTerm(term:Term)
+    {
+        return this.httpClient.post(this.SESSIONS_URL+"generate/group/"+term.id,term);
     }
 
     deleteTrainingSession(trainingSession: TrainingSession) {

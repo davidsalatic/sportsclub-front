@@ -1,6 +1,4 @@
 <div class="mat-elevation-z8">
-
-    <button md-raised-button (click)="openDialog();">Add Training Session</button>
   
     <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">
   
@@ -8,6 +6,12 @@
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
         <td mat-cell *matCellDef="let row">{{row.dateHeld}}</td>
+      </ng-container>
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+        <td mat-cell *matCellDef="let row">{{row.timeHeld}}</td>
       </ng-container>
   
       <!-- Actions colums-->

@@ -20,6 +20,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { EditProfileFormComponent } from './components/forms/edit-profile-form/edit-profile-form.component';
 import { MyAttendancesComponent } from './components/my-attendances/my-attendances.component';
 import { TermsComponent } from './components/terms/terms.component';
+import { AddTermFormComponent } from './components/forms/add-term-form/add-term-form.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -42,7 +43,8 @@ const routes: Routes = [
   {path: 'profile',component:ProfileComponent},
   {path: 'profile/edit',component:EditProfileFormComponent},
   {path: 'my-attendances',component:MyAttendancesComponent},
-  {path: 'terms',component:TermsComponent}
+  {path: 'terms/group/:groupId',component:TermsComponent},
+  {path: 'terms/add',component:AddTermFormComponent}
 ];
 
 @NgModule({

@@ -1,0 +1,28 @@
+<form [formGroup]="addTermForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="daysOfWeek">Day of week</label>
+    <select formControlName="daysOfWeek" id="daysOfWeek">
+      <option></option>
+      <option *ngFor="let day of daysOfWeek; let i = index" [ngValue]="i">
+        {{daysOfWeek[i]}}
+      </option>
+    </select>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <input matInput formControlName="startTime" placeholder="Start time" [format]="24" aria-label="12hr format" [ngxTimepicker]="startTime" readonly>
+      <ngx-material-timepicker #startTime></ngx-material-timepicker>
+    </mat-form-field>
+  </div>
+    
+  <div>
+    <mat-form-field>
+      <input formControlName="durationMinutes" type="number" matInput placeholder="Duration in minutes"  required  minlength="1">
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button type="submit" [disabled]="!addTermForm.valid">Submit</button>
+  </div>
+</form>

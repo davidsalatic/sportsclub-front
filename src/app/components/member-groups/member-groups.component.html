@@ -17,6 +17,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
       <td mat-cell *matCellDef="let row">
         <a [routerLink]="['/members', row.id]"><button md-raised-button>Edit</button></a>
+        <a [routerLink]="['/terms/group', row.id]"><button md-raised-button>Terms</button></a>
         <button md-raised-button (click)="deleteGroup(row);" >Delete</button> </td>
     </ng-container> 
 

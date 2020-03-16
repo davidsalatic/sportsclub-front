@@ -8,11 +8,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { AddTrainingSessionDialogComponent } from '../dialogs/add-training-session-dialog/add-training-session-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
+import { Term } from 'src/app/models/term';
 
 
 @Component({
@@ -26,7 +26,7 @@ export class SessionsGroupComponent implements OnInit {
 
   dataSource: MatTableDataSource<TrainingSession>= new MatTableDataSource();
 
-  displayedColumns = ['date','actions'];
+  displayedColumns = ['date','time','actions'];
   memberGroup:MemberGroup;
 
   constructor(private trainingSessionService: TrainingSessionService,private route:ActivatedRoute
@@ -74,27 +74,6 @@ export class SessionsGroupComponent implements OnInit {
     })
   }
 
-  openDialog()
-  {
-    const dialogConfig = new MatDialogConfig();
-    let dialogRef = this.matDialog.open(AddTrainingSessionDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(inputDate=>{
-      if(inputDate)
-        this.addTrainingSession(inputDate);
-    })
-  }
-
-  addTrainingSession(dateHeld:Date)
-  {
-    let trainingSession : TrainingSession = new TrainingSession();
-    trainingSession.dateHeld=dateHeld;
-    trainingSession.memberGroup=this.memberGroup;
-    this.trainingSessionService.addTrainingSession(trainingSession).subscribe(response=>{
-      this.loadTrainingSessionsInGroup(this.memberGroup.id);
-      this.showSnackbar("Training session created.")
-    })
-  }
-
   deleteTrainingSession(trainingSession:TrainingSession)
   {
     if(confirm("Delete training session and all connected attendances?")) {
@@ -103,6 +82,14 @@ export class SessionsGroupComponent implements OnInit {
         this.showSnackbar("Training session deleted.")
       })
     }
+  }
+
+
+  generateTrainingSessionsInTerm(term:Term)
+  {
+    this.trainingSessionService.generateTrainingSessionsInTerm(term).subscribe(response=>{
+      this.loadTrainingSessionsInGroup(this.memberGroup.id);
+    })
   }
 
   showSnackbar(message:string)

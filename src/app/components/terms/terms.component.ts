@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth-service';
 import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
 import { TermService } from 'src/app/services/term-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-terms',
@@ -20,10 +21,12 @@ export class TermsComponent implements OnInit {
   
   dataSource: MatTableDataSource<Term> = new MatTableDataSource();
 
-  displayedColumns = ['id'];
+  daysOfWeek=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-  constructor(private authService:AuthService,private activatedRoute:ActivatedRoute,
-    private router:Router,private termService:TermService){}
+  displayedColumns = ['day','time','actions'];
+
+  constructor(private authService:AuthService,private route:ActivatedRoute,
+    private router:Router,private termService:TermService,private snackBar:MatSnackBar){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -35,7 +38,8 @@ export class TermsComponent implements OnInit {
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims && this.roleIsValid(claims))
         {
-          this.loadTerms();
+          let memberGroupId=this.route.snapshot.params['groupId'];
+          this.loadTermsInGroup(memberGroupId);
         }
         else
           this.router.navigate(['home']);
@@ -48,12 +52,28 @@ export class TermsComponent implements OnInit {
     return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
-  loadTerms()
+  loadTermsInGroup(memberGroupId:number)
   {
-    this.termService.getAllTerms().subscribe(data=>{
+    this.termService.getAllTermsByMemberGroup(memberGroupId).subscribe(data=>{
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    })
+  }
+
+  deleteTerm(term:Term)
+  {
+    if(confirm("Delete term on '"+this.daysOfWeek[term.dayOfWeek]+" "+ term.startTime))
+    this.termService.deleteTerm(term).subscribe(response=>{
+      // this.loadTerms()
+      this.showSnackbar("Term deleted.");
+    })
+  }
+
+  showSnackbar(message:string)
+  {
+    this.snackBar.open(message, "X",{
+      duration: 1500
     })
   }
 }

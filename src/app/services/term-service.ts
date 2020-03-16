@@ -9,13 +9,18 @@ export class TermService{
 
     constructor(private httpClient: HttpClient){ }
 
-    getAllTerms()
+    getAllTermsByMemberGroup(memberGroupId:number)
     {
-        return this.httpClient.get<Term[]>(this.TERMS_URL);
+        return this.httpClient.get<Term[]>(this.TERMS_URL+"/"+memberGroupId);
     }
 
-    insertTerm(term:Term)
+    addTerm(term:Term)
     {
         return this.httpClient.post(this.TERMS_URL,term);
+    }
+
+    deleteTerm(term:Term)
+    {
+        return this.httpClient.delete(this.TERMS_URL+"/"+term.id);
     }
 }

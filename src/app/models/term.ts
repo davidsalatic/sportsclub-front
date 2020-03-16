@@ -1,7 +1,9 @@
+import { MemberGroup } from './member-group';
+
 export class Term{
 
     id:number;
     startTime:Date;
-    duration:number;
+    durationMinutes:number;
     dayOfWeek:number;
 }

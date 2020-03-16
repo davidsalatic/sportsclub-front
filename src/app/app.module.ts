@@ -37,7 +37,6 @@ import { AddPaymentComponent } from './components/forms/add-payment/add-payment.
 import { SessionsComponent } from './components/sessions/sessions.component';
 import { TrainingSessionService } from './services/training-session-service';
 import { SessionsGroupComponent } from './components/sessions-group/sessions-group.component';
-import { AddTrainingSessionDialogComponent } from './components/dialogs/add-training-session-dialog/add-training-session-dialog.component';
 import { AttendancesComponent } from './components/attendances/attendances.component';
 import { MatCheckboxModule} from "@angular/material/checkbox";
 import { AttendanceService } from './services/attendance-service';
@@ -57,6 +56,8 @@ import { EditPasswordDialogComponent } from './components/dialogs/edit-password-
 import { MyAttendancesComponent } from './components/my-attendances/my-attendances.component';
 import { TermsComponent } from './components/terms/terms.component';
 import { TermService } from './services/term-service';
+import { AddTermFormComponent } from './components/forms/add-term-form/add-term-form.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,6 @@ import { TermService } from './services/term-service';
     AddPaymentComponent,
     SessionsComponent,
     SessionsGroupComponent,
-    AddTrainingSessionDialogComponent,
     AttendancesComponent,
     UngroupedUsersComponent,
     HomeComponent,
@@ -84,7 +84,8 @@ import { TermService } from './services/term-service';
     EditProfileFormComponent,
     EditPasswordDialogComponent,
     MyAttendancesComponent,
-    TermsComponent
+    TermsComponent,
+    AddTermFormComponent
   ],
   imports: [
     BrowserModule,
@@ -109,7 +110,8 @@ import { TermService } from './services/term-service';
     MatNativeDateModule,
     MatSnackBarModule,
     MatRadioModule,
-    MatCardModule
+    MatCardModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
     TrainingSessionService,AttendanceService,AuthService,RoleService,TermService],

@@ -1,13 +1,27 @@
 <div class="mat-elevation-z8">
   <div>
-    <a><button md-raised-button>Add term</button></a>
+    <a [routerLink]="['/terms/add']"><button md-raised-button>Add term</button></a>
   </div>
-  <table mat-table class="full-width-table" matSort aria-label="Elements">
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-      <td mat-cell *matCellDef="let row">{{row.id}}</td>
+  <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">
+
+    <!-- Day Column -->
+    <ng-container matColumnDef="day">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Day</th>
+      <td mat-cell *matCellDef="let row">{{daysOfWeek[row.dayOfWeek]}}</td>
     </ng-container>
+
+    <!-- Time Column -->
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+      <td mat-cell *matCellDef="let row">{{row.startTime}}</td>
+    </ng-container>
+
+    <!-- Actions colums-->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+      <td mat-cell *matCellDef="let row">
+        <button md-raised-button (click)="deleteTerm(row);" >Delete</button> </td>
+    </ng-container> 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
