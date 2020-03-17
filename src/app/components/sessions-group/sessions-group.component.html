@@ -1,7 +1,21 @@
 <div class="mat-elevation-z8">
   
-  <div>
+  <div *ngIf=showAutoGenerateButton>
     <button type="button" (click)="openDialog()">Auto generate</button>
+  </div>
+
+  <div> 
+    <button type="button" (click)="deleteAll()">Delete all</button>
+  </div>
+  
+  <div *ngIf=allPeriods>
+    <label for="allPeriods">Period</label>
+    <select id="allPeriods" (change)="selectChangeHandler($event)">
+      <option></option>
+      <option *ngFor="let period of allPeriods; let i = index" [ngValue]="i">
+        {{allPeriods[i].month}}-{{allPeriods[i].year}}
+      </option>
+    </select>
   </div>
 
   <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">

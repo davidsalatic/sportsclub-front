@@ -3,6 +3,7 @@ import { TrainingSession } from '../models/training-session';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Term } from '../models/term';
+import { Period } from '../models/period';
 
 @Injectable()
 export class TrainingSessionService{
@@ -32,5 +33,10 @@ export class TrainingSessionService{
 
     deleteTrainingSession(trainingSession: TrainingSession) {
         return this.httpClient.delete(this.SESSIONS_URL+trainingSession.id);
+    }
+
+    deleteTrainingSessionsInGroupInPeriod(memberGroupId:number,periodId:number)
+    {
+        return this.httpClient.delete(this.SESSIONS_URL+"group/"+memberGroupId+"/"+periodId);
     }
 }

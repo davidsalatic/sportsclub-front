@@ -33,7 +33,11 @@ export class SessionsGroupComponent implements OnInit {
   displayedColumns = ['date','time','actions'];
   memberGroup:MemberGroup;
   terms:Term[];
+  allPeriods:Period[];
   periodId:number;
+  showAutoGenerateButton=true;
+
+  selectedPeriod: string = '';
 
   daysOfWeek=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
@@ -44,6 +48,7 @@ export class SessionsGroupComponent implements OnInit {
 
   ngOnInit() {
     this.loadPageIfValidRole();
+    
   }
 
   loadPageIfValidRole()
@@ -54,6 +59,7 @@ export class SessionsGroupComponent implements OnInit {
           {
             let memberGroupId = this.route.snapshot.params['groupId'];
             this.periodId = this.route.snapshot.params['periodId'];
+            this.loadAllPeriods();
             this.loadMemberGroupAndTerms(memberGroupId);
             this.loadTrainingSessionsInGroupInPeriod(memberGroupId,this.periodId);
           }
@@ -68,6 +74,13 @@ export class SessionsGroupComponent implements OnInit {
     return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
+  loadAllPeriods()
+  {
+    this.periodService.getAll().subscribe(periods=>{
+      this.allPeriods=periods;
+    })
+  }
+
   loadMemberGroupAndTerms(memberGroupId:number)
   {
     this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
@@ -80,6 +93,13 @@ export class SessionsGroupComponent implements OnInit {
   
   loadTrainingSessionsInGroupInPeriod(memberGroupId:number,periodId:number)
   {
+    this.periodService.getPeriodById(periodId).subscribe(period=>{
+      let date:Date = new Date();
+      if(period.month!=date.getMonth()+1 || period.year!=date.getFullYear())
+        this.showAutoGenerateButton=false;
+      else
+        this.showAutoGenerateButton=true;
+    })
     this.trainingSessionService.getAllTrainingSessionsByGroupByPeriod(memberGroupId,periodId).subscribe(data=>{
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
@@ -117,6 +137,28 @@ export class SessionsGroupComponent implements OnInit {
     else
       this.showSnackbar("Add terms for group first. [Members page]")
     
+  }
+
+  selectChangeHandler (event: any) {
+    this.selectedPeriod = event.target.value;
+    let periodArray:string[] = this.selectedPeriod.split("-");
+    let month = parseInt(periodArray[0]);
+    let year = parseInt(periodArray[1]);
+    this.periodService.getPeriodByMonthAndYear(month,year).subscribe(period=>{
+
+      this.router.navigate(['/sessions/group/'+this.memberGroup.id+'/period/'+period.id])
+      this.periodId=period.id;
+      this.loadTrainingSessionsInGroupInPeriod(this.memberGroup.id,period.id)
+    })
+  }
+
+  deleteAll()
+  {
+    if(confirm("Delete all training sessions for this month? All attendances will be lost.")) {
+      this.trainingSessionService.deleteTrainingSessionsInGroupInPeriod(this.memberGroup.id,this.periodId).subscribe(response=>{
+        this.loadTrainingSessionsInGroupInPeriod(this.memberGroup.id,this.periodId);
+      })
+    } 
   }
 
   showSnackbar(message:string)
