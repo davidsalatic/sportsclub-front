@@ -72,7 +72,7 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
     
     this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
       if(period)
-        this.loadMemberships();
+        this.loadMemberships(period);
       else
       {
         let period:Period = new Period();
@@ -93,16 +93,26 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
     membership.period=period;
     membership.price=this.defaultMembershipPrice.price;
     this.membershipService.addMembership(membership).subscribe(response=>{
-      this.loadMemberships();
+      this.loadMemberships(period);
     });
   }
 
-  loadMemberships()
+  loadMemberships(period:Period)
   {
     this.membershipService.getAllMemberships().subscribe(data=>{
-      this.dataSource.data=data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      if(data.length>0)
+      {
+        this.dataSource.data=data;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+      else
+      {
+        this.addMembership(period);
+      }
+
+
+
     })
   }
   
@@ -121,7 +131,7 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
   {
     this.defaultMembershipPrice.price=price;
     this.membershipService.setMembershipPrice(this.defaultMembershipPrice).subscribe(response=>{
-      this.loadMemberships();
+      this.loadMemberships(null);
       this.showSnackbar("Default price of membership changed to "+this.defaultMembershipPrice.price+".")
     });
   }

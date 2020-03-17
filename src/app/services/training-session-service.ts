@@ -25,9 +25,9 @@ export class TrainingSessionService{
         return this.httpClient.post(this.SESSIONS_URL, trainingSession);
     }
 
-    generateTrainingSessionsForTerms(terms:Term[],day:number)
+    generateTrainingSessionsForTerms(terms:Term[],periodId:number,day:number)
     {
-        return this.httpClient.post(this.SESSIONS_URL+"generate/day/"+day,terms);
+        return this.httpClient.post(this.SESSIONS_URL+"generate/period/"+periodId+"/day/"+day,terms);
     }
 
     deleteTrainingSession(trainingSession: TrainingSession) {

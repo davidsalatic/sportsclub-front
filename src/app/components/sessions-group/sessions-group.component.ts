@@ -33,7 +33,7 @@ export class SessionsGroupComponent implements OnInit {
   displayedColumns = ['date','time','actions'];
   memberGroup:MemberGroup;
   terms:Term[];
-  period:Period;
+  periodId:number;
 
   daysOfWeek=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
@@ -53,9 +53,9 @@ export class SessionsGroupComponent implements OnInit {
         if(claims && this.roleIsValid(claims))
           {
             let memberGroupId = this.route.snapshot.params['groupId'];
-            let periodId = this.route.snapshot.params['periodId'];
+            this.periodId = this.route.snapshot.params['periodId'];
             this.loadMemberGroupAndTerms(memberGroupId);
-            this.loadTrainingSessionsInGroupInPeriod(memberGroupId,periodId);
+            this.loadTrainingSessionsInGroupInPeriod(memberGroupId,this.periodId);
           }
         else
           this.router.navigate(['home']);
@@ -91,7 +91,7 @@ export class SessionsGroupComponent implements OnInit {
   {
     if(confirm("Delete training session and all connected attendances?")) {
       this.trainingSessionService.deleteTrainingSession(trainingSession).subscribe(response=>{
-        // this.loadTrainingSessionsInGroup(this.memberGroup.id);
+        this.loadTrainingSessionsInGroupInPeriod(this.memberGroup.id,this.periodId);
         this.showSnackbar("Training session deleted.")
       })
     }
@@ -107,8 +107,9 @@ export class SessionsGroupComponent implements OnInit {
       dialogRef.afterClosed().subscribe(day=>{
         if(day)
         {
-          this.trainingSessionService.generateTrainingSessionsForTerms(this.terms,day).subscribe(response=>{
-            // this.loadTrainingSessionsInGroup(this.memberGroup.id);
+          this.trainingSessionService.generateTrainingSessionsForTerms(this.terms,this.periodId,day).subscribe(response=>{
+            this.loadTrainingSessionsInGroupInPeriod(this.memberGroup.id,this.periodId);
+            this.showSnackbar("Training sessions generated.");
           })
         }
       })
