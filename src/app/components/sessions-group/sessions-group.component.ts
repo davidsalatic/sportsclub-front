@@ -15,6 +15,8 @@ import { Roles } from 'src/app/const/role-const';
 import { Term } from 'src/app/models/term';
 import { AutoGenerateSessionsDialogComponent } from '../dialogs/auto-generate-sessions-dialog/auto-generate-sessions-dialog.component';
 import { TermService } from 'src/app/services/term-service';
+import { PeriodService } from 'src/app/services/period-service';
+import { Period } from 'src/app/models/period';
 
 
 @Component({
@@ -31,11 +33,14 @@ export class SessionsGroupComponent implements OnInit {
   displayedColumns = ['date','time','actions'];
   memberGroup:MemberGroup;
   terms:Term[];
+  period:Period;
+
+  daysOfWeek=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   constructor(private trainingSessionService: TrainingSessionService,private route:ActivatedRoute
     ,private memberGroupService:MemberGroupService, private matDialog:MatDialog,
     private snackBar:MatSnackBar,private authService:AuthService,private router:Router,
-    private termService:TermService){}
+    private termService:TermService,private periodService:PeriodService){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -48,8 +53,9 @@ export class SessionsGroupComponent implements OnInit {
         if(claims && this.roleIsValid(claims))
           {
             let memberGroupId = this.route.snapshot.params['groupId'];
+            let periodId = this.route.snapshot.params['periodId'];
             this.loadMemberGroupAndTerms(memberGroupId);
-            this.loadTrainingSessionsInGroup(memberGroupId);
+            this.loadTrainingSessionsInGroupInPeriod(memberGroupId,periodId);
           }
         else
           this.router.navigate(['home']);
@@ -72,9 +78,9 @@ export class SessionsGroupComponent implements OnInit {
     })
   }
   
-  loadTrainingSessionsInGroup(memberGroupId:number)
+  loadTrainingSessionsInGroupInPeriod(memberGroupId:number,periodId:number)
   {
-    this.trainingSessionService.getAllTrainingSessionsByGroup(memberGroupId).subscribe(data=>{
+    this.trainingSessionService.getAllTrainingSessionsByGroupByPeriod(memberGroupId,periodId).subscribe(data=>{
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -85,7 +91,7 @@ export class SessionsGroupComponent implements OnInit {
   {
     if(confirm("Delete training session and all connected attendances?")) {
       this.trainingSessionService.deleteTrainingSession(trainingSession).subscribe(response=>{
-        this.loadTrainingSessionsInGroup(this.memberGroup.id);
+        // this.loadTrainingSessionsInGroup(this.memberGroup.id);
         this.showSnackbar("Training session deleted.")
       })
     }
@@ -94,22 +100,28 @@ export class SessionsGroupComponent implements OnInit {
 
   openDialog()
   {
-    const dialogConfig = new MatDialogConfig();
-    let dialogRef = this.matDialog.open(AutoGenerateSessionsDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(day=>{
-      if(day)
-      {
-        this.trainingSessionService.generateTrainingSessionsForTerms(this.terms,day).subscribe(response=>{
-          this.loadTrainingSessionsInGroup(this.memberGroup.id);
-        })
-      }
-    })
+    if(this.terms.length>0)
+    {
+      const dialogConfig = new MatDialogConfig();
+      let dialogRef = this.matDialog.open(AutoGenerateSessionsDialogComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe(day=>{
+        if(day)
+        {
+          this.trainingSessionService.generateTrainingSessionsForTerms(this.terms,day).subscribe(response=>{
+            // this.loadTrainingSessionsInGroup(this.memberGroup.id);
+          })
+        }
+      })
+    }
+    else
+      this.showSnackbar("Add terms for group first. [Members page]")
+    
   }
 
   showSnackbar(message:string)
   {
     this.snackBar.open(message, "X",{
-      duration: 1500
+      duration: 2500
     })
   }
 }

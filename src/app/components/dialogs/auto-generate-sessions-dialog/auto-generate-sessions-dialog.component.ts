@@ -20,13 +20,16 @@ export class AutoGenerateSessionsDialogComponent implements OnInit {
 
   generateFromToday()
   {
-    let today:number = new Date().getDate();
-    this.dialogRef.close(today);
+    if(confirm("This will delete existing training sessions from today to the end of the month and recreate them. All attendances in that period will be lost!"))
+    {
+      let today:number = new Date().getDate();
+      this.dialogRef.close(today);
+    }
   }
 
   generateThisMonth()
   {
-    if(confirm("This will overwrite existing training sessions in this month.")) {
+    if(confirm("This will delete existing training sessions in this month and recreate them. All attendances in this month will be lost!")) {
       this.dialogRef.close(1);
     }
   }

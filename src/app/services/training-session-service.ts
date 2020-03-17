@@ -11,8 +11,8 @@ export class TrainingSessionService{
     
     constructor(private httpClient: HttpClient){ }
 
-    getAllTrainingSessionsByGroup(memberGroupId:number): Observable<TrainingSession[]>{
-        return this.httpClient.get<TrainingSession[]>(this.SESSIONS_URL+"group/"+memberGroupId);
+    getAllTrainingSessionsByGroupByPeriod(memberGroupId:number,periodId:number): Observable<TrainingSession[]>{
+        return this.httpClient.get<TrainingSession[]>(this.SESSIONS_URL+"group/"+memberGroupId+"/period/"+periodId);
     }
     
     getById(id:number) : Observable<TrainingSession>

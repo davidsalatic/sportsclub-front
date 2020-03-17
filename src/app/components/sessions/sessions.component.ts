@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service';
 import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
+import { PeriodService } from 'src/app/services/period-service';
+import { Period } from 'src/app/models/period';
 
 @Component({
   selector: 'app-sessions',
@@ -25,7 +27,7 @@ export class SessionsComponent implements  OnInit {
   currentYear:number = new Date().getFullYear();
 
   constructor(private memberGroupService:MemberGroupService,private router:Router,
-    private authService:AuthService){}
+    private authService:AuthService,private periodService:PeriodService){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -54,6 +56,30 @@ export class SessionsComponent implements  OnInit {
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    })
+  }
+
+  viewTrainingSessionsInGroup(memberGroupId:number)
+  {
+    let date:Date =new Date();
+    let currentMonth:number = date.getMonth()+1;
+    let currentYear:number = date.getFullYear();
+
+    this.periodService.getPeriodByMonthAndYear(date.getMonth()+1,date.getFullYear()).subscribe(period=>{
+      if(period)
+        this.router.navigate(['/sessions/group/'+memberGroupId+'/period/'+period.id]);
+      else
+      {
+        let period:Period = new Period();
+    
+        period.month=currentMonth;
+        period.year=currentYear;
+        this.periodService.addPeriod(period).subscribe(response=>{
+          this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(data=>{
+            this.router.navigate(['/sessions/group/'+memberGroupId+'/period/'+data.id]);
+          })
+        })
+      }
     })
   }
 }

@@ -54,9 +54,7 @@ export class AttendancesComponent implements  OnInit {
         if(claims && this.roleIsValid(claims))
           {
             this.trainingId=this.route.snapshot.params['id'];
-            let memberGroupId = this.route.snapshot.params['groupId'];
-            this.loadTrainingSession(this.trainingId);
-            this.loadAppUsersInMemberGroup(memberGroupId);
+            this.loadTrainingSessionAndAppUsers(this.trainingId);
           }
         else
           this.router.navigate(['home']);
@@ -69,10 +67,11 @@ export class AttendancesComponent implements  OnInit {
     return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
-  loadTrainingSession(trainingId:number)
+  loadTrainingSessionAndAppUsers(trainingId:number)
   {
     this.trainingSessionService.getById(trainingId).subscribe(training=>{
       this.trainingSession=training;
+      this.loadAppUsersInMemberGroup(training.memberGroup.id);
     })
   }
 
