@@ -58,6 +58,8 @@ import { TermsComponent } from './components/terms/terms.component';
 import { TermService } from './services/term-service';
 import { AddTermFormComponent } from './components/forms/add-term-form/add-term-form.component';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { AutoGenerateSessionsDialogComponent } from './components/dialogs/auto-generate-sessions-dialog/auto-generate-sessions-dialog.component';
+import { PeriodService } from './services/period-service';
 
 @NgModule({
   declarations: [
@@ -85,7 +87,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     EditPasswordDialogComponent,
     MyAttendancesComponent,
     TermsComponent,
-    AddTermFormComponent
+    AddTermFormComponent,
+    AutoGenerateSessionsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -114,7 +117,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     NgxMaterialTimepickerModule
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
-    TrainingSessionService,AttendanceService,AuthService,RoleService,TermService],
+    TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,PeriodService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

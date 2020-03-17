@@ -1,7 +1,8 @@
+import { Period } from './period';
+
 export class Membership {
 
     id:number;
-    month:number;
-    year:number;
+    period:Period;
     price:number;
 }

@@ -1,36 +1,40 @@
 <div class="mat-elevation-z8">
   
-    <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">
-  
-      <!-- Date Column -->
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-        <td mat-cell *matCellDef="let row">{{row.dateHeld}}</td>
-      </ng-container>
+  <div>
+    <button type="button" (click)="openDialog()">Auto generate</button>
+  </div>
 
-      <!-- Date Column -->
-      <ng-container matColumnDef="time">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
-        <td mat-cell *matCellDef="let row">{{row.timeHeld}}</td>
-      </ng-container>
+  <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+      <td mat-cell *matCellDef="let row">{{row.dateHeld}}</td>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+      <td mat-cell *matCellDef="let row">{{row.timeHeld}}</td>
+    </ng-container>
+
+    <!-- Actions colums-->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+      <td mat-cell *matCellDef="let row">
+        <a [routerLink]="['/sessions',row.id,'group',memberGroup.id,'attendances']"><button md-raised-button>Attendance</button></a>
+        <button md-raised-button (click)="deleteTrainingSession(row);">Delete</button> </td>
+      </ng-container> 
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
   
-      <!-- Actions colums-->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
-        <td mat-cell *matCellDef="let row">
-          <a [routerLink]="['/sessions',row.id,'group',memberGroup.id,'attendances']"><button md-raised-button>Attendance</button></a>
-          <button md-raised-button (click)="deleteTrainingSession(row);">Delete</button> </td>
-        </ng-container> 
-  
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  
-    <mat-paginator #paginator
-        [length]="dataSource?.data.length"
-        [pageIndex]="0"
-        [pageSize]="50"
-        [pageSizeOptions]="[25, 50, 100, 250]">
-    </mat-paginator>
+  <mat-paginator #paginator
+      [length]="dataSource?.data.length"
+      [pageIndex]="0"
+      [pageSize]="50"
+      [pageSizeOptions]="[25, 50, 100, 250]">
+  </mat-paginator>
   </div>
   

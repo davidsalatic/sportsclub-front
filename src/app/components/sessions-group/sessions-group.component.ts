@@ -13,6 +13,8 @@ import { AuthService } from 'src/app/services/auth-service';
 import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
 import { Term } from 'src/app/models/term';
+import { AutoGenerateSessionsDialogComponent } from '../dialogs/auto-generate-sessions-dialog/auto-generate-sessions-dialog.component';
+import { TermService } from 'src/app/services/term-service';
 
 
 @Component({
@@ -28,10 +30,12 @@ export class SessionsGroupComponent implements OnInit {
 
   displayedColumns = ['date','time','actions'];
   memberGroup:MemberGroup;
+  terms:Term[];
 
   constructor(private trainingSessionService: TrainingSessionService,private route:ActivatedRoute
     ,private memberGroupService:MemberGroupService, private matDialog:MatDialog,
-    private snackBar:MatSnackBar,private authService:AuthService,private router:Router){}
+    private snackBar:MatSnackBar,private authService:AuthService,private router:Router,
+    private termService:TermService){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -44,7 +48,7 @@ export class SessionsGroupComponent implements OnInit {
         if(claims && this.roleIsValid(claims))
           {
             let memberGroupId = this.route.snapshot.params['groupId'];
-            this.loadMemberGroup(memberGroupId);
+            this.loadMemberGroupAndTerms(memberGroupId);
             this.loadTrainingSessionsInGroup(memberGroupId);
           }
         else
@@ -58,10 +62,13 @@ export class SessionsGroupComponent implements OnInit {
     return claims.role===Roles.COACH || claims.role===Roles.MANAGER
   }
 
-  loadMemberGroup(memberGroupId:number)
+  loadMemberGroupAndTerms(memberGroupId:number)
   {
     this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
       this.memberGroup=group;
+      this.termService.getAllTermsByMemberGroup(this.memberGroup.id).subscribe(terms=>{
+        this.terms=terms;
+      })
     })
   }
   
@@ -85,10 +92,17 @@ export class SessionsGroupComponent implements OnInit {
   }
 
 
-  generateTrainingSessionsInTerm(term:Term)
+  openDialog()
   {
-    this.trainingSessionService.generateTrainingSessionsInTerm(term).subscribe(response=>{
-      this.loadTrainingSessionsInGroup(this.memberGroup.id);
+    const dialogConfig = new MatDialogConfig();
+    let dialogRef = this.matDialog.open(AutoGenerateSessionsDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(day=>{
+      if(day)
+      {
+        this.trainingSessionService.generateTrainingSessionsForTerms(this.terms,day).subscribe(response=>{
+          this.loadTrainingSessionsInGroup(this.memberGroup.id);
+        })
+      }
     })
   }
 

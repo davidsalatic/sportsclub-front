@@ -4,6 +4,7 @@ import { Membership } from '../models/membership';
 
 import { HttpClient } from '@angular/common/http';
 import { MembershipPrice } from '../models/membership-price';
+import { Period } from '../models/period';
 
 @Injectable()
 export class MembershipService

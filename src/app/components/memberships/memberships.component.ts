@@ -12,6 +12,8 @@ import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
 import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
+import { PeriodService } from 'src/app/services/period-service';
+import { Period } from 'src/app/models/period';
 
 @Component({
   selector: 'app-memberships',
@@ -29,7 +31,8 @@ export class MembershipsComponent implements OnInit {
   displayedColumns = ['month','actions'];
 
 constructor(private membershipService:MembershipService,private matDialog:MatDialog,
-  private snackBar:MatSnackBar,private authService:AuthService,private router:Router)
+  private snackBar:MatSnackBar,private authService:AuthService,private router:Router
+  ,private periodService:PeriodService)
 {}
 
   ngOnInit() {
@@ -66,20 +69,28 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
     let date=new Date();
     let currentMonth = date.getMonth()+1;
     let currentYear = date.getFullYear();
-    this.membershipService.getAllByMonthAndYear(currentMonth,currentYear).subscribe(memberships=>{
-      //IF THERE ISN'T A MEMBERSHIP IN THIS MONTH, CREATE ONE
-      if(!memberships)
-        this.addMembership(currentMonth,currentYear);
-      else
+    
+    this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
+      if(period)
         this.loadMemberships();
+      else
+      {
+        let period:Period = new Period();
+        period.month=currentMonth;
+        period.year=currentYear;
+        this.periodService.addPeriod(period).subscribe(response=>{
+          this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(newPeriod=>{
+            this.addMembership(newPeriod);
+          })
+        })
+      }
     })
   }
 
-  addMembership(month:number,year:number)
+  addMembership(period:Period)
   {
     let membership:Membership = new Membership();
-    membership.month=month;
-    membership.year=year;
+    membership.period=period;
     membership.price=this.defaultMembershipPrice.price;
     this.membershipService.addMembership(membership).subscribe(response=>{
       this.loadMemberships();
