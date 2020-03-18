@@ -28,7 +28,7 @@ export class AddAppUserFormComponent implements OnInit {
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
     username: new FormControl('',Validators.required),
-    dateJoined: new FormControl('',Validators.required,)
+    dateJoined: new FormControl('')
   });
 
   constructor(private route:ActivatedRoute, private router:Router,

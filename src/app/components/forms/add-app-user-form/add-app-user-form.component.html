@@ -32,7 +32,7 @@
   <div>
     <mat-form-field>
       <mat-label>Date Joined</mat-label>
-      <input formControlName="dateJoined" matInput readonly required [matDatepicker]="dateJoined">
+      <input formControlName="dateJoined" matInput readonly [matDatepicker]="dateJoined">
       <mat-datepicker-toggle matSuffix [for]="dateJoined"></mat-datepicker-toggle>
       <mat-datepicker #dateJoined></mat-datepicker>
     </mat-form-field>

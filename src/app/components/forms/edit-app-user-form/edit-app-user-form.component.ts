@@ -29,7 +29,7 @@ export class EditAppUserFormComponent implements OnInit {
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
-    dateJoined: new FormControl('',Validators.required),
+    dateJoined: new FormControl(''),
     memberGroups: new FormControl('')
   });
 
