@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { MemberGroup } from '../models/member-group';
+import { AppUser } from '../models/app-user';
 
 @Injectable()
 export class MemberGroupService {
@@ -19,6 +20,14 @@ export class MemberGroupService {
     {
         return this.httpClient.get<MemberGroup>(this.GROUPS_URL+"/"+id);
     }
+
+    getGroupByName(name:string)
+    {
+        let params = new HttpParams();
+        params = params.append('name', name);
+        return this.httpClient.get<MemberGroup>(this.GROUPS_URL+"/search/name", {params: params})
+    }
+
 
     addGroup(memberGroup:MemberGroup)
     {

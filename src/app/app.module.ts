@@ -60,6 +60,8 @@ import { AddTermFormComponent } from './components/forms/add-term-form/add-term-
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { AutoGenerateSessionsDialogComponent } from './components/dialogs/auto-generate-sessions-dialog/auto-generate-sessions-dialog.component';
 import { PeriodService } from './services/period-service';
+import { GuideComponent } from './components/dialogs/guide/guide.component';
+import { FileService } from './services/file-service';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,8 @@ import { PeriodService } from './services/period-service';
     MyAttendancesComponent,
     TermsComponent,
     AddTermFormComponent,
-    AutoGenerateSessionsDialogComponent
+    AutoGenerateSessionsDialogComponent,
+    GuideComponent
   ],
   imports: [
     BrowserModule,
@@ -117,7 +120,8 @@ import { PeriodService } from './services/period-service';
     NgxMaterialTimepickerModule
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
-    TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,PeriodService],
+    TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,PeriodService
+    ,FileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

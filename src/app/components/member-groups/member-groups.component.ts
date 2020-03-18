@@ -11,6 +11,9 @@ import { AuthService } from 'src/app/services/auth-service';
 import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
 import { Router } from '@angular/router';
+import { Guide } from 'src/app/const/guide-csv';
+import { FileService } from 'src/app/services/file-service';
+import { FileDTO } from 'src/app/models/helpers/file-dto';
 
 @Component({
   selector: 'app-member-groups',
@@ -26,7 +29,8 @@ export class MemberGroupsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private memberGroupService:MemberGroupService, 
-    private matDialog:MatDialog,private snackBar:MatSnackBar,private authService:AuthService,private router:Router)
+    private matDialog:MatDialog,private snackBar:MatSnackBar,
+    private authService:AuthService,private router:Router,private fileService:FileService)
   {}
 
   ngOnInit() {
@@ -86,6 +90,23 @@ export class MemberGroupsComponent implements OnInit {
     return groupName && groupName.trim().length>0;
   }
 
+  public changeListener(files: FileList){
+    if(files && files.length > 0) {
+       let file : File = files.item(0); 
+         let reader: FileReader = new FileReader();
+         reader.readAsText(file);
+         reader.onload = (e) => {
+            let csv: string = reader.result as string;
+            let fileDTO:FileDTO = new FileDTO();
+            fileDTO.csvText=csv;
+            this.fileService.upload(fileDTO).subscribe(response=>{
+              this.loadGroups();
+              alert(response);
+            })
+         }
+      }
+  }
+
   deleteGroup(memberGroup:MemberGroup)
   {
     if(confirm("Delete group '"+memberGroup.name+"'?")) {
@@ -94,6 +115,11 @@ export class MemberGroupsComponent implements OnInit {
         this.showSnackbar("Group "+memberGroup.name+" deleted.")
       })
     }
+  }
+
+  showGuide()
+  {
+    alert(Guide.TEXT)
   }
 
   showSnackbar(message:string)

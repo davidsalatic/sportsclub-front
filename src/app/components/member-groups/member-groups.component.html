@@ -3,6 +3,16 @@
   <div>
     <button type="button" (click)="openDialog()">Add group</button>
   </div>
+  <div>
+    <div>
+      Upload from CSV
+    </div>
+    <div>
+      <input  type="file" (change)="changeListener($event.target.files)">
+      <button md-raised-button (click)="showGuide();">Guide</button>
+    </div>
+  </div>
+
 
   <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Elements">
     
