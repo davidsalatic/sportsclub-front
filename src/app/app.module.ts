@@ -53,7 +53,6 @@ import { EditStaffMemberFormComponent } from './components/forms/edit-staff-memb
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditProfileFormComponent } from './components/forms/edit-profile-form/edit-profile-form.component';
 import { EditPasswordDialogComponent } from './components/dialogs/edit-password-dialog/edit-password-dialog.component';
-import { MyAttendancesComponent } from './components/my-attendances/my-attendances.component';
 import { TermsComponent } from './components/terms/terms.component';
 import { TermService } from './services/term-service';
 import { AddTermFormComponent } from './components/forms/add-term-form/add-term-form.component';
@@ -62,6 +61,8 @@ import { AutoGenerateSessionsDialogComponent } from './components/dialogs/auto-g
 import { PeriodService } from './services/period-service';
 import { GuideComponent } from './components/dialogs/guide/guide.component';
 import { FileService } from './services/file-service';
+import { UserAttendanceComponent } from './components/user-attendance/user-attendance.component';
+import { UserPaymentsComponent } from './components/user-payments/user-payments.component';
 
 @NgModule({
   declarations: [
@@ -87,11 +88,12 @@ import { FileService } from './services/file-service';
     ProfileComponent,
     EditProfileFormComponent,
     EditPasswordDialogComponent,
-    MyAttendancesComponent,
     TermsComponent,
     AddTermFormComponent,
     AutoGenerateSessionsDialogComponent,
-    GuideComponent
+    GuideComponent,
+    UserAttendanceComponent,
+    UserPaymentsComponent
   ],
   imports: [
     BrowserModule,

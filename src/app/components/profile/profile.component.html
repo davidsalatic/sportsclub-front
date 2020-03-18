@@ -5,5 +5,8 @@
   <button md-raised-button (click)="openDialog()">Edit password</button>
 </div>
 <div *ngIf="appUser && appUser.role.name==='MEMBER'">
-  <a><button md-raised-button [routerLink]="['/my-attendances']">My Attendances</button></a>
+  <a><button md-raised-button [routerLink]="['/attendances/member',appUser.id]">My Attendances</button></a>
+</div>
+<div *ngIf="appUser && appUser.role.name==='MEMBER'">
+  <a><button md-raised-button [routerLink]="['/payments/member',appUser.id]">My Payments</button></a>
 </div>

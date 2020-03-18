@@ -19,7 +19,7 @@ import { Roles } from 'src/app/const/role-const';
 })
 export class AppUsersComponent implements OnInit {
 
-  displayedColumns = ['name','actions'];
+  displayedColumns = ['name','actions','view'];
   dataSource: MatTableDataSource<AppUser> = new MatTableDataSource();
 
   memberGroup: MemberGroup;

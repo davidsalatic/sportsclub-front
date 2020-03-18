@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Attendance } from '../models/attendance';
 import { HttpClient } from '@angular/common/http';
-import { AppUser } from '../models/app-user';
-import { AppUserService } from './app-user-service';
 
 @Injectable()
 export class AttendanceService{
@@ -22,9 +20,9 @@ export class AttendanceService{
         return this.httpClient.get<Attendance>(this.ATTENDANCES_URL+"/session/"+trainingSessionId+"/user/"+appUserId);
     }
 
-    getByAppUser(appUser:AppUser)
+    getByAppUser(appUserId:number)
     {
-        return this.httpClient.get<Attendance[]>(this.ATTENDANCES_URL+"/member/"+appUser.id);
+        return this.httpClient.get<Attendance[]>(this.ATTENDANCES_URL+"/member/"+appUserId);
     }
 
     addAttendance(attendance:Attendance)

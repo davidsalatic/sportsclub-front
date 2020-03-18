@@ -18,9 +18,10 @@ import { AddStaffMemberFormComponent } from './components/forms/add-staff-member
 import { EditStaffMemberFormComponent } from './components/forms/edit-staff-member-form/edit-staff-member-form.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditProfileFormComponent } from './components/forms/edit-profile-form/edit-profile-form.component';
-import { MyAttendancesComponent } from './components/my-attendances/my-attendances.component';
 import { TermsComponent } from './components/terms/terms.component';
 import { AddTermFormComponent } from './components/forms/add-term-form/add-term-form.component';
+import { UserAttendanceComponent } from './components/user-attendance/user-attendance.component';
+import { UserPaymentsComponent } from './components/user-payments/user-payments.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: 'memberships/:id',component:AppUsersInMembershipComponent},
   {path: 'payments/membership/:membershipId/user/:appUserId',component:PaymentsForMembershipByAppUserComponent},
   {path: 'payments/membership/:membershipId/user/:appUserId/add',component:AddPaymentComponent},
+  {path: 'payments/member/:appUserId',component:UserPaymentsComponent},
   {path: 'sessions',component:SessionsComponent},
   {path: 'sessions/group/:groupId/period/:periodId',component:SessionsGroupComponent},
   {path: 'sessions/:id/attendances',component:AttendancesComponent},
@@ -42,7 +44,7 @@ const routes: Routes = [
   {path: 'staff/:id/edit',component:EditStaffMemberFormComponent},
   {path: 'profile',component:ProfileComponent},
   {path: 'profile/edit',component:EditProfileFormComponent},
-  {path: 'my-attendances',component:MyAttendancesComponent},
+  {path: 'attendances/member/:appUserId',component:UserAttendanceComponent},
   {path: 'terms/group/:groupId',component:TermsComponent},
   {path: 'terms/group/:groupId/add',component:AddTermFormComponent}
 ];
