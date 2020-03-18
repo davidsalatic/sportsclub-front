@@ -99,20 +99,15 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
 
   loadMemberships(period:Period)
   {
-    this.membershipService.getAllMemberships().subscribe(data=>{
-      if(data.length>0)
-      {
-        this.dataSource.data=data;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
+    this.membershipService.getMembershipByPeriod(period.id).subscribe(periodDB=>{
+      if(periodDB)
+        this.membershipService.getAllMemberships().subscribe(data=>{
+          this.dataSource.data=data;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        })
       else
-      {
         this.addMembership(period);
-      }
-
-
-
     })
   }
   

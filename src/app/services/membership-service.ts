@@ -23,8 +23,9 @@ export class MembershipService
         return this.httpClient.get<Membership>(this.MEMBERSHIPS_URL+"/"+id);
     }
 
-    getAllByMonthAndYear(month:number,year:number){
-        return this.httpClient.get<Membership>(this.MEMBERSHIPS_URL+"/"+month+"/"+year);
+    getMembershipByPeriod(periodId:number)
+    {
+        return this.httpClient.get<Period>(this.MEMBERSHIPS_URL+"/period/"+periodId)
     }
 
     addMembership(membership: Membership)
