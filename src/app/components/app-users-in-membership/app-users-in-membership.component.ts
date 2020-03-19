@@ -32,7 +32,7 @@ export class AppUsersInMembershipComponent implements OnInit {
   appUsers:AppUser[];
   usersWithCondition:AppUserCondition[]= new Array();
 
-  displayedColumns = [ 'name','settled','actions'];
+  displayedColumns = [ 'name','group','settled','actions'];
   
   constructor(private route:ActivatedRoute, private appUserService : AppUserService,
     private paymentService:PaymentService,private matDialog:MatDialog,
