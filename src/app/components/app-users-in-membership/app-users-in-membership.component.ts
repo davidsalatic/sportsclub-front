@@ -48,10 +48,11 @@ export class AppUsersInMembershipComponent implements OnInit {
     this.authService.getToken().subscribe(token=>{
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims && this.roleIsValid(claims))
-            {
-              let membershipId=this.route.snapshot.params['id'];
-              this.loadMembershipAndUsers(membershipId);
-            }
+        {
+          let membershipId=this.route.snapshot.params['id'];
+          this.loadMembership(membershipId);
+          this.loadAppUsersAndPayments();
+        }
         else
           this.router.navigate(['home']);
       })
@@ -63,34 +64,37 @@ export class AppUsersInMembershipComponent implements OnInit {
     return claims.role===Roles.MANAGER
   }
 
-  loadMembershipAndUsers(membershipId:number)
+  loadMembership(membershipId:number)
   {
     this.membershipService.getMembershipById(membershipId).subscribe(membership=>{
       this.membership=membership;
-      this.loadAppUsers();
     })
   }
 
-  loadAppUsers()
+  loadAppUsersAndPayments()
   {
-    this.appUserService.getAllMembers().subscribe(data=>{
-      this.appUsers=data;
-      
-      this.paymentService.getAllPaymentsForMembership(this.membership.id).subscribe(paymentsForMembership=>{
-        for(let i=0;i<this.appUsers.length;i++)
+    this.appUserService.getAllMembers().subscribe(users=>{
+      this.appUsers=users;
+      this.loadAllPaymentsForMembership();
+    })
+  }
+
+  loadAllPaymentsForMembership()
+  {
+    this.paymentService.getAllPaymentsForMembership(this.membership.id).subscribe(paymentsForMembership=>{
+      for(let i=0;i<this.appUsers.length;i++)
+      {
+        let totalAmount=0;
+        for(let j=0;j<paymentsForMembership.length;j++)
         {
-          let totalAmount=0;
-          for(let j=0;j<paymentsForMembership.length;j++)
-          {
-            if(this.paymentFoundForUser(this.appUsers[i],paymentsForMembership[j]))
-              totalAmount+=paymentsForMembership[j].amount;
-          }
-          this.createNewUserWithConditionForTable(this.appUsers[i],totalAmount);
+          if(this.paymentFoundForUser(this.appUsers[i],paymentsForMembership[j]))
+            totalAmount+=paymentsForMembership[j].amount;
         }
-        this.dataSource.data=this.usersWithCondition;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      })
+        this.createNewUserWithConditionForTable(this.appUsers[i],totalAmount);
+      }
+      this.dataSource.data=this.usersWithCondition;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     })
   }
 
@@ -127,7 +131,7 @@ export class AppUsersInMembershipComponent implements OnInit {
     this.membershipService.updateMembership(this.membership).subscribe(response=>{
       //empties the array on the UI, then populates it again with refreshed data
       this.usersWithCondition.length=0;
-      this.loadAppUsers();
+      this.loadAppUsersAndPayments();
     })
   }
 }

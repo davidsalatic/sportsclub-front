@@ -40,12 +40,12 @@ export class AddPaymentComponent implements OnInit {
     this.authService.getToken().subscribe(token=>{
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims && this.roleIsValid(claims))
-            {
-              let membershipId=this.route.snapshot.params['membershipId'];
-              let appUserId=this.route.snapshot.params['appUserId'];
-              this.loadMembership(membershipId);
-              this.loadAppUser(appUserId);
-            }
+        {
+          let membershipId=this.route.snapshot.params['membershipId'];
+          let appUserId=this.route.snapshot.params['appUserId'];
+          this.loadMembership(membershipId);
+          this.loadAppUser(appUserId);
+        }
         else
           this.router.navigate(['home']);
       })

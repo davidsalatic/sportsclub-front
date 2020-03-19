@@ -8,7 +8,7 @@
       Upload from CSV
     </div>
     <div>
-      <input  type="file" (change)="changeListener($event.target.files)">
+      <input  type="file" (change)="fileChosen($event.target.files)">
       <button md-raised-button (click)="showGuide();">Rules</button>
     </div>
   </div>

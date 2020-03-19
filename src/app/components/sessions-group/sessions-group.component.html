@@ -10,8 +10,8 @@
   
   <div *ngIf=allPeriods>
     <label for="allPeriods">Period</label>
-    <select id="allPeriods" (change)="selectChangeHandler($event)">
-      <option></option>
+    <select id="allPeriods" (change)="periodSelected($event)">
+      <option value="">Select a period</option>
       <option *ngFor="let period of allPeriods; let i = index" [ngValue]="i">
         {{allPeriods[i].month}}-{{allPeriods[i].year}}
       </option>
@@ -26,7 +26,7 @@
       <td mat-cell *matCellDef="let row">{{row.dateHeld}}</td>
     </ng-container>
 
-    <!-- Date Column -->
+    <!-- Time Column -->
     <ng-container matColumnDef="time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
       <td mat-cell *matCellDef="let row">{{row.timeHeld}}</td>

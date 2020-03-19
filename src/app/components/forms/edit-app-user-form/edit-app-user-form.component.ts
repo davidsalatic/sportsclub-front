@@ -69,21 +69,21 @@ export class EditAppUserFormComponent implements OnInit {
       this.appUser=appUser;
       if(appUser.memberGroup!=null)
         this.idOfOriginalGroup=this.appUser.memberGroup.id;
-      this.updateFormWithUserData(this.appUser);
+      this.updateFormWithUserData();
       this.populateMemberGroupDropDown();
     })
   }
 
-  updateFormWithUserData(appUser:AppUser)
+  updateFormWithUserData()
   {
     this.appUserForm.patchValue({
-      username:appUser.username,
-      name: appUser.name, 
-      surname:appUser.surname,
-      jmbg: appUser.jmbg,
-      adress: appUser.address,
-      phoneNumber: appUser.phoneNumber,
-      dateJoined: appUser.dateJoined
+      username:this.appUser.username,
+      name: this.appUser.name, 
+      surname:this.appUser.surname,
+      jmbg: this.appUser.jmbg,
+      adress: this.appUser.address,
+      phoneNumber: this.appUser.phoneNumber,
+      dateJoined: this.appUser.dateJoined
     });
   }
 
@@ -116,6 +116,7 @@ export class EditAppUserFormComponent implements OnInit {
       this.appUser.memberGroup=this.appUserForm.get('memberGroups').value;
     this.appUser.name=this.appUserForm.get('name').value;
     this.appUser.surname=this.appUserForm.get('surname').value;
+    this.appUser.username = this.appUserForm.get('username').value;
     this.appUser.jmbg=this.appUserForm.get('jmbg').value;
     this.appUser.address=this.appUserForm.get('adress').value;
     this.appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
@@ -129,14 +130,11 @@ export class EditAppUserFormComponent implements OnInit {
     }
     else
       this.appUser.dateJoined=this.appUserForm.get('dateJoined').value;
-    
-    this.appUser.username = this.appUserForm.get('username').value;
-
-    this.updateAppUserIfNotExists(this.appUser);
+    this.updateAppUserIfValid(this.appUser);
 
   }
 
-  updateAppUserIfNotExists(appUser:AppUser)
+  updateAppUserIfValid(appUser:AppUser)
   {
     this.appUserService.getByUsername(appUser.username).subscribe(data=>{
       if(data && data.username!=this.appUser.username)

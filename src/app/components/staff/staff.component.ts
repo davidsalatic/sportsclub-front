@@ -23,8 +23,6 @@ export class StaffComponent implements OnInit {
 
   displayedColumns = ['name','actions'];
 
-  usernameOfLoggedInStaff :string;
-
   constructor(private authService:AuthService,private router:Router,
     private appUserService:AppUserService,private snackBar:MatSnackBar){}
 
@@ -37,10 +35,7 @@ export class StaffComponent implements OnInit {
     this.authService.getToken().subscribe(token=>{
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims && this.roleIsValid(claims))
-            {
-              this.usernameOfLoggedInStaff=claims.sub;
-              this.loadStaff();
-            }
+          this.loadStaff();
         else
           this.router.navigate(['home']);
       })

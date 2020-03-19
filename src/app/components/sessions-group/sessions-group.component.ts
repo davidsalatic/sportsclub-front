@@ -5,10 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TrainingSession } from 'src/app/models/training-session';
 import { TrainingSessionService } from 'src/app/services/training-session-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MemberGroupService } from 'src/app/services/member-group-service';
-import { MemberGroup } from 'src/app/models/member-group';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { Claims } from 'src/app/models/helpers/claims';
 import { Roles } from 'src/app/const/role-const';
@@ -29,9 +27,8 @@ export class SessionsGroupComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   dataSource: MatTableDataSource<TrainingSession>= new MatTableDataSource();
-
   displayedColumns = ['date','time','actions'];
-  memberGroup:MemberGroup;
+  memberGroupId:number;
   terms:Term[];
   allPeriods:Period[];
   periodId:number;
@@ -42,13 +39,12 @@ export class SessionsGroupComponent implements OnInit {
   daysOfWeek=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   constructor(private trainingSessionService: TrainingSessionService,private route:ActivatedRoute
-    ,private memberGroupService:MemberGroupService, private matDialog:MatDialog,
+    ,private matDialog:MatDialog,
     private snackBar:MatSnackBar,private authService:AuthService,private router:Router,
     private termService:TermService,private periodService:PeriodService){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
-    
   }
 
   loadPageIfValidRole()
@@ -57,11 +53,11 @@ export class SessionsGroupComponent implements OnInit {
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims && this.roleIsValid(claims))
           {
-            let memberGroupId = this.route.snapshot.params['groupId'];
+            this.memberGroupId = this.route.snapshot.params['groupId'];
             this.periodId = this.route.snapshot.params['periodId'];
             this.loadAllPeriods();
-            this.loadMemberGroupAndTerms(memberGroupId);
-            this.loadTrainingSessionsInGroupInPeriod(memberGroupId,this.periodId);
+            this.loadAllTermsInGroup();
+            this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId);
           }
         else
           this.router.navigate(['home']);
@@ -81,25 +77,17 @@ export class SessionsGroupComponent implements OnInit {
     })
   }
 
-  loadMemberGroupAndTerms(memberGroupId:number)
+  loadAllTermsInGroup()
   {
-    this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
-      this.memberGroup=group;
-      this.termService.getAllTermsByMemberGroup(this.memberGroup.id).subscribe(terms=>{
-        this.terms=terms;
-      })
+    this.termService.getAllTermsByMemberGroup(this.memberGroupId).subscribe(terms=>{
+      this.terms=terms;
     })
   }
   
   loadTrainingSessionsInGroupInPeriod(memberGroupId:number,periodId:number)
   {
-    this.periodService.getPeriodById(periodId).subscribe(period=>{
-      let date:Date = new Date();
-      if(period.month!=date.getMonth()+1 || period.year!=date.getFullYear())
-        this.showAutoGenerateButton=false;
-      else
-        this.showAutoGenerateButton=true;
-    })
+    this.setAutoGenerateButtonVisibility(periodId);
+
     this.trainingSessionService.getAllTrainingSessionsByGroupByPeriod(memberGroupId,periodId).subscribe(data=>{
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
@@ -107,31 +95,46 @@ export class SessionsGroupComponent implements OnInit {
     })
   }
 
+  setAutoGenerateButtonVisibility(periodId:number)
+  {
+    this.periodService.getPeriodById(periodId).subscribe(period=>{
+      if(this.periodIsCurrentMonth(period))
+        this.showAutoGenerateButton=true;
+      else
+        this.showAutoGenerateButton=false;
+    })
+  }
+
+  periodIsCurrentMonth(period:Period):boolean
+  {
+    let date:Date = new Date();
+    let currentMonth = date.getMonth()+1;
+    let currentYear = date.getFullYear();
+    return period.month==currentMonth && period.year==currentYear;
+  }
+
   deleteTrainingSession(trainingSession:TrainingSession)
   {
     if(confirm("Delete training session and all connected attendances?")) {
-      this.trainingSessionService.deleteTrainingSession(trainingSession).subscribe(response=>{
-        this.loadTrainingSessionsInGroupInPeriod(this.memberGroup.id,this.periodId);
+      this.trainingSessionService.deleteTrainingSession(trainingSession).subscribe(()=>{
+        this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId);
         this.showSnackbar("Training session deleted.")
       })
     }
   }
 
-
   openDialog()
   {
-    if(this.terms.length>0)
+    if(this.memberGroupHasTerms())
     {
       const dialogConfig = new MatDialogConfig();
       let dialogRef = this.matDialog.open(AutoGenerateSessionsDialogComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(day=>{
         if(day)
-        {
-          this.trainingSessionService.generateTrainingSessionsForTerms(this.terms,this.periodId,day).subscribe(response=>{
-            this.loadTrainingSessionsInGroupInPeriod(this.memberGroup.id,this.periodId);
+          this.trainingSessionService.generateTrainingSessionsForTerms(this.terms,this.periodId,day).subscribe(()=>{
+            this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId);
             this.showSnackbar("Training sessions generated.");
           })
-        }
       })
     }
     else
@@ -139,24 +142,31 @@ export class SessionsGroupComponent implements OnInit {
     
   }
 
-  selectChangeHandler (event: any) {
-    this.selectedPeriod = event.target.value;
-    let periodArray:string[] = this.selectedPeriod.split("-");
-    let month = parseInt(periodArray[0]);
-    let year = parseInt(periodArray[1]);
-    this.periodService.getPeriodByMonthAndYear(month,year).subscribe(period=>{
+  memberGroupHasTerms():boolean
+  {
+    return this.terms.length>0;
+  }
 
-      this.router.navigate(['/sessions/group/'+this.memberGroup.id+'/period/'+period.id])
-      this.periodId=period.id;
-      this.loadTrainingSessionsInGroupInPeriod(this.memberGroup.id,period.id)
-    })
+  periodSelected (event: any) {
+    if(event.target.value)
+    {
+      this.selectedPeriod = event.target.value;
+      let periodArray:string[] = this.selectedPeriod.split("-");
+      let month = parseInt(periodArray[0]);
+      let year = parseInt(periodArray[1]);
+      this.periodService.getPeriodByMonthAndYear(month,year).subscribe(period=>{
+        this.router.navigate(['/sessions/group/'+this.memberGroupId+'/period/'+period.id])
+        this.periodId=period.id;
+        this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,period.id)
+      })
+    }
   }
 
   deleteAll()
   {
     if(confirm("Delete all training sessions for this month? All attendances will be lost.")) {
-      this.trainingSessionService.deleteTrainingSessionsInGroupInPeriod(this.memberGroup.id,this.periodId).subscribe(response=>{
-        this.loadTrainingSessionsInGroupInPeriod(this.memberGroup.id,this.periodId);
+      this.trainingSessionService.deleteTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId).subscribe(()=>{
+        this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId);
       })
     } 
   }

@@ -32,7 +32,6 @@ export class AddMemberGroupDialogComponent implements OnInit {
         this.dialogRef.close(groupName);
       })
     }
-      
   }
 
   showSnackbar(message:string)

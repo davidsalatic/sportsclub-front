@@ -90,15 +90,14 @@ export class MemberGroupsComponent implements OnInit {
     return groupName && groupName.trim().length>0;
   }
 
-  public changeListener(files: FileList){
+  public fileChosen(files: FileList){
     if(files && files.length > 0) {
        let file : File = files.item(0); 
          let reader: FileReader = new FileReader();
          reader.readAsText(file);
          reader.onload = (e) => {
-            let csv: string = reader.result as string;
             let fileDTO:FileDTO = new FileDTO();
-            fileDTO.csvText=csv;
+            fileDTO.csvText=reader.result as string;;
             this.fileService.upload(fileDTO).subscribe(response=>{
               this.loadGroups();
               alert(response);

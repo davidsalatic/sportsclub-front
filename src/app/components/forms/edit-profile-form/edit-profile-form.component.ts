@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AppUser } from 'src/app/models/app-user';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { AuthService } from 'src/app/services/auth-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-edit-profile-form',
@@ -19,15 +17,15 @@ export class EditProfileFormComponent implements OnInit {
   username:string;
 
   profileForm = new FormGroup({
-    username: new FormControl ({value: '', disabled: true},),
-    name: new FormControl ({value: '', disabled: true}),
-    surname: new FormControl ({value: '', disabled: true}),
-    jmbg: new FormControl({value: '', disabled: true}),
+    username: new FormControl (''),
+    name: new FormControl (''),
+    surname: new FormControl (''),
+    jmbg: new FormControl(''),
     adress: new FormControl(''),
     phoneNumber: new FormControl('')
   });
 
-  constructor(private route:ActivatedRoute, private router:Router,
+  constructor(private router:Router,
     private appUserService : AppUserService, private authService:AuthService,
     private snackBar:MatSnackBar) { 
  }
@@ -41,9 +39,9 @@ export class EditProfileFormComponent implements OnInit {
     this.authService.getToken().subscribe(token=>{
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims)
-          {
-            this.checkToken()
-          }
+        {
+          this.checkToken()
+        }
         else
           this.router.navigate(['home']);
       })
@@ -90,13 +88,17 @@ export class EditProfileFormComponent implements OnInit {
     
     this.appUser.address=this.profileForm.get('adress').value;
     this.appUser.phoneNumber=this.profileForm.get('phoneNumber').value;
+    this.appUser.name=this.profileForm.get('name').value;
+    this.appUser.surname=this.profileForm.get('surname').value;
+    this.appUser.jmbg=this.profileForm.get('jmbg').value;
+    this.appUser.username=this.profileForm.get('username').value;
 
-    this.updateAppUser(this.appUser);
+    this.updateAppUser();
   }
 
-  updateAppUser(appUser:AppUser)
+  updateAppUser()
   {
-    this.appUserService.updateSelf(this.appUser).subscribe(response=>{
+    this.appUserService.updateSelf(this.appUser).subscribe(()=>{
       this.router.navigate(['/profile']);
       this.showSnackbar("User edited.")
     });

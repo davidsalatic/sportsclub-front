@@ -41,7 +41,7 @@
     <div>
       <label for="memberGroups">Group</label>
       <select formControlName="memberGroups" id="memberGroups">
-        <option></option>
+        <option value="">Select a group</option>
         <option *ngFor="let memberGroup of memberGroups; let i = index" [ngValue]="memberGroups[i]">
           {{memberGroups[i].name}}
         </option>

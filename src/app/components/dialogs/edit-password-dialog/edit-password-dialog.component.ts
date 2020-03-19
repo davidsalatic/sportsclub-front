@@ -18,9 +18,7 @@ export class EditPasswordDialogComponent implements OnInit {
     }
 
   ngOnInit(): void {
-
   }
-
 
   close()
   {

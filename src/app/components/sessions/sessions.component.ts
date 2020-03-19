@@ -59,27 +59,36 @@ export class SessionsComponent implements  OnInit {
     })
   }
 
-  viewTrainingSessionsInGroup(memberGroupId:number)
+  viewClick(memberGroupId:number)
   {
     let date:Date =new Date();
     let currentMonth:number = date.getMonth()+1;
     let currentYear:number = date.getFullYear();
 
-    this.periodService.getPeriodByMonthAndYear(date.getMonth()+1,date.getFullYear()).subscribe(period=>{
+    this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
       if(period)
-        this.router.navigate(['/sessions/group/'+memberGroupId+'/period/'+period.id]);
+        this.navigateToTrainingSessionsInGroupForPeriod(memberGroupId,period.id);
       else
       {
         let period:Period = new Period();
-    
         period.month=currentMonth;
         period.year=currentYear;
-        this.periodService.addPeriod(period).subscribe(response=>{
-          this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(data=>{
-            this.router.navigate(['/sessions/group/'+memberGroupId+'/period/'+data.id]);
-          })
-        })
+
+        this.addPeriodAndNavigateToTrainingSessionsInGroup(period,memberGroupId);
       }
+    })
+  }
+
+  navigateToTrainingSessionsInGroupForPeriod(memberGroupId: number, periodId: number) {
+    this.router.navigate(['/sessions/group/'+memberGroupId+'/period/'+periodId]);
+  }
+
+  addPeriodAndNavigateToTrainingSessionsInGroup(period:Period,memberGroupId:number)
+  {
+    this.periodService.addPeriod(period).subscribe(()=>{
+      this.periodService.getPeriodByMonthAndYear(period.month,period.year).subscribe(createdPeriod=>{
+        this.navigateToTrainingSessionsInGroupForPeriod(memberGroupId,createdPeriod.id);
+      })
     })
   }
 }

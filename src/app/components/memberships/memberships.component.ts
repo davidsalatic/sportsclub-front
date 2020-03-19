@@ -44,7 +44,7 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
     this.authService.getToken().subscribe(token=>{
       this.authService.extractClaims(token).subscribe(claims=>{
         if(claims && this.roleIsValid(claims))
-            this.loadDefaultMembershipPriceAndCreateMembershipIfNotExist();
+            this.loadDefaultPriceAndCheckIfPeriodExists();
         else
           this.router.navigate(['home']);
       })
@@ -56,34 +56,44 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
     return claims.role===Roles.MANAGER
   }
 
-  loadDefaultMembershipPriceAndCreateMembershipIfNotExist()
+  loadDefaultPriceAndCheckIfPeriodExists()
   {
     this.membershipService.getMembershipPrice().subscribe(data=>{
       this.defaultMembershipPrice=data;
-      this.createMembershipForCurrentMonthAndLoadAll();
+      this.checkIfPeriodExists();
   });
   }
 
-
-  createMembershipForCurrentMonthAndLoadAll() {
+  checkIfPeriodExists() {
     let date=new Date();
     let currentMonth = date.getMonth()+1;
     let currentYear = date.getFullYear();
     
     this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
       if(period)
-        this.loadMemberships(period);
+          this.createMembershipInPeriodIfNotExists(period);
       else
       {
         let period:Period = new Period();
         period.month=currentMonth;
         period.year=currentYear;
+
         this.periodService.addPeriod(period).subscribe(response=>{
           this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(newPeriod=>{
-            this.addMembership(newPeriod);
+            this.createMembershipInPeriodIfNotExists(newPeriod);
           })
         })
       }
+    })
+  }
+
+  createMembershipInPeriodIfNotExists(period:Period)
+  {
+    this.membershipService.getMembershipByPeriod(period.id).subscribe(membership=>{
+      if(membership)
+        this.loadMemberships();
+      else
+        this.addMembership(period);
     })
   }
 
@@ -93,21 +103,16 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
     membership.period=period;
     membership.price=this.defaultMembershipPrice.price;
     this.membershipService.addMembership(membership).subscribe(response=>{
-      this.loadMemberships(period);
+      this.loadMemberships();
     });
   }
 
-  loadMemberships(period:Period)
+  loadMemberships()
   {
-    this.membershipService.getMembershipByPeriod(period.id).subscribe(periodDB=>{
-      if(periodDB)
-        this.membershipService.getAllMemberships().subscribe(data=>{
-          this.dataSource.data=data;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        })
-      else
-        this.addMembership(period);
+    this.membershipService.getAllMemberships().subscribe(data=>{
+      this.dataSource.data=data;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     })
   }
   
@@ -126,7 +131,6 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
   {
     this.defaultMembershipPrice.price=price;
     this.membershipService.setMembershipPrice(this.defaultMembershipPrice).subscribe(response=>{
-      this.loadMemberships(null);
       this.showSnackbar("Default price of membership changed to "+this.defaultMembershipPrice.price+".")
     });
   }

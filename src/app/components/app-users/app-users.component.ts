@@ -71,7 +71,7 @@ export class AppUsersComponent implements OnInit {
     });
   }
 
-  rename(newGroupName: string)
+  renameClick(newGroupName: string)
   {
     if(newGroupName)
       this.updateMemberGroup(newGroupName);

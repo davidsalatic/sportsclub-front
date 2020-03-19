@@ -79,20 +79,18 @@ export class AddAppUserFormComponent implements OnInit {
       appUser.name=this.appUserForm.get('name').value;
       appUser.surname=this.appUserForm.get('surname').value;
       appUser.jmbg=this.appUserForm.get('jmbg').value;
+      //PASSWORD CREATED BY JMBG VALUE, USER CAN CHANGE IT LATER
+      appUser.password=appUser.jmbg;
       appUser.address=this.appUserForm.get('adress').value;
       appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
   
       let formDate : Date =this.appUserForm.get('dateJoined').value;
       formDate.setDate(formDate.getDate()+1);
-  
       appUser.dateJoined=formDate;
       appUser.memberGroup=this.memberGroup;
-      //PASSWORD CREATED BY JMBG VALUE, USER SHOULD BE ABLE TO CHANGE IT LATER
-      appUser.password=appUser.jmbg;
-      
+  
       this.addAppUserIfNotExists(appUser);
     })
- 
   }
 
   addAppUserIfNotExists(appUser:AppUser)

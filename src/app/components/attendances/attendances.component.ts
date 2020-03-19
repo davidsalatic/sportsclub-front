@@ -31,12 +31,10 @@ export class AttendancesComponent implements  OnInit {
 
   trainingId:number;
   trainingSession:TrainingSession;
-  memberGroup:MemberGroup;
   //helper class just for showing users with condition on UI
   usersWithCondition:AppUserCondition[] = new Array();
   appUsers:AppUser[];
   
-
   constructor(private route:ActivatedRoute,private appUserService:AppUserService
     ,private attendanceService:AttendanceService,
     private trainingSessionService:TrainingSessionService,
@@ -147,7 +145,6 @@ export class AttendancesComponent implements  OnInit {
   {
     this.attendanceService.getByTrainingSessionAndAppUser(this.trainingSession.id,attendanceClicked.appUser.id).subscribe(attend=>{
       this.attendanceService.deleteAttendance(attend).subscribe(response=>{
-        //attendance deleted in db
       })
     })
   }
