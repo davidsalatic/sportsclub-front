@@ -17,7 +17,7 @@ export class EditProfileFormComponent implements OnInit {
   username:string;
 
   profileForm = new FormGroup({
-    username: new FormControl (''),
+    username: new FormControl ({value:'',disabled:true}),
     name: new FormControl (''),
     surname: new FormControl (''),
     jmbg: new FormControl(''),

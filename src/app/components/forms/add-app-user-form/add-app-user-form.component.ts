@@ -27,7 +27,7 @@ export class AddAppUserFormComponent implements OnInit {
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
-    username: new FormControl('',Validators.required),
+    username: new FormControl('',Validators.compose([Validators.required,Validators.email])),
     dateJoined: new FormControl('')
   });
 
@@ -79,8 +79,7 @@ export class AddAppUserFormComponent implements OnInit {
       appUser.name=this.appUserForm.get('name').value;
       appUser.surname=this.appUserForm.get('surname').value;
       appUser.jmbg=this.appUserForm.get('jmbg').value;
-      //PASSWORD CREATED BY JMBG VALUE, USER CAN CHANGE IT LATER
-      appUser.password=appUser.jmbg;
+
       appUser.address=this.appUserForm.get('adress').value;
       appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
   

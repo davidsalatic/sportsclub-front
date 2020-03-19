@@ -24,7 +24,7 @@ export class AddStaffMemberFormComponent implements OnInit {
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
-    username: new FormControl('',Validators.required),
+    username: new FormControl('',Validators.compose([Validators.required,Validators.email])),
     role: new FormControl('', Validators.required)
   });
 

@@ -23,7 +23,7 @@ export class EditAppUserFormComponent implements OnInit {
   memberGroups :MemberGroup[];
 
   appUserForm = new FormGroup({
-    username: new FormControl('',Validators.required),
+    username: new FormControl({value:'',disabled:true}),
     name: new FormControl('',Validators.required),
     surname: new FormControl('',Validators.required),
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
