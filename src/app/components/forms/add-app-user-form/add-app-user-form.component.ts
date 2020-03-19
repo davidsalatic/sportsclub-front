@@ -85,10 +85,13 @@ export class AddAppUserFormComponent implements OnInit {
       appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
   
       let formDate : Date =this.appUserForm.get('dateJoined').value;
-      formDate.setDate(formDate.getDate()+1);
-      appUser.dateJoined=formDate;
+      if(formDate)
+      {
+        formDate.setDate(formDate.getDate()+1);
+        appUser.dateJoined=formDate;
+      }
       appUser.memberGroup=this.memberGroup;
-  
+
       this.addAppUserIfNotExists(appUser);
     })
   }
