@@ -63,6 +63,7 @@ import { GuideComponent } from './components/dialogs/guide/guide.component';
 import { FileService } from './services/file-service';
 import { UserAttendanceComponent } from './components/user-attendance/user-attendance.component';
 import { UserPaymentsComponent } from './components/user-payments/user-payments.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { UserPaymentsComponent } from './components/user-payments/user-payments.
     AutoGenerateSessionsDialogComponent,
     GuideComponent,
     UserAttendanceComponent,
-    UserPaymentsComponent
+    UserPaymentsComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

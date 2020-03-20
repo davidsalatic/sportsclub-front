@@ -1,0 +1,16 @@
+<form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+    <div>
+        <mat-form-field>
+        <input formControlName="password" type="password" matInput placeholder="Password" required>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <input formControlName="confirmPassword" type="password" matInput placeholder="Confirm password" required>
+        </mat-form-field>
+    </div>
+ 
+    <div>
+      <button type="submit" [disabled]="!passwordForm.valid">Submit</button>
+    </div>
+  </form>

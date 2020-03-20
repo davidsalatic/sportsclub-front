@@ -62,6 +62,7 @@ export class AppUserService{
 
     updateSelf(appUser:AppUser)
     {
+        console.log(appUser)
         return this.httpClient.put(this.APP_USERS_URL+"update-self",appUser);
     }
 

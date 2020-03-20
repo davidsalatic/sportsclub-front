@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
   showMemberships:boolean=false;
   showMembers:boolean=false;
   showStaff:boolean=false;
-  
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
