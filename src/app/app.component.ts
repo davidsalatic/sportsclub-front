@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   showMemberships:boolean=false;
   showMembers:boolean=false;
   showStaff:boolean=false;
+  isLoggedIn=false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -31,36 +32,43 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.authService.getToken().subscribe(token=>{
       if(token)
-      this.authService.extractClaims(token).subscribe(claims=>{
-        if(claims.role===Roles.MEMBER)
-        {
-          this.showTrainingSessions=false;
-          this.showMemberships=false;
+      {
+        this.isLoggedIn=true;
+        this.authService.extractClaims(token).subscribe(claims=>{
+          if(claims.role===Roles.MEMBER)
+          {
+            this.showTrainingSessions=false;
+            this.showMemberships=false;
+              this.showMembers=false;
+            this.showStaff=false;
+          }
+          else if(claims.role===Roles.COACH)
+          {
+            this.showTrainingSessions=true;
+            this.showMemberships=false;
+            this.showMembers=true;
+            this.showStaff=false;
+          }
+          else if(claims.role===Roles.MANAGER)
+          {
+            this.showTrainingSessions=true;
+            this.showMembers=true;
+            this.showMemberships=true;
+            this.showStaff=true;
+          }
+          else
+          {
+            this.showTrainingSessions=false;
             this.showMembers=false;
-          this.showStaff=false;
-        }
-        else if(claims.role===Roles.COACH)
-        {
-          this.showTrainingSessions=true;
-          this.showMemberships=false;
-          this.showMembers=true;
-          this.showStaff=false;
-        }
-        else if(claims.role===Roles.MANAGER)
-        {
-          this.showTrainingSessions=true;
-          this.showMembers=true;
-          this.showMemberships=true;
-          this.showStaff=true;
-        }
-        else
-        {
-          this.showTrainingSessions=false;
-          this.showMembers=false;
-          this.showMemberships=false;
-          this.showStaff=false;
-        }
-      })
+            this.showMemberships=false;
+            this.showStaff=false;
+          }
+        })
+      }
+      else
+      {
+        this.isLoggedIn=false;
+      }
     })
   }
 
