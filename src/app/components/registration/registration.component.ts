@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
 
 
   constructor(private snackBar:MatSnackBar,private authService:AuthService
-    ,private route:ActivatedRoute,private appUserService:AppUserService) { }
+    ,private route:ActivatedRoute,private appUserService:AppUserService,private router:Router) { }
 
   ngOnInit(): void {
     let token:string = this.route.snapshot.params['token'];
@@ -33,12 +33,21 @@ export class RegistrationComponent implements OnInit {
 
   loadAppUserFromToken(token:string)
   {
-    this.authService.extractClaims(token).subscribe(claims=>{
-      this.appUserService.getByUsername(claims.sub).subscribe(appUser=>{
-        this.appUser=appUser;
-        if(appUser.password!=null)
-          window.location.href=this.LOGIN_URL;
-      })
+    this.authService.getToken().subscribe(retrievedToken=>{
+      if(retrievedToken)
+      {
+        alert("Please log out of your user session first.")
+        this.router.navigate(['home']);
+      }
+      else{
+        this.authService.extractClaims(token).subscribe(claims=>{
+          this.appUserService.getByUsername(claims.sub).subscribe(appUser=>{
+            this.appUser=appUser;
+            if(appUser.password!=null)
+              window.location.href=this.LOGIN_URL;
+          })
+        })
+      }
     })
   }
 
@@ -51,6 +60,7 @@ export class RegistrationComponent implements OnInit {
       this.appUser.password=password;
       this.appUserService.updateSelf(this.appUser).subscribe(response=>{
         this.showSnackbar("Registration complete. Redirecting to login page...");
+        this.passwordForm.disable();
         setTimeout(() => 
         {
             window.location.href=this.LOGIN_URL;
