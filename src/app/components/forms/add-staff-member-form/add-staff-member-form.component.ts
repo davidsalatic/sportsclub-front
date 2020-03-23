@@ -71,8 +71,6 @@ export class AddStaffMemberFormComponent implements OnInit {
       staffMember.jmbg=this.addStaffUserForm.get('jmbg').value;
       staffMember.address=this.addStaffUserForm.get('adress').value;
       staffMember.phoneNumber=this.addStaffUserForm.get('phoneNumber').value;
-      //PASSWORD CREATED BY JMBG VALUE, USER SHOULD BE ABLE TO CHANGE IT LATER
-      staffMember.password=staffMember.jmbg;
       this.addAppUserIfNotExists(staffMember);
     })
  
