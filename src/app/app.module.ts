@@ -64,6 +64,7 @@ import { FileService } from './services/file-service';
 import { UserAttendanceComponent } from './components/user-attendance/user-attendance.component';
 import { UserPaymentsComponent } from './components/user-payments/user-payments.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { RegistrationComponent } from './components/registration/registration.co
     GuideComponent,
     UserAttendanceComponent,
     UserPaymentsComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

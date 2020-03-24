@@ -5,12 +5,13 @@ import { Membership } from '../models/membership';
 import { HttpClient } from '@angular/common/http';
 import { MembershipPrice } from '../models/membership-price';
 import { Period } from '../models/period';
+import { Routes } from '../const/routes';
 
 @Injectable()
 export class MembershipService
 {
 
-    private readonly MEMBERSHIPS_URL='http://localhost:8080/memberships';
+    private readonly MEMBERSHIPS_URL=Routes.SERVER_URL+'/memberships';
 
     constructor(private httpClient: HttpClient){ }
 

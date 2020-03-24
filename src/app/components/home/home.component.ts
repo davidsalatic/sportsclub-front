@@ -12,18 +12,6 @@ export class HomeComponent implements OnInit {
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
-    this.authService.getToken().subscribe(user=>{
-      if(user)
-      {
-        sessionStorage.setItem('user',user);
-      }
-      else
-      {
-        window.location.href="http://localhost:8080/login"
-      }
-    })
+    
   }
-
-
-
 }

@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Attendance } from '../models/attendance';
 import { HttpClient } from '@angular/common/http';
+import { Routes } from '../const/routes';
 
 @Injectable()
 export class AttendanceService{
 
-    private readonly ATTENDANCES_URL = 'http://localhost:8080/attendances';
+    private readonly ATTENDANCES_URL = Routes.SERVER_URL+'/attendances';
 
 
     constructor(private httpClient: HttpClient){ }

@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Term } from '../models/term';
 import { Period } from '../models/period';
+import { Routes } from '../const/routes';
 
 @Injectable()
 export class TrainingSessionService{
 
-    private readonly SESSIONS_URL = 'http://localhost:8080/sessions/';
+    private readonly SESSIONS_URL = Routes.SERVER_URL+'/sessions/';
     
     constructor(private httpClient: HttpClient){ }
 

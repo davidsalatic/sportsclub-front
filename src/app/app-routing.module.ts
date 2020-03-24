@@ -23,6 +23,7 @@ import { AddTermFormComponent } from './components/forms/add-term-form/add-term-
 import { UserAttendanceComponent } from './components/user-attendance/user-attendance.component';
 import { UserPaymentsComponent } from './components/user-payments/user-payments.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -48,7 +49,8 @@ const routes: Routes = [
   {path: 'attendances/member/:appUserId',component:UserAttendanceComponent},
   {path: 'terms/group/:groupId',component:TermsComponent},
   {path: 'terms/group/:groupId/add',component:AddTermFormComponent},
-  {path: 'register/:token',component:RegistrationComponent}
+  {path: 'register/:token',component:RegistrationComponent},
+  {path: 'login',component:LoginComponent}
 ];
 
 @NgModule({

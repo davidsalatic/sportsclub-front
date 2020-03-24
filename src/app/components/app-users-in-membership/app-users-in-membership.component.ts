@@ -31,7 +31,7 @@ export class AppUsersInMembershipComponent implements OnInit {
   membership:Membership;
   appUsers:AppUser[];
   usersWithCondition:AppUserCondition[]= new Array();
-
+  membershipId:number;
   displayedColumns = [ 'name','group','settled','actions'];
   
   constructor(private route:ActivatedRoute, private appUserService : AppUserService,
@@ -45,18 +45,20 @@ export class AppUsersInMembershipComponent implements OnInit {
 
   loadPageIfValidRole()
   {
-    this.authService.getToken().subscribe(token=>{
-      this.authService.extractClaims(token).subscribe(claims=>{
-        if(claims && this.roleIsValid(claims))
-        {
-          let membershipId=this.route.snapshot.params['id'];
-          this.loadMembership(membershipId);
-          this.loadAppUsersAndPayments();
-        }
-        else
-          this.router.navigate(['home']);
-      })
+    let token:string = sessionStorage.getItem('user');
+    if(token)
+    this.authService.extractClaims(token).subscribe(claims=>{
+      if(this.roleIsValid(claims))
+      {
+        this.membershipId=this.route.snapshot.params['id'];
+        this.loadMembership(this.membershipId);
+        this.loadAppUsersAndPayments();
+      }
+      else
+        this.router.navigate(['login']);
     })
+    else
+      this.router.navigate(['login']);
   }
 
   roleIsValid(claims:Claims) : boolean
@@ -81,7 +83,7 @@ export class AppUsersInMembershipComponent implements OnInit {
 
   loadAllPaymentsForMembership()
   {
-    this.paymentService.getAllPaymentsForMembership(this.membership.id).subscribe(paymentsForMembership=>{
+    this.paymentService.getAllPaymentsForMembership(this.membershipId).subscribe(paymentsForMembership=>{
       for(let i=0;i<this.appUsers.length;i++)
       {
         let totalAmount=0;

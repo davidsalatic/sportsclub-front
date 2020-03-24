@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Payment } from '../models/payment';
 import { Period } from '../models/period';
+import { Routes } from '../const/routes';
 
 @Injectable()
 export class PeriodService{
 
-    private readonly PERIOD_URL = 'http://localhost:8080/period/';
+    private readonly PERIOD_URL = Routes.SERVER_URL+'/period/';
 
     
     constructor(private httpClient: HttpClient){ }

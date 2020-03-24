@@ -2,11 +2,12 @@ import { Observable } from 'rxjs';
 import { Payment } from '../models/payment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Routes } from '../const/routes';
 
 @Injectable()
 export class PaymentService{
 
-    private readonly PAYMENTS_URL = 'http://localhost:8080/payments/';
+    private readonly PAYMENTS_URL = Routes.SERVER_URL+'/payments/';
 
     
     constructor(private httpClient: HttpClient){ }

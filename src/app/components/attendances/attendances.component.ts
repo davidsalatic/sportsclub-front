@@ -47,17 +47,19 @@ export class AttendancesComponent implements  OnInit {
 
   loadPageIfValidRole()
   {
-    this.authService.getToken().subscribe(token=>{
-      this.authService.extractClaims(token).subscribe(claims=>{
-        if(claims && this.roleIsValid(claims))
-          {
-            this.trainingId=this.route.snapshot.params['id'];
-            this.loadTrainingSessionAndAppUsers(this.trainingId);
-          }
-        else
-          this.router.navigate(['home']);
-      })
+    let token:string = sessionStorage.getItem('user');
+    if(token)
+    this.authService.extractClaims(token).subscribe(claims=>{
+      if(this.roleIsValid(claims))
+      {
+        this.trainingId=this.route.snapshot.params['id'];
+        this.loadTrainingSessionAndAppUsers(this.trainingId);
+      }
+      else
+        this.router.navigate(['login']);
     })
+    else
+      this.router.navigate(['login']);
   }
 
   roleIsValid(claims:Claims) : boolean

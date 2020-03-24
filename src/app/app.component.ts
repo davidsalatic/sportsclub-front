@@ -5,6 +5,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { AppUserService } from './services/app-user-service';
 import { AuthService } from './services/auth-service';
 import { Roles } from './const/role-const';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -26,51 +27,58 @@ export class AppComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver,private authService:AuthService) {
+  constructor(private breakpointObserver: BreakpointObserver,private authService:AuthService,private router:Router) {
   }
 
   ngOnInit() {
-    this.authService.getToken().subscribe(token=>{
-      if(token)
-      {
-        this.isLoggedIn=true;
-        this.authService.extractClaims(token).subscribe(claims=>{
-          if(claims.role===Roles.MEMBER)
-          {
-            this.showTrainingSessions=false;
-            this.showMemberships=false;
-              this.showMembers=false;
-            this.showStaff=false;
-          }
-          else if(claims.role===Roles.COACH)
-          {
-            this.showTrainingSessions=true;
-            this.showMemberships=false;
-            this.showMembers=true;
-            this.showStaff=false;
-          }
-          else if(claims.role===Roles.MANAGER)
-          {
-            this.showTrainingSessions=true;
-            this.showMembers=true;
-            this.showMemberships=true;
-            this.showStaff=true;
-          }
-          else
-          {
-            this.showTrainingSessions=false;
+
+    
+
+    console.log("ngonitin")
+    let token:string = sessionStorage.getItem('user');
+    if(token)
+    {
+      this.isLoggedIn=true;
+      this.authService.extractClaims(token).subscribe(claims=>{
+        if(claims.role===Roles.MEMBER)
+        {
+          this.showTrainingSessions=false;
+          this.showMemberships=false;
             this.showMembers=false;
-            this.showMemberships=false;
-            this.showStaff=false;
-          }
-        })
-      }
-      else
-      {
-        this.isLoggedIn=false;
-      }
-    })
+          this.showStaff=false;
+        }
+        else if(claims.role===Roles.COACH)
+        {
+          this.showTrainingSessions=true;
+          this.showMemberships=false;
+          this.showMembers=true;
+          this.showStaff=false;
+        }
+        else if(claims.role===Roles.MANAGER)
+        {
+          this.showTrainingSessions=true;
+          this.showMembers=true;
+          this.showMemberships=true;
+          this.showStaff=true;
+        }
+        else
+        {
+          this.showTrainingSessions=false;
+          this.showMembers=false;
+          this.showMemberships=false;
+          this.showStaff=false;
+        }
+    }
+    )}
+    else
+    {
+      this.isLoggedIn=false;
+    }
   }
 
-
+  logout()
+  {
+    sessionStorage.clear();
+    this.router.navigate(['login']);
+  }
 }

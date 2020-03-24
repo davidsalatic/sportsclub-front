@@ -27,30 +27,27 @@ export class RegistrationComponent implements OnInit {
     ,private route:ActivatedRoute,private appUserService:AppUserService,private router:Router) { }
 
   ngOnInit(): void {
-    let token:string = this.route.snapshot.params['token'];
-    this.loadAppUserFromToken(token);
+    this.loadPageIfUserIsNotRegistered();
   }
 
-  loadAppUserFromToken(token:string)
+  loadPageIfUserIsNotRegistered()
   {
-    this.authService.getToken().subscribe(retrievedToken=>{
-      if(retrievedToken)
-      {
-        alert("Please log out of your user session first.")
-        this.router.navigate(['home']);
-      }
-      else{
-        this.authService.extractClaims(token).subscribe(claims=>{
-          this.appUserService.getByUsername(claims.sub).subscribe(appUser=>{
-            this.appUser=appUser;
-            if(appUser.password!=null)
-              window.location.href=this.LOGIN_URL;
-          })
+    let token:string = sessionStorage.getItem('user');
+    if(token)//user is logged in
+    {
+      alert("Please log out of your user session first.")
+      this.router.navigate(['home']);
+    }
+    else
+      this.authService.extractClaims(token).subscribe(claims=>{
+        this.appUserService.getByUsername(claims.sub).subscribe(appUser=>{
+          this.appUser=appUser;
+          if(appUser.password!=null)//if user is already registered
+            this.router.navigate(['home']);
         })
-      }
-    })
+      })
   }
-
+  
   onSubmit() {
     let password:string = this.passwordForm.get('password').value;
     let confirm:string = this.passwordForm.get('confirmPassword').value;

@@ -25,16 +25,15 @@ export class ProfileComponent implements OnInit {
 
   loadPageIfValidRole()
   {
-    this.authService.getToken().subscribe(token=>{
+    let token:string = sessionStorage.getItem('user');
+    if(token)
+    {
       this.authService.extractClaims(token).subscribe(claims=>{
-        if(claims)
-        {
-          this.loadUserByUsername(claims.sub);
-        }
-        else
-          this.router.navigate(['home']);
+        this.loadUserByUsername(claims.sub);
       })
-    })
+    }
+    else
+      this.router.navigate(['login']);
   }
 
   loadUserByUsername(username:string)

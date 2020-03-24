@@ -3,11 +3,12 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MemberGroup } from '../models/member-group';
 import { AppUser } from '../models/app-user';
+import { Routes } from '../const/routes';
 
 @Injectable()
 export class MemberGroupService {
 
-    private readonly GROUPS_URL = 'http://localhost:8080/groups';
+    private readonly GROUPS_URL = Routes.SERVER_URL+'/groups';
 
 
     constructor(private httpClient: HttpClient){ }

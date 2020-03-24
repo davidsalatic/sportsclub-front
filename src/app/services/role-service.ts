@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Role } from '../models/role';
+import { Routes } from '../const/routes';
 
 @Injectable()
 export class RoleService{
 
-    private readonly ROLES_URL = 'http://localhost:8080/roles/';
+    private readonly ROLES_URL = Routes.SERVER_URL+ '/roles/';
 
     constructor(private httpClient: HttpClient){ }
 

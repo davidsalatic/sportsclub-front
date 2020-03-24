@@ -49,20 +49,22 @@ export class SessionsGroupComponent implements OnInit {
 
   loadPageIfValidRole()
   {
-    this.authService.getToken().subscribe(token=>{
-      this.authService.extractClaims(token).subscribe(claims=>{
-        if(claims && this.roleIsValid(claims))
-          {
-            this.memberGroupId = this.route.snapshot.params['groupId'];
-            this.periodId = this.route.snapshot.params['periodId'];
-            this.loadAllPeriods();
-            this.loadAllTermsInGroup();
-            this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId);
-          }
-        else
-          this.router.navigate(['home']);
-      })
+    let token:string = sessionStorage.getItem('user');
+    if(token)
+    this.authService.extractClaims(token).subscribe(claims=>{
+      if(this.roleIsValid(claims))
+      {
+        this.memberGroupId = this.route.snapshot.params['groupId'];
+        this.periodId = this.route.snapshot.params['periodId'];
+        this.loadAllPeriods();
+        this.loadAllTermsInGroup();
+        this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId);
+      }
+      else
+        this.router.navigate(['login']);
     })
+    else
+      this.router.navigate(['login']);
   }
 
   roleIsValid(claims:Claims) : boolean

@@ -42,20 +42,22 @@ export class EditAppUserFormComponent implements OnInit {
   ngOnInit(): void {
     this.loadPageIfValidRole();
   }
-
+  
   loadPageIfValidRole()
   {
-    this.authService.getToken().subscribe(token=>{
-      this.authService.extractClaims(token).subscribe(claims=>{
-        if(claims && this.roleIsValid(claims))
-          {
-            let appUserId=this.route.snapshot.params['id'];
-            this.loadAppUser(appUserId);
-          }
-        else
-          this.router.navigate(['home']);
-      })
+    let token:string = sessionStorage.getItem('user');
+    if(token)
+    this.authService.extractClaims(token).subscribe(claims=>{
+      if(this.roleIsValid(claims))
+      {            
+        let appUserId=this.route.snapshot.params['id'];
+        this.loadAppUser(appUserId);
+      }
+      else
+        this.router.navigate(['login']);
     })
+    else
+      this.router.navigate(['login']);
   }
 
   roleIsValid(claims:Claims) : boolean
