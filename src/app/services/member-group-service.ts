@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { MemberGroup } from '../models/member-group';
 import { AppUser } from '../models/app-user';
 import { Routes } from '../const/routes';
+import { AuthService } from './auth-service';
 
 @Injectable()
 export class MemberGroupService {
@@ -11,10 +12,10 @@ export class MemberGroupService {
     private readonly GROUPS_URL = Routes.SERVER_URL+'/groups';
 
 
-    constructor(private httpClient: HttpClient){ }
+    constructor(private httpClient: HttpClient,private authService:AuthService){ }
 
     getAllGroups(): Observable<MemberGroup[]>{
-        return this.httpClient.get<MemberGroup[]>(this.GROUPS_URL);
+        return this.httpClient.get<MemberGroup[]>(this.GROUPS_URL)
     }
 
     getGroupById(id:number) : Observable<MemberGroup>

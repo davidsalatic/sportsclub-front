@@ -21,6 +21,7 @@ export class AppUserService{
     }
 
     getAllUsers(): Observable<AppUser[]>{
+        
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL);
     }
 
@@ -63,7 +64,6 @@ export class AppUserService{
 
     updateSelf(appUser:AppUser)
     {
-        console.log(appUser)
         return this.httpClient.put(this.APP_USERS_URL+"update-self",appUser);
     }
 

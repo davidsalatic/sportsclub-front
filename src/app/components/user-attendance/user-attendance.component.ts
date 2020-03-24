@@ -40,7 +40,7 @@ export class UserAttendanceComponent implements OnInit {
         this.loadAttendancesForUser(appUserId);
       }
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -48,7 +48,7 @@ export class UserAttendanceComponent implements OnInit {
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.COACH || claims.role===Roles.MANAGER ||  claims.role===Roles.MEMBER;
+    return claims.role.name===Roles.COACH || claims.role.name===Roles.MANAGER ||  claims.role.name===Roles.MEMBER;
   }
 
   loadAttendancesForUser(appUserId:number)

@@ -38,7 +38,7 @@ export class StaffComponent implements OnInit {
       if(this.roleIsValid(claims))
       this.loadStaff();
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -46,7 +46,7 @@ export class StaffComponent implements OnInit {
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.MANAGER
+    return claims.role.name===Roles.MANAGER
   }
 
   loadStaff()

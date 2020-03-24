@@ -20,8 +20,7 @@ export class AuthService{
 
     getToken()
     {
-        const headers = new HttpHeaders();
-        return this.httpClient.get<string>(this.AUTH_URL+"/token",{headers,responseType:'text' as 'json'});
+        return sessionStorage.getItem('user');
     }
 
     extractClaims(token:string)

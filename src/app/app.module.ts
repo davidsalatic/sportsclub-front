@@ -16,7 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MemberGroupsComponent } from './components/member-groups/member-groups.component';
 import { MemberGroupService } from './services/member-group-service';
 import {AppUserService} from './services/app-user-service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -65,6 +65,7 @@ import { UserAttendanceComponent } from './components/user-attendance/user-atten
 import { UserPaymentsComponent } from './components/user-payments/user-payments.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
+import { HttpInterceptorService } from './interceptor/http-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,11 @@ import { LoginComponent } from './components/login/login.component';
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
     TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,PeriodService
-    ,FileService],
+    ,FileService,    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -55,7 +55,7 @@ export class AppUsersInMembershipComponent implements OnInit {
         this.loadAppUsersAndPayments();
       }
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -63,7 +63,7 @@ export class AppUsersInMembershipComponent implements OnInit {
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.MANAGER
+    return claims.role.name===Roles.MANAGER
   }
 
   loadMembership(membershipId:number)

@@ -32,29 +32,32 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-    
+    this.displayMenuItems();
 
-    console.log("ngonitin")
+  }
+
+  displayMenuItems()
+  {
     let token:string = sessionStorage.getItem('user');
     if(token)
     {
       this.isLoggedIn=true;
       this.authService.extractClaims(token).subscribe(claims=>{
-        if(claims.role===Roles.MEMBER)
+        if(claims.role.name===Roles.MEMBER)
         {
           this.showTrainingSessions=false;
           this.showMemberships=false;
             this.showMembers=false;
           this.showStaff=false;
         }
-        else if(claims.role===Roles.COACH)
+        else if(claims.role.name===Roles.COACH)
         {
           this.showTrainingSessions=true;
           this.showMemberships=false;
           this.showMembers=true;
           this.showStaff=false;
         }
-        else if(claims.role===Roles.MANAGER)
+        else if(claims.role.name===Roles.MANAGER)
         {
           this.showTrainingSessions=true;
           this.showMembers=true;
@@ -79,6 +82,6 @@ export class AppComponent implements OnInit {
   logout()
   {
     sessionStorage.clear();
-    this.router.navigate(['login']);
+    window.location.href="http://localhost:8082/logout"
   }
 }

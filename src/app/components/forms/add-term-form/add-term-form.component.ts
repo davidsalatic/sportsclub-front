@@ -45,7 +45,7 @@ export class AddTermFormComponent implements OnInit {
         this.loadMemberGroup(memberGroupId);
       }
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -53,7 +53,7 @@ export class AddTermFormComponent implements OnInit {
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.MANAGER || claims.role===Roles.COACH;
+    return claims.role.name===Roles.MANAGER || claims.role.name===Roles.COACH;
   }
 
   loadMemberGroup(memberGroupId:number)

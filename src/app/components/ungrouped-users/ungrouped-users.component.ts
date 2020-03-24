@@ -39,7 +39,7 @@ export class UngroupedUsersComponent implements OnInit {
       if(this.roleIsValid(claims))
         this.loadAppUsers();
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -47,7 +47,7 @@ export class UngroupedUsersComponent implements OnInit {
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
+    return claims.role.name===Roles.COACH || claims.role.name===Roles.MANAGER
   }
 
   loadAppUsers()

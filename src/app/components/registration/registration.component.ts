@@ -15,7 +15,6 @@ export class RegistrationComponent implements OnInit {
 
   appUser:AppUser;
 
-  LOGIN_URL :string="http://localhost:8080/login";
 
   passwordForm = new FormGroup({
     password: new FormControl('',Validators.required),
@@ -32,14 +31,15 @@ export class RegistrationComponent implements OnInit {
 
   loadPageIfUserIsNotRegistered()
   {
-    let token:string = sessionStorage.getItem('user');
-    if(token)//user is logged in
+    let token:string = this.route.snapshot.params['token'];
+    if(this.authService.getToken())//user is logged in
     {
       alert("Please log out of your user session first.")
       this.router.navigate(['home']);
     }
     else
       this.authService.extractClaims(token).subscribe(claims=>{
+        console.log(claims)
         this.appUserService.getByUsername(claims.sub).subscribe(appUser=>{
           this.appUser=appUser;
           if(appUser.password!=null)//if user is already registered
@@ -60,7 +60,7 @@ export class RegistrationComponent implements OnInit {
         this.passwordForm.disable();
         setTimeout(() => 
         {
-            window.location.href=this.LOGIN_URL;
+            this.router.navigate(['login'])
         },
         2500);
       })

@@ -23,9 +23,12 @@ export class LoginComponent implements OnInit {
     ,private route:ActivatedRoute,private appUserService:AppUserService,private router:Router) { }
 
   ngOnInit(): void {
+    if(this.authService.getToken())
+      this.router.navigate(['home']);
   }
 
   onSubmit() {
+
     let password:string = this.loginForm.get('password').value;
     let username:string = this.loginForm.get('username').value;
 

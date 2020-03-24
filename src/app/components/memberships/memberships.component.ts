@@ -47,7 +47,7 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
       if(this.roleIsValid(claims))
       this.loadDefaultPriceAndCheckIfPeriodExists();
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -55,7 +55,7 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.MANAGER
+    return claims.role.name===Roles.MANAGER
   }
 
   loadDefaultPriceAndCheckIfPeriodExists()

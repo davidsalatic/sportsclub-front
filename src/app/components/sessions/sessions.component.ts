@@ -41,7 +41,7 @@ export class SessionsComponent implements  OnInit {
       if(this.roleIsValid(claims))
         this.loadGroups();
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -49,7 +49,7 @@ export class SessionsComponent implements  OnInit {
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
+    return claims.role.name===Roles.COACH || claims.role.name===Roles.MANAGER
   }
 
   loadGroups()

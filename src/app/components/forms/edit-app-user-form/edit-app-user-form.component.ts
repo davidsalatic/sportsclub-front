@@ -54,7 +54,7 @@ export class EditAppUserFormComponent implements OnInit {
         this.loadAppUser(appUserId);
       }
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -62,7 +62,7 @@ export class EditAppUserFormComponent implements OnInit {
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.COACH || claims.role===Roles.MANAGER
+    return claims.role.name===Roles.COACH || claims.role.name===Roles.MANAGER
   }
 
   loadAppUser(appUserId:number)
@@ -118,8 +118,8 @@ export class EditAppUserFormComponent implements OnInit {
       this.appUser.memberGroup=this.appUserForm.get('memberGroups').value;
     this.appUser.name=this.appUserForm.get('name').value;
     this.appUser.surname=this.appUserForm.get('surname').value;
-    this.appUser.username = this.appUserForm.get('username').value;
-    this.appUser.jmbg=this.appUserForm.get('jmbg').value;
+    // this.appUser.username = this.appUserForm.get('username').value;
+    // this.appUser.jmbg=this.appUserForm.get('jmbg').value;
     this.appUser.address=this.appUserForm.get('adress').value;
     this.appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
 
@@ -132,19 +132,25 @@ export class EditAppUserFormComponent implements OnInit {
     }
     else
       this.appUser.dateJoined=this.appUserForm.get('dateJoined').value;
-    this.updateAppUserIfValid(this.appUser);
+
+    this.updateAppUserIfValid(this.appUserForm.get('username').value,this.appUserForm.get('jmbg').value);
 
   }
 
-  updateAppUserIfValid(appUser:AppUser)
+  updateAppUserIfValid(username:string,jmbg:string)
   {
-    this.appUserService.getByUsername(appUser.username).subscribe(data=>{
+    this.appUserService.getByUsername(username).subscribe(data=>{
       if(data && data.username!=this.appUser.username)
         this.showSnackbar("A user with that username already exists!")
       else
-        this.appUserService.getByJmbg(appUser.jmbg).subscribe(data=>{
-          if(data && data.jmbg!=this.appUser.jmbg)
+        this.appUserService.getByJmbg(jmbg).subscribe(data=>{
+          if(data)
+          {
+            if(data.id===this.appUser.id)
+              this.updateUserAndGoToRoute();
+            else
             this.showSnackbar("A user with that JMBG already exists!");
+          }
           else
               this.updateUserAndGoToRoute();
         })

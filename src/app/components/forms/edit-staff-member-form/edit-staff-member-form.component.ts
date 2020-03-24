@@ -49,7 +49,7 @@ export class EditStaffMemberFormComponent implements OnInit {
         this.loadAppUser(appUserId);
       }
       else
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     })
     else
       this.router.navigate(['login']);
@@ -57,7 +57,7 @@ export class EditStaffMemberFormComponent implements OnInit {
 
   roleIsValid(claims:Claims) : boolean
   {
-    return claims.role===Roles.MANAGER
+    return claims.role.name===Roles.MANAGER
   }
 
   loadAppUser(appUserId:number)
