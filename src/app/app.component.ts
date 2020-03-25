@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { AppUserService } from './services/app-user-service';
 import { AuthService } from './services/auth-service';
 import { Roles } from './const/role-const';
 import { Router } from '@angular/router';
@@ -31,57 +30,49 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.authService.getToken())
+      this.authService.changeIsLoggedIn(true);
+    else
+      this.authService.changeIsLoggedIn(false);
 
-    this.displayMenuItems();
-
+    this.authService.isLoggedIn.subscribe(isLoggedIn=>{
+      this.isLoggedIn=isLoggedIn;
+      if(isLoggedIn)
+        this.displayMenuItemsDependingOnRole();
+    })
   }
 
-  displayMenuItems()
+  displayMenuItemsDependingOnRole()
   {
-    let token:string = sessionStorage.getItem('user');
-    if(token)
-    {
-      this.isLoggedIn=true;
-      this.authService.extractClaims(token).subscribe(claims=>{
-        if(claims.role.name===Roles.MEMBER)
-        {
-          this.showTrainingSessions=false;
-          this.showMemberships=false;
-            this.showMembers=false;
-          this.showStaff=false;
-        }
-        else if(claims.role.name===Roles.COACH)
-        {
-          this.showTrainingSessions=true;
-          this.showMemberships=false;
-          this.showMembers=true;
-          this.showStaff=false;
-        }
-        else if(claims.role.name===Roles.MANAGER)
-        {
-          this.showTrainingSessions=true;
-          this.showMembers=true;
-          this.showMemberships=true;
-          this.showStaff=true;
-        }
-        else
-        {
-          this.showTrainingSessions=false;
-          this.showMembers=false;
-          this.showMemberships=false;
-          this.showStaff=false;
-        }
-    }
-    )}
-    else
-    {
-      this.isLoggedIn=false;
-    }
+    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
+      if(claims.role.name===Roles.MEMBER)
+      {
+        this.showTrainingSessions=false;
+        this.showMemberships=false;
+        this.showMembers=false;
+        this.showStaff=false;
+      }
+      else if(claims.role.name===Roles.COACH)
+      {
+        this.showTrainingSessions=true;
+        this.showMemberships=false;
+        this.showMembers=true;
+        this.showStaff=false;
+      }
+      else if(claims.role.name===Roles.MANAGER)
+      {
+        this.showTrainingSessions=true;
+        this.showMembers=true;
+        this.showMemberships=true;
+        this.showStaff=true;
+      }
+    })
   }
 
   logout()
   {
     sessionStorage.clear();
-    window.location.href="http://localhost:8082/logout"
+    this.authService.changeIsLoggedIn(false);
+    this.router.navigate(['login'])
   }
 }

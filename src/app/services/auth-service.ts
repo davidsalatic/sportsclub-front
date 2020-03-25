@@ -5,6 +5,7 @@ import { Claims } from '../models/helpers/claims';
 import { Routes } from '../const/routes';
 import { LoginDTO } from '../models/helpers/login-dto';
 import { TokenDTO } from '../models/helpers/token-dto';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class AuthService{
@@ -12,6 +13,14 @@ export class AuthService{
     constructor(private httpClient: HttpClient,private router:Router){ }
 
     private readonly AUTH_URL=Routes.SERVER_URL+"/auth";
+
+    private logged = new BehaviorSubject(true);
+    isLoggedIn = this.logged.asObservable();
+
+    changeIsLoggedIn(loggedIn:boolean)
+    {
+        this.logged.next(loggedIn)
+    }
 
     login(loginDTO:LoginDTO)
     {

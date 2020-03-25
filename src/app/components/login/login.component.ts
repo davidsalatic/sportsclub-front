@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
       if(tokenDTO)
       {
         sessionStorage.setItem('user',tokenDTO.token);
+        this.authService.changeIsLoggedIn(true);
         this.router.navigate(['home']);
       }
       else
