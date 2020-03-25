@@ -27,7 +27,7 @@ export class AddAppUserFormComponent implements OnInit {
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
-    username: new FormControl('',Validators.compose([Validators.required,Validators.email])),
+    username: new FormControl('',Validators.compose([Validators.email])),
     dateJoined: new FormControl('')
   });
 
@@ -41,9 +41,8 @@ export class AddAppUserFormComponent implements OnInit {
 
   loadPageIfValidRole()
   {
-    let token:string = sessionStorage.getItem('user');
-    if(token)
-    this.authService.extractClaims(token).subscribe(claims=>{
+    if(this.authService.getToken())
+    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
       if(this.roleIsValid(claims))
       {
         let memberGroupId=this.route.snapshot.params['id'];
@@ -99,16 +98,22 @@ export class AddAppUserFormComponent implements OnInit {
 
   addAppUserIfNotExists(appUser:AppUser)
   {
-    this.appUserService.getByUsername(appUser.username).subscribe(data=>{
+    this.appUserService.getByJmbg(appUser.jmbg).subscribe(data=>{
       if(data)
-        this.showSnackbar("A user with that username already exists!")
-      else
-        this.appUserService.getByJmbg(appUser.jmbg).subscribe(data=>{
-          if(data)
             this.showSnackbar("A user with that JMBG already exists!");
-          else
-            this.addAppUser(appUser);
-        })
+      else
+      {
+        let username:string = this.appUserForm.get('username').value;
+        if(username)
+          this.appUserService.getByUsername(username).subscribe(data=>{
+            if(data)
+              this.showSnackbar("A user with that username already exists!");
+            else
+              this.addAppUser(appUser);
+          })
+        else
+          this.addAppUser(appUser);
+      }
     })
   }
 

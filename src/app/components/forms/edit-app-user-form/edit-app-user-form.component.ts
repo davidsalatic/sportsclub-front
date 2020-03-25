@@ -23,7 +23,7 @@ export class EditAppUserFormComponent implements OnInit {
   memberGroups :MemberGroup[];
 
   appUserForm = new FormGroup({
-    username: new FormControl({value:'',disabled:true}),
+    username: new FormControl('',Validators.email),
     name: new FormControl('',Validators.required),
     surname: new FormControl('',Validators.required),
     jmbg: new FormControl('',Validators.compose([Validators.required,Validators.minLength(13),Validators.maxLength(13)])),
@@ -45,9 +45,8 @@ export class EditAppUserFormComponent implements OnInit {
   
   loadPageIfValidRole()
   {
-    let token:string = sessionStorage.getItem('user');
-    if(token)
-    this.authService.extractClaims(token).subscribe(claims=>{
+    if(this.authService.getToken())
+    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
       if(this.roleIsValid(claims))
       {            
         let appUserId=this.route.snapshot.params['id'];
@@ -118,8 +117,6 @@ export class EditAppUserFormComponent implements OnInit {
       this.appUser.memberGroup=this.appUserForm.get('memberGroups').value;
     this.appUser.name=this.appUserForm.get('name').value;
     this.appUser.surname=this.appUserForm.get('surname').value;
-    // this.appUser.username = this.appUserForm.get('username').value;
-    // this.appUser.jmbg=this.appUserForm.get('jmbg').value;
     this.appUser.address=this.appUserForm.get('adress').value;
     this.appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
 
@@ -139,26 +136,34 @@ export class EditAppUserFormComponent implements OnInit {
 
   updateAppUserIfValid(username:string,jmbg:string)
   {
-    this.appUserService.getByUsername(username).subscribe(data=>{
-      if(data && data.username!=this.appUser.username)
-        this.showSnackbar("A user with that username already exists!")
-      else
-        this.appUserService.getByJmbg(jmbg).subscribe(data=>{
-          if(data)
+    this.appUserService.getByJmbg(jmbg).subscribe(data=>{
+      if(data)
+      {
+        if(data.id===this.appUser.id)
+        {
+          if(username)
           {
-            if(data.id===this.appUser.id)
-              this.updateUserAndGoToRoute();
-            else
-            this.showSnackbar("A user with that JMBG already exists!");
+            this.appUserService.getByUsername(username).subscribe(data=>{
+              if(data && data.username!=this.appUser.username)
+                this.showSnackbar("A user with that username already exists!")
+              else
+                this.updateUserAndGoToRoute();
+            })
           }
           else
-              this.updateUserAndGoToRoute();
-        })
+            this.updateUserAndGoToRoute();
+        }
+        else
+        this.showSnackbar("A user with that JMBG already exists!");
+      }
+      else
+          this.updateUserAndGoToRoute();
     })
   }
 
   updateUserAndGoToRoute()
   {
+    this.appUser.username=this.appUserForm.get('username').value;
     this.appUserService.updateUser(this.appUser).subscribe(response=>{
       if(this.idOfOriginalGroup!=null)
         this.router.navigate(['/members/'+this.idOfOriginalGroup]);

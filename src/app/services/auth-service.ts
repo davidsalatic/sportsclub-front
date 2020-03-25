@@ -6,6 +6,8 @@ import { Routes } from '../const/routes';
 import { LoginDTO } from '../models/helpers/login-dto';
 import { TokenDTO } from '../models/helpers/token-dto';
 import { BehaviorSubject } from 'rxjs';
+import { RegisterDTO } from '../models/helpers/register-dto';
+import { AppUser } from '../models/app-user';
 
 @Injectable()
 export class AuthService{
@@ -25,6 +27,21 @@ export class AuthService{
     login(loginDTO:LoginDTO)
     {
         return this.httpClient.post<TokenDTO>(this.AUTH_URL+"/login",loginDTO);
+    }
+
+    register(registerDTO:RegisterDTO)
+    {
+        return this.httpClient.post(this.AUTH_URL+"/register",registerDTO);
+    }
+
+    checkToken(tokenDTO:TokenDTO)
+    {
+        return this.httpClient.post<AppUser>(this.AUTH_URL+"/check-token",tokenDTO);
+    }
+
+    setToken(token:string)
+    {
+        sessionStorage.setItem('user',token);
     }
 
     getToken()

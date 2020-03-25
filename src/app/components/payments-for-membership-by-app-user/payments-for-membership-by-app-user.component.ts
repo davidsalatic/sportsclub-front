@@ -41,9 +41,8 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
 
   loadPageIfValidRole()
   {
-    let token:string = sessionStorage.getItem('user');
-    if(token)
-    this.authService.extractClaims(token).subscribe(claims=>{
+    if(this.authService.getToken())
+    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
       if(this.roleIsValid(claims))
       {
         let membershipId=this.route.snapshot.params['membershipId'];

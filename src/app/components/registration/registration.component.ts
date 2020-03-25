@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/services/auth-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { AppUser } from 'src/app/models/app-user';
+import { RegisterDTO } from 'src/app/models/helpers/register-dto';
+import { TokenDTO } from 'src/app/models/helpers/token-dto';
 
 @Component({
   selector: 'app-registration',
@@ -13,39 +15,28 @@ import { AppUser } from 'src/app/models/app-user';
 })
 export class RegistrationComponent implements OnInit {
 
-  appUser:AppUser;
-
+  token:string;
 
   passwordForm = new FormGroup({
     password: new FormControl('',Validators.required),
     confirmPassword: new FormControl('',Validators.required)
   });
 
-
   constructor(private snackBar:MatSnackBar,private authService:AuthService
-    ,private route:ActivatedRoute,private appUserService:AppUserService,private router:Router) { }
+    ,private route:ActivatedRoute,private router:Router) { }
 
   ngOnInit(): void {
-    this.loadPageIfUserIsNotRegistered();
-  }
+    this.token = this.route.snapshot.params['token'];
 
-  loadPageIfUserIsNotRegistered()
-  {
-    let token:string = this.route.snapshot.params['token'];
-    if(this.authService.getToken())//user is logged in
-    {
-      alert("Please log out of your user session first.")
-      this.router.navigate(['home']);
-    }
-    else
-      this.authService.extractClaims(token).subscribe(claims=>{
-        console.log(claims)
-        this.appUserService.getByUsername(claims.sub).subscribe(appUser=>{
-          this.appUser=appUser;
-          if(appUser.password!=null)//if user is already registered
-            this.router.navigate(['home']);
-        })
-      })
+    let tokenDTO:TokenDTO = new TokenDTO();
+    tokenDTO.token=this.token;
+    this.authService.checkToken(tokenDTO).subscribe(isValid=>{
+      if(!isValid)
+      {
+        //already registered redirect to login
+        this.router.navigate(['login']); 
+      }
+    }) 
   }
   
   onSubmit() {
@@ -54,8 +45,11 @@ export class RegistrationComponent implements OnInit {
 
     if(password===confirm)
     {
-      this.appUser.password=password;
-      this.appUserService.updateSelf(this.appUser).subscribe(response=>{
+      let registerDTO:RegisterDTO = new RegisterDTO();
+      registerDTO.token=this.token;
+      registerDTO.password=password;
+
+      this.authService.register(registerDTO).subscribe(response=>{
         this.showSnackbar("Registration complete. Redirecting to login page...");
         this.passwordForm.disable();
         setTimeout(() => 
@@ -64,7 +58,7 @@ export class RegistrationComponent implements OnInit {
         },
         2500);
       })
-      
+
     }
     else
       this.showSnackbar("Password do not match!")
@@ -76,5 +70,4 @@ export class RegistrationComponent implements OnInit {
       duration: 2500
     })
   }
-
 }

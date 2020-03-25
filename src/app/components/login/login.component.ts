@@ -37,10 +37,9 @@ export class LoginComponent implements OnInit {
     loginDTO.password=password;
 
     this.authService.login(loginDTO).subscribe(tokenDTO=>{
-      console.log(tokenDTO);
       if(tokenDTO)
       {
-        sessionStorage.setItem('user',tokenDTO.token);
+        this.authService.setToken(tokenDTO.token);
         this.authService.changeIsLoggedIn(true);
         this.router.navigate(['home']);
       }

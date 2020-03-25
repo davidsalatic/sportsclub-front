@@ -36,18 +36,17 @@ export class EditProfileFormComponent implements OnInit {
 
   loadPageIfValidRole()
   {
-    let token:string = sessionStorage.getItem('user');
-    if(token)//is logged in
+    if(this.authService.getToken())//is logged in
     {
-      this.checkToken(token);
+      this.checkToken();
     }
     else
       this.router.navigate(['login']);
   }
 
-  checkToken(token:string)
+  checkToken()
   {
-    this.authService.extractClaims(token).subscribe(claims=>{
+    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
       if(claims)
       {
         this.username=claims.sub;
