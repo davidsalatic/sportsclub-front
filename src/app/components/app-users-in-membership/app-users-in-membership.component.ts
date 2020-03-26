@@ -46,8 +46,7 @@ export class AppUsersInMembershipComponent implements OnInit {
   loadPageIfValidRole()
   {
     if(this.authService.getToken())
-    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
-      if(this.roleIsValid(claims))
+      if(this.authService.isManagerLoggedIn())
       {
         this.membershipId=this.route.snapshot.params['id'];
         this.loadMembership(this.membershipId);
@@ -55,14 +54,8 @@ export class AppUsersInMembershipComponent implements OnInit {
       }
       else
         this.router.navigate(['home']);
-    })
     else
       this.router.navigate(['login']);
-  }
-
-  roleIsValid(claims:Claims) : boolean
-  {
-    return claims.role.name===Roles.MANAGER
   }
 
   loadMembership(membershipId:number)

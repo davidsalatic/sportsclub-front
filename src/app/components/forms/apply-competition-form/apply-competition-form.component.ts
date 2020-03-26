@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth-service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-apply-competition-form',
@@ -26,7 +27,8 @@ export class ApplyCompetitionFormComponent implements OnInit {
     this.competitionId=this.route.snapshot.params['id'];
     if(this.authService.getToken())
     {
-
+      if(this.authService.getLoggedInRole()!=Roles.MEMBER)
+        this.router.navigate(['home']);
     }
     else
     {

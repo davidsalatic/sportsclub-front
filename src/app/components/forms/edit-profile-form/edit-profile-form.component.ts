@@ -37,9 +37,7 @@ export class EditProfileFormComponent implements OnInit {
   loadPageIfValidRole()
   {
     if(this.authService.getToken())//is logged in
-    {
       this.checkToken();
-    }
     else
       this.router.navigate(['login']);
   }

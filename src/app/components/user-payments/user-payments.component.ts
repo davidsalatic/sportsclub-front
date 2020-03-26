@@ -32,23 +32,14 @@ export class UserPaymentsComponent implements OnInit {
   loadPageIfValidRole()
   {
     if(this.authService.getToken())
-    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
-      if(this.roleIsValid(claims))
-      {
-        let appUserId = this.activatedRoute.snapshot.params['appUserId'];
-        this.loadPaymentsForUser(appUserId);
-      }
-      else
-        this.router.navigate(['home']);
-    })
+    {
+      let appUserId = this.activatedRoute.snapshot.params['appUserId'];
+      this.loadPaymentsForUser(appUserId);
+    }
     else
       this.router.navigate(['login']);
   }
 
-  roleIsValid(claims:Claims) : boolean
-  {
-    return claims.role.name===Roles.COACH || claims.role.name===Roles.MANAGER || claims.role.name===Roles.MEMBER;
-  }
 
   loadPaymentsForUser(appUserId:number)
   {

@@ -50,8 +50,7 @@ export class SessionsGroupComponent implements OnInit {
   loadPageIfValidRole()
   {
     if(this.authService.getToken())
-    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
-      if(this.roleIsValid(claims))
+      if(this.authService.isCoachOrManagerLoggedIn())
       {
         this.memberGroupId = this.route.snapshot.params['groupId'];
         this.periodId = this.route.snapshot.params['periodId'];
@@ -61,14 +60,8 @@ export class SessionsGroupComponent implements OnInit {
       }
       else
         this.router.navigate(['home']);
-    })
     else
       this.router.navigate(['login']);
-  }
-
-  roleIsValid(claims:Claims) : boolean
-  {
-    return claims.role.name===Roles.COACH || claims.role.name===Roles.MANAGER
   }
 
   loadAllPeriods()

@@ -8,6 +8,7 @@ import { TokenDTO } from '../models/helpers/token-dto';
 import { BehaviorSubject } from 'rxjs';
 import { RegisterDTO } from '../models/helpers/register-dto';
 import { AppUser } from '../models/app-user';
+import { Roles } from '../const/role-const';
 
 @Injectable()
 export class AuthService{
@@ -87,5 +88,26 @@ export class AuthService{
     clearRouteAfterLogin()
     {
         sessionStorage.removeItem('route-after-login');
+    }
+
+    isMemberLoggedIn():boolean
+    {
+        return this.getLoggedInRole()===Roles.MEMBER;
+    }
+
+    isCoachLoggedIn():boolean
+    {
+        return this.getLoggedInRole()===Roles.COACH;
+    }
+
+    isManagerLoggedIn():boolean
+    {
+        return this.getLoggedInRole()===Roles.MANAGER;
+    }
+
+    isCoachOrManagerLoggedIn():boolean
+    {
+        let role = this.getLoggedInRole();
+        return role===Roles.MANAGER || role===Roles.COACH;
     }
 }

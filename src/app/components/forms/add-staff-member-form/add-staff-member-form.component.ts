@@ -39,21 +39,14 @@ export class AddStaffMemberFormComponent implements OnInit {
   loadPageIfValidRole()
   {
     if(this.authService.getToken())
-    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
-      if(this.roleIsValid(claims))
+      if(this.authService.isManagerLoggedIn())
       {            
         
       }
       else
         this.router.navigate(['home']);
-    })
     else
       this.router.navigate(['login']);
-  }
-
-  roleIsValid(claims:Claims) : boolean
-  {
-    return claims.role.name===Roles.MANAGER
   }
 
   onSubmit() {
