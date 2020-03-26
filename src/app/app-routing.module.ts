@@ -24,6 +24,9 @@ import { UserAttendanceComponent } from './components/user-attendance/user-atten
 import { UserPaymentsComponent } from './components/user-payments/user-payments.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
+import { CompetitionsComponent } from './components/competitions/competitions.component';
+import { AddCompetitionFormComponent } from './components/forms/add-competition-form/add-competition-form.component';
+import { ApplyCompetitionFormComponent } from './components/forms/apply-competition-form/apply-competition-form.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -50,7 +53,10 @@ const routes: Routes = [
   {path: 'terms/group/:groupId',component:TermsComponent},
   {path: 'terms/group/:groupId/add',component:AddTermFormComponent},
   {path: 'register/:token',component:RegistrationComponent},
-  {path: 'login',component:LoginComponent}
+  {path: 'login',component:LoginComponent},
+  {path: 'competitions',component:CompetitionsComponent},
+  {path: 'competitions/add',component:AddCompetitionFormComponent},
+  {path: 'competitions/:id/apply',component:ApplyCompetitionFormComponent}
 ];
 
 @NgModule({

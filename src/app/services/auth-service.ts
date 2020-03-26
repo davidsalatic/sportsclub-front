@@ -41,6 +41,7 @@ export class AuthService{
 
     setToken(token:string)
     {
+        this.changeIsLoggedIn(true);
         sessionStorage.setItem('user',token);
     }
 
@@ -49,10 +50,42 @@ export class AuthService{
         return sessionStorage.getItem('user');
     }
 
+    setLoggedInRole(role:string)
+    {
+        sessionStorage.setItem('role',role);
+    }
+
+    getLoggedInRole()
+    {
+        return sessionStorage.getItem('role');
+    }
+
     extractClaims(token:string)
     {
         let params = new HttpParams();
         params = params.append('token', token);
         return this.httpClient.get<Claims>(this.AUTH_URL+"/claims", {params: params})
+    }
+
+    clearSession()
+    {
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('role');
+        this.changeIsLoggedIn(false);
+    }
+
+    setRouteAfterLogin(route:string)
+    {
+        sessionStorage.setItem('route-after-login',route);
+    }
+
+    getRouteAfterLogin():string
+    {
+        return sessionStorage.getItem('route-after-login');
+    }
+
+    clearRouteAfterLogin()
+    {
+        sessionStorage.removeItem('route-after-login');
     }
 }

@@ -1,0 +1,11 @@
+<form [formGroup]="applyForm" (ngSubmit)="onSubmit()">
+    <div>
+      <mat-form-field>
+        <input formControlName="message" type="text" matInput placeholder="Message (optional)">
+      </mat-form-field>
+    </div>
+  
+    <div>
+      <button type="submit" [disabled]="!applyForm.valid">Apply</button>
+    </div>
+  </form>

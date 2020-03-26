@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   showMemberships:boolean=false;
   showMembers:boolean=false;
   showStaff:boolean=false;
+  showCompetitions:boolean=false;
   isLoggedIn=false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -38,41 +39,41 @@ export class AppComponent implements OnInit {
     this.authService.isLoggedIn.subscribe(isLoggedIn=>{
       this.isLoggedIn=isLoggedIn;
       if(isLoggedIn)
-        this.displayMenuItemsDependingOnRole();
+        this.displayMenuItemsDependingOnRole(this.authService.getLoggedInRole());
     })
   }
 
-  displayMenuItemsDependingOnRole()
+  displayMenuItemsDependingOnRole(role:string)
   {
-    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
-      if(claims.role.name===Roles.MEMBER)
-      {
-        this.showTrainingSessions=false;
-        this.showMemberships=false;
-        this.showMembers=false;
-        this.showStaff=false;
-      }
-      else if(claims.role.name===Roles.COACH)
-      {
-        this.showTrainingSessions=true;
-        this.showMemberships=false;
-        this.showMembers=true;
-        this.showStaff=false;
-      }
-      else if(claims.role.name===Roles.MANAGER)
-      {
-        this.showTrainingSessions=true;
-        this.showMembers=true;
-        this.showMemberships=true;
-        this.showStaff=true;
-      }
-    })
+    if(role===Roles.MEMBER)
+    {
+      this.showTrainingSessions=false;
+      this.showMemberships=false;
+      this.showMembers=false;
+      this.showStaff=false;
+      this.showCompetitions=true;
+    }
+    else if(role===Roles.COACH)
+    {
+      this.showTrainingSessions=true;
+      this.showMemberships=false;
+      this.showMembers=true;
+      this.showStaff=false;
+      this.showCompetitions=true;
+    }
+    else if(role===Roles.MANAGER)
+    {
+      this.showTrainingSessions=true;
+      this.showMembers=true;
+      this.showMemberships=true;
+      this.showStaff=true;
+      this.showCompetitions=true;
+    }
   }
 
   logout()
   {
-    sessionStorage.clear();
-    this.authService.changeIsLoggedIn(false);
+    this.authService.clearSession();
     this.router.navigate(['login'])
   }
 }

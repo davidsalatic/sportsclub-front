@@ -39,9 +39,19 @@ export class LoginComponent implements OnInit {
     this.authService.login(loginDTO).subscribe(tokenDTO=>{
       if(tokenDTO)
       {
-        this.authService.setToken(tokenDTO.token);
-        this.authService.changeIsLoggedIn(true);
-        this.router.navigate(['home']);
+        this.authService.extractClaims(tokenDTO.token).subscribe(claims=>{
+          this.authService.setLoggedInRole(claims.role.name);
+          this.authService.setToken(tokenDTO.token);
+
+          if(this.authService.getRouteAfterLogin())
+          {
+            let route:string = this.authService.getRouteAfterLogin();
+            this.router.navigate([route]);
+            this.authService.clearRouteAfterLogin();
+          }
+          else
+            this.router.navigate(['home']);
+        })
       }
       else
         this.showSnackbar("Incorrect username/password combination.")

@@ -66,6 +66,10 @@ import { UserPaymentsComponent } from './components/user-payments/user-payments.
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
 import { HttpInterceptorService } from './interceptor/http-interceptor.service';
+import { CompetitionsComponent } from './components/competitions/competitions.component';
+import { CompetitionService } from './services/competition-service';
+import { AddCompetitionFormComponent } from './components/forms/add-competition-form/add-competition-form.component';
+import { ApplyCompetitionFormComponent } from './components/forms/apply-competition-form/apply-competition-form.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +102,10 @@ import { HttpInterceptorService } from './interceptor/http-interceptor.service';
     UserAttendanceComponent,
     UserPaymentsComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    CompetitionsComponent,
+    AddCompetitionFormComponent,
+    ApplyCompetitionFormComponent
   ],
   imports: [
     BrowserModule,
@@ -127,7 +134,7 @@ import { HttpInterceptorService } from './interceptor/http-interceptor.service';
     NgxMaterialTimepickerModule
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
-    TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,PeriodService
+    TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,CompetitionService,PeriodService
     ,FileService,    {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
