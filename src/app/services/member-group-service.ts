@@ -11,7 +11,6 @@ export class MemberGroupService {
 
     private readonly GROUPS_URL = Routes.SERVER_URL+'/groups';
 
-
     constructor(private httpClient: HttpClient,private authService:AuthService){ }
 
     getAllGroups(): Observable<MemberGroup[]>{

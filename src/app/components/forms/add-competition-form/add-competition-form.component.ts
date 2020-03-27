@@ -32,6 +32,9 @@ export class AddCompetitionFormComponent implements OnInit {
   {
     if(!this.authService.getToken())
       this.router.navigate(['login']);
+    else
+      if(this.authService.isMemberLoggedIn())
+        this.router.navigate(['home']);
   }
 
   onSubmit() {

@@ -15,6 +15,11 @@ export class CompetitionService{
         return this.httpClient.get<Competition[]>(this.COMPETITIONS_URL);
     }
 
+    getCompetitionById(id:number)
+    {
+        return this.httpClient.get<Competition>(this.COMPETITIONS_URL+id);
+    }
+
     addCompetition(competition:Competition)
     {
         return this.httpClient.post(this.COMPETITIONS_URL,competition);
@@ -23,6 +28,11 @@ export class CompetitionService{
     sendInvitations(competition:Competition)
     {
         return this.httpClient.post(this.COMPETITIONS_URL+"invite",competition);
+    }
+    
+    updateCompetition(competition:Competition)
+    {
+        return this.httpClient.put(this.COMPETITIONS_URL,competition);
     }
 
     deleteCompetition(competitionId:number)

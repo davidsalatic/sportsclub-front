@@ -70,6 +70,9 @@ import { CompetitionsComponent } from './components/competitions/competitions.co
 import { CompetitionService } from './services/competition-service';
 import { AddCompetitionFormComponent } from './components/forms/add-competition-form/add-competition-form.component';
 import { ApplyCompetitionFormComponent } from './components/forms/apply-competition-form/apply-competition-form.component';
+import { EditCompetitionFormComponent } from './components/forms/edit-competition-form/edit-competition-form.component';
+import { CompetitionApplicationService } from './services/competition-application-service';
+import { AppliedUsersCompetitionComponent } from './components/applied-users-competition/applied-users-competition.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +108,9 @@ import { ApplyCompetitionFormComponent } from './components/forms/apply-competit
     LoginComponent,
     CompetitionsComponent,
     AddCompetitionFormComponent,
-    ApplyCompetitionFormComponent
+    ApplyCompetitionFormComponent,
+    EditCompetitionFormComponent,
+    AppliedUsersCompetitionComponent
   ],
   imports: [
     BrowserModule,
@@ -135,7 +140,8 @@ import { ApplyCompetitionFormComponent } from './components/forms/apply-competit
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
     TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,CompetitionService,PeriodService
-    ,FileService,    {
+    ,FileService, CompetitionApplicationService,
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
       multi: true

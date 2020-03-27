@@ -1,12 +1,13 @@
+
 <div>
-    <a [routerLink]="['/profile/edit']"><button md-raised-button>Edit info</button></a>
+  <a [routerLink]="['/profile/edit']"><button md-raised-button>Edit info</button></a>
 </div>
 <div>
-  <button md-raised-button (click)="openDialog()">Edit password</button>
+<button md-raised-button (click)="openDialog()">Edit password</button>
 </div>
 <div *ngIf="appUser && appUser.role.name==='MEMBER'">
-  <a><button md-raised-button [routerLink]="['/attendances/member',appUser.id]">My Attendances</button></a>
+<a><button md-raised-button [routerLink]="['/attendances/member',appUser.id]">My Attendances</button></a>
 </div>
 <div *ngIf="appUser && appUser.role.name==='MEMBER'">
-  <a><button md-raised-button [routerLink]="['/payments/member',appUser.id]">My Payments</button></a>
+<a><button md-raised-button [routerLink]="['/payments/member',appUser.id]">My Payments</button></a>
 </div>

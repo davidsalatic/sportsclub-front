@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
   showStaff:boolean=false;
   showCompetitions:boolean=false;
   isLoggedIn=false;
+  showMyAttendances:boolean=false;
+  showMyPayments:boolean=false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -52,6 +54,8 @@ export class AppComponent implements OnInit {
       this.showMembers=false;
       this.showStaff=false;
       this.showCompetitions=true;
+      this.showMyAttendances=true;
+      this.showMyPayments=true;
     }
     else if(role===Roles.COACH)
     {
@@ -60,6 +64,8 @@ export class AppComponent implements OnInit {
       this.showMembers=true;
       this.showStaff=false;
       this.showCompetitions=true;
+      this.showMyPayments=false;
+      this.showMyAttendances=false;
     }
     else if(role===Roles.MANAGER)
     {
@@ -68,6 +74,8 @@ export class AppComponent implements OnInit {
       this.showMemberships=true;
       this.showStaff=true;
       this.showCompetitions=true;
+      this.showMyPayments=false;
+      this.showMyAttendances=false;
     }
   }
 

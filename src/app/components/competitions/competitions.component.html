@@ -36,12 +36,13 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
       <td mat-cell *matCellDef="let row">
         <span *ngIf="loggedInRole!='MEMBER'">
-          <a><button md-raised-button>Edit</button></a>
+          <a [routerLink]="['/competitions',row.id,'edit']"><button md-raised-button>Edit</button></a>
           <button md-raised-button (click)="deleteCompetition(row);" >Delete</button> 
+          <a [routerLink]="['/competitions',row.id,'applications']"><button md-raised-button>View applied users</button></a>
           <button md-raised-button (click)="sendInvitations(row)">Send invitations</button>
         </span>
         <span *ngIf="loggedInRole==='MEMBER'">
-          <a><button md-raised-button>Apply</button></a>
+          <a [routerLink]="['/competitions',row.id,'apply']"><button md-raised-button>Apply</button></a>
         </span>
         
       </td>

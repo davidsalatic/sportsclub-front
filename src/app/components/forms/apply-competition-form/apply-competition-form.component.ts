@@ -3,7 +3,12 @@ import { AuthService } from 'src/app/services/auth-service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Roles } from 'src/app/const/role-const';
+import { AppUserService } from 'src/app/services/app-user-service';
+import { CompetitionService } from 'src/app/services/competition-service';
+import { Competition } from 'src/app/models/competition';
+import { CompetitionApplication } from 'src/app/models/competition-application';
+import { CompetitionApplicationService } from 'src/app/services/competition-application-service';
+import { AppUser } from 'src/app/models/app-user';
 
 @Component({
   selector: 'app-apply-competition-form',
@@ -16,31 +21,96 @@ export class ApplyCompetitionFormComponent implements OnInit {
     message: new FormControl('')
   });
 
-  competitionId:number;
+  alreadyApplied:boolean=false;
+  competition:Competition;
+  appUser:AppUser;
 
   constructor(private authService:AuthService,private snackBar:MatSnackBar
-    ,private route:ActivatedRoute,private router:Router) { }
-
-
+    ,private route:ActivatedRoute,private router:Router,private appUserService:AppUserService,
+    private competitionService:CompetitionService,
+    private competitionApplicationService:CompetitionApplicationService) { }
 
   ngOnInit(): void {
-    this.competitionId=this.route.snapshot.params['id'];
+    this.loadPageIfValidRole();
+  }
+
+  loadPageIfValidRole()
+  {
+    let competitionId=this.route.snapshot.params['id'];
     if(this.authService.getToken())
-    {
-      if(this.authService.getLoggedInRole()!=Roles.MEMBER)
+      if(this.authService.isMemberLoggedIn())    
+      {
+        this.loadCompetition(competitionId);
+        this.checkIfAlreadyApplied(competitionId);
+      }
+      else
         this.router.navigate(['home']);
-    }
     else
     {
       this.showSnackbar("Log in to apply for this competition.");
-      this.authService.setRouteAfterLogin('competitions/'+this.competitionId+"/apply");
+      this.authService.setRouteAfterLogin('competitions/'+competitionId+"/apply");
       this.router.navigate(['login']);
     }
   }
 
+  loadCompetition(id:number)
+  {
+    this.competitionService.getCompetitionById(id).subscribe(comp=>{
+      this.competition=comp;
+    })
+  }
+
+  checkIfAlreadyApplied(competitionId:number)
+  {
+    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
+      if(claims)
+      this.appUserService.getByUsername(claims.sub).subscribe(user=>{
+        if(user)
+        {
+          this.appUser=user;
+          this.competitionApplicationService.getByCompetitionAndAppUser(competitionId,user.id).subscribe(application=>{
+            if(application)
+              this.alreadyApplied=true;//show button for cancel application
+            else
+              this.alreadyApplied=false;//show form for competition application
+          })
+        }
+      })
+    })
+
+  }
+
   onSubmit()
   {
-    //TODO
+    this.createCompetitionApplicationAndApply();
+  }
+
+  createCompetitionApplicationAndApply()
+  {
+    let application: CompetitionApplication = new CompetitionApplication();
+    this.authService.extractClaims(this.authService.getToken()).subscribe(claims=>{
+      this.appUserService.getByUsername(claims.sub).subscribe(member=>{
+        application.appUser=member;
+        application.message=this.applyForm.get('message').value;
+        application.competition=this.competition;
+        this.competitionApplicationService.addCompetitionApplication(application).subscribe(response=>{
+          this.showSnackbar("Applied for competition.");
+          this.router.navigate(['home']);
+        })
+      })
+    })
+  }
+
+  cancelApplication()
+  {
+    if(confirm("Cancel your application to attend '"+this.competition.name+"'?")) {
+      this.competitionApplicationService.getByCompetitionAndAppUser(this.competition.id,this.appUser.id).subscribe(compApplication=>{
+        this.competitionApplicationService.deleteCompetitionApplication(compApplication).subscribe(response=>{
+          this.showSnackbar("Application canceled.");
+          this.router.navigate(['competitions']);
+        })
+      })
+    }
   }
 
   showSnackbar(message:string)

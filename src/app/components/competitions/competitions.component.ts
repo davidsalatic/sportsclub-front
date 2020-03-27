@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth-service';
 import { ThrowStmt } from '@angular/compiler';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CompetitionApplicationService } from 'src/app/services/competition-application-service';
 
 @Component({
   selector: 'app-competitions',
@@ -25,7 +26,7 @@ export class CompetitionsComponent implements OnInit {
   loggedInRole :string;
 
   constructor(private competitionService:CompetitionService,private authService:AuthService,
-    private router:Router,private snackBar:MatSnackBar){}
+    private router:Router,private snackBar:MatSnackBar,private competitionApplicationService:CompetitionApplicationService){}
 
   ngOnInit() {
     this.loadPageIfLoggedIn();

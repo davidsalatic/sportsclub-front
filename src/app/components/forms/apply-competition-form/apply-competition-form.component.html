@@ -1,4 +1,4 @@
-<form [formGroup]="applyForm" (ngSubmit)="onSubmit()">
+<form *ngIf="!alreadyApplied" [formGroup]="applyForm" (ngSubmit)="onSubmit()">
     <div>
       <mat-form-field>
         <input formControlName="message" type="text" matInput placeholder="Message (optional)">
@@ -8,4 +8,11 @@
     <div>
       <button type="submit" [disabled]="!applyForm.valid">Apply</button>
     </div>
-  </form>
+</form>
+
+<div *ngIf="alreadyApplied">
+  <p>You already applied for this competition.</p>
+  <div>
+    <button md-raised-button (click)="cancelApplication()">Cancel application</button>
+  </div>
+</div>

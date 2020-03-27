@@ -7,8 +7,6 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-edit-app-user-form',
@@ -157,7 +155,7 @@ export class EditAppUserFormComponent implements OnInit {
   updateUserAndGoToRoute()
   {
     this.appUser.username=this.appUserForm.get('username').value;
-    this.appUserService.updateUser(this.appUser).subscribe(response=>{
+    this.appUserService.updateUser(this.appUser).subscribe(()=>{
       if(this.idOfOriginalGroup!=null)
         this.router.navigate(['/members/'+this.idOfOriginalGroup]);
       else

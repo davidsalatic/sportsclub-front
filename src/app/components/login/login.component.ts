@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
         this.authService.extractClaims(tokenDTO.token).subscribe(claims=>{
           this.authService.setLoggedInRole(claims.role.name);
           this.authService.setToken(tokenDTO.token);
+          this.authService.setLoggedInUsername(claims.sub);
 
           if(this.authService.getRouteAfterLogin())
           {

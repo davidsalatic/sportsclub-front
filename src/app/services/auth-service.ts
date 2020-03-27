@@ -43,12 +43,12 @@ export class AuthService{
     setToken(token:string)
     {
         this.changeIsLoggedIn(true);
-        sessionStorage.setItem('user',token);
+        sessionStorage.setItem('token',token);
     }
 
     getToken()
     {
-        return sessionStorage.getItem('user');
+        return sessionStorage.getItem('token');
     }
 
     setLoggedInRole(role:string)
@@ -61,6 +61,16 @@ export class AuthService{
         return sessionStorage.getItem('role');
     }
 
+    setLoggedInUsername(username:string)
+    {
+        sessionStorage.setItem('username',username);
+    }
+
+    getLoggedInUsername()
+    {
+        return sessionStorage.getItem('username');
+    }
+
     extractClaims(token:string)
     {
         let params = new HttpParams();
@@ -70,8 +80,9 @@ export class AuthService{
 
     clearSession()
     {
-        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('token');
         sessionStorage.removeItem('role');
+        sessionStorage.removeItem('username');
         this.changeIsLoggedIn(false);
     }
 
@@ -93,11 +104,6 @@ export class AuthService{
     isMemberLoggedIn():boolean
     {
         return this.getLoggedInRole()===Roles.MEMBER;
-    }
-
-    isCoachLoggedIn():boolean
-    {
-        return this.getLoggedInRole()===Roles.COACH;
     }
 
     isManagerLoggedIn():boolean

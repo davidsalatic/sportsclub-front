@@ -27,6 +27,8 @@ import { LoginComponent } from './components/login/login.component';
 import { CompetitionsComponent } from './components/competitions/competitions.component';
 import { AddCompetitionFormComponent } from './components/forms/add-competition-form/add-competition-form.component';
 import { ApplyCompetitionFormComponent } from './components/forms/apply-competition-form/apply-competition-form.component';
+import { EditCompetitionFormComponent } from './components/forms/edit-competition-form/edit-competition-form.component';
+import { AppliedUsersCompetitionComponent } from './components/applied-users-competition/applied-users-competition.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -56,7 +58,9 @@ const routes: Routes = [
   {path: 'login',component:LoginComponent},
   {path: 'competitions',component:CompetitionsComponent},
   {path: 'competitions/add',component:AddCompetitionFormComponent},
-  {path: 'competitions/:id/apply',component:ApplyCompetitionFormComponent}
+  {path: 'competitions/:id/apply',component:ApplyCompetitionFormComponent},
+  {path: 'competitions/:id/edit',component:EditCompetitionFormComponent},
+  {path: 'competitions/:id/applications', component:AppliedUsersCompetitionComponent}
 ];
 
 @NgModule({
