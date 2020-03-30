@@ -28,7 +28,9 @@ export class EditAppUserFormComponent implements OnInit {
     adress: new FormControl(''),
     phoneNumber: new FormControl(''),
     dateJoined: new FormControl(''),
-    memberGroups: new FormControl('')
+    memberGroups: new FormControl(''),
+    dateOfBirth: new FormControl({value:'',disabled:true}),
+    gender: new FormControl({value:'',disabled:true})
   });
 
   constructor(private route:ActivatedRoute, private router:Router,
@@ -75,7 +77,9 @@ export class EditAppUserFormComponent implements OnInit {
       jmbg: this.appUser.jmbg,
       adress: this.appUser.address,
       phoneNumber: this.appUser.phoneNumber,
-      dateJoined: this.appUser.dateJoined
+      dateJoined: this.appUser.dateJoined,
+      dateOfBirth: this.appUser.dateOfBirth,
+      gender: this.appUser.gender
     });
   }
 
@@ -110,13 +114,14 @@ export class EditAppUserFormComponent implements OnInit {
     this.appUser.surname=this.appUserForm.get('surname').value;
     this.appUser.address=this.appUserForm.get('adress').value;
     this.appUser.phoneNumber=this.appUserForm.get('phoneNumber').value;
+    this.appUser.jmbg=this.appUserForm.get('jmbg').value;
 
-    let formDate : Date =this.appUserForm.get('dateJoined').value;
+    let formDateJoined : Date =this.appUserForm.get('dateJoined').value;
     //if date has changed
-    if(formDate!=this.appUser.dateJoined)
+    if(formDateJoined!=this.appUser.dateJoined)
     {
-      formDate.setDate(formDate.getDate()+1);
-      this.appUser.dateJoined=formDate;
+      formDateJoined.setDate(formDateJoined.getDate()+1);
+      this.appUser.dateJoined=formDateJoined;
     }
     else
       this.appUser.dateJoined=this.appUserForm.get('dateJoined').value;

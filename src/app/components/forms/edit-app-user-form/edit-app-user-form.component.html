@@ -16,6 +16,19 @@
     </div>
     <div>
       <mat-form-field>
+        <input formControlName="gender" type="text" matInput placeholder="Gender"required>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Date of Birth</mat-label>
+        <input formControlName="dateOfBirth" matInput readonly [matDatepicker]="dateOfBirth">
+        <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfBirth></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
         <input formControlName="jmbg" type="text" matInput placeholder="Jmbg" pattern="[0-9 ]*" required minlength="13" maxlength="13">
       </mat-form-field>
     </div>
