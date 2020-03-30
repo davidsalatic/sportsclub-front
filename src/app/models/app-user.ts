@@ -11,6 +11,7 @@ export class AppUser{
     address:string;
     phoneNumber:string;
     dateJoined:Date;
+    dateOfBirth:Date;
     memberGroup:MemberGroup;
     role:Role;
 }
