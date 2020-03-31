@@ -43,51 +43,35 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
   {
     if(this.authService.getToken())
       if(this.authService.isManagerLoggedIn())
-      this.loadDefaultPriceAndCheckIfPeriodExists();
+      this.loadDefaultPriceAndCreateMembershipIfNotExist();
       else
         this.router.navigate(['home']);
     else
       this.router.navigate(['login']);
   }
 
-  loadDefaultPriceAndCheckIfPeriodExists()
+  loadDefaultPriceAndCreateMembershipIfNotExist()
   {
     this.membershipService.getMembershipPrice().subscribe(data=>{
       this.defaultMembershipPrice=data;
-      this.checkIfPeriodExists();
+      this.createMembershipInPeriodIfNotExists();
   });
   }
 
-  checkIfPeriodExists() {
-    let date=new Date();
-    let currentMonth = date.getMonth()+1;
-    let currentYear = date.getFullYear();
-    
+  createMembershipInPeriodIfNotExists()
+  {
+    let today:Date = new Date();
+    let currentMonth:number = today.getMonth()+1;
+    let currentYear:number = today.getFullYear();
+
     this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
       if(period)
-          this.createMembershipInPeriodIfNotExists(period);
-      else
-      {
-        let period:Period = new Period();
-        period.month=currentMonth;
-        period.year=currentYear;
-
-        this.periodService.addPeriod(period).subscribe(response=>{
-          this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(newPeriod=>{
-            this.createMembershipInPeriodIfNotExists(newPeriod);
-          })
+        this.membershipService.getMembershipByPeriod(period.id).subscribe(membership=>{
+          if(membership)
+            this.loadMemberships();
+          else
+            this.addMembership(period);
         })
-      }
-    })
-  }
-
-  createMembershipInPeriodIfNotExists(period:Period)
-  {
-    this.membershipService.getMembershipByPeriod(period.id).subscribe(membership=>{
-      if(membership)
-        this.loadMemberships();
-      else
-        this.addMembership(period);
     })
   }
 

@@ -62,27 +62,10 @@ export class SessionsComponent implements  OnInit {
     this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
       if(period)
         this.navigateToTrainingSessionsInGroupForPeriod(memberGroupId,period.id);
-      else
-      {
-        let period:Period = new Period();
-        period.month=currentMonth;
-        period.year=currentYear;
-
-        this.addPeriodAndNavigateToTrainingSessionsInGroup(period,memberGroupId);
-      }
     })
   }
 
   navigateToTrainingSessionsInGroupForPeriod(memberGroupId: number, periodId: number) {
     this.router.navigate(['/sessions/group/'+memberGroupId+'/period/'+periodId]);
-  }
-
-  addPeriodAndNavigateToTrainingSessionsInGroup(period:Period,memberGroupId:number)
-  {
-    this.periodService.addPeriod(period).subscribe(()=>{
-      this.periodService.getPeriodByMonthAndYear(period.month,period.year).subscribe(createdPeriod=>{
-        this.navigateToTrainingSessionsInGroupForPeriod(memberGroupId,createdPeriod.id);
-      })
-    })
   }
 }

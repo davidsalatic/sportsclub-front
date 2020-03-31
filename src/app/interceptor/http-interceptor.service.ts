@@ -15,7 +15,7 @@ export class HttpInterceptorService {
 
       let headers;
 
-      if (req.url.includes('auth')) {
+      if (req.url.includes('auth') || req.url.includes('period')) {
           headers = req.headers.set('Content-Type', 'application/json');
       } else {
           headers = req.headers

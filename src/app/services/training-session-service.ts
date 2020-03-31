@@ -14,7 +14,7 @@ export class TrainingSessionService{
     constructor(private httpClient: HttpClient){ }
 
     getAllTrainingSessionsByGroupByPeriod(memberGroupId:number,periodId:number): Observable<TrainingSession[]>{
-        return this.httpClient.get<TrainingSession[]>(this.SESSIONS_URL+"group/"+memberGroupId+"/period/"+periodId);
+        return this.httpClient.get<TrainingSession[]>(this.SESSIONS_URL+"group/"+memberGroupId+"/per/"+periodId);
     }
     
     getById(id:number) : Observable<TrainingSession>
@@ -29,7 +29,7 @@ export class TrainingSessionService{
 
     generateTrainingSessionsForTerms(terms:Term[],periodId:number,day:number)
     {
-        return this.httpClient.post(this.SESSIONS_URL+"generate/period/"+periodId+"/day/"+day,terms);
+        return this.httpClient.post(this.SESSIONS_URL+"generate/per/"+periodId+"/day/"+day,terms);
     }
 
     deleteTrainingSession(trainingSession: TrainingSession) {

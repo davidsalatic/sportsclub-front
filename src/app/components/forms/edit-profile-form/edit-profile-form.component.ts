@@ -75,15 +75,23 @@ export class EditProfileFormComponent implements OnInit {
 
   onSubmit()
   {
-    
     this.appUser.address=this.profileForm.get('adress').value;
     this.appUser.phoneNumber=this.profileForm.get('phoneNumber').value;
     this.appUser.name=this.profileForm.get('name').value;
     this.appUser.surname=this.profileForm.get('surname').value;
-    this.appUser.jmbg=this.profileForm.get('jmbg').value;
     this.appUser.username=this.profileForm.get('username').value;
 
-    this.updateAppUser();
+    this.appUserService.getByJmbg(this.profileForm.get('jmbg').value).subscribe(user=>{
+      if(user && user.jmbg!=this.appUser.jmbg)
+      {
+        this.showSnackbar("User with that JMBG already exists!");
+      }
+      else
+      {
+        this.appUser.jmbg=this.profileForm.get('jmbg').value;
+        this.updateAppUser();
+      }
+    })
   }
 
   updateAppUser()

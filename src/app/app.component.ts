@@ -5,6 +5,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from './services/auth-service';
 import { Roles } from './const/role-const';
 import { Router } from '@angular/router';
+import { PeriodService } from './services/period-service';
+import { Period } from './models/period';
 
 @Component({
   selector: 'app-root',
@@ -29,10 +31,37 @@ export class AppComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver,private authService:AuthService,private router:Router) {
+  constructor(private breakpointObserver: BreakpointObserver,private authService:AuthService,
+    private router:Router,private periodService:PeriodService) {
   }
 
   ngOnInit() {
+    this.createPeriodIfNotExistAndShowMenuItems();
+
+  }
+
+  createPeriodIfNotExistAndShowMenuItems()
+  {
+    let date:Date = new Date();
+    let currentMonth:number = date.getMonth()+1;
+    let currentYear:number = date.getFullYear();
+    this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
+      if(!period)
+      {
+        let newPeriod:Period = new Period();
+        newPeriod.month=currentMonth;
+        newPeriod.year=currentYear;
+        this.periodService.addPeriod(newPeriod).subscribe(response=>{
+          //period added for this month
+        })
+      }
+      this.trackLoginStatusAndHandleMenuItems();
+    })
+
+  }
+
+  trackLoginStatusAndHandleMenuItems()
+  {
     if(this.authService.getToken())
       this.authService.changeIsLoggedIn(true);
     else
