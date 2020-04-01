@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Claims } from '../models/helpers/claims';
 import { Routes } from '../const/routes';
 import { LoginDTO } from '../models/helpers/login-dto';
@@ -13,7 +13,7 @@ import { Roles } from '../const/role-const';
 @Injectable()
 export class AuthService{
     
-    constructor(private httpClient: HttpClient,private router:Router){ }
+    constructor(private httpClient: HttpClient){ }
 
     private readonly AUTH_URL=Routes.SERVER_URL+"/auth";
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppUser } from '../models/app-user';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Routes } from '../const/routes';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class AppUserService{
 
     private readonly APP_USERS_URL = Routes.SERVER_URL+'/users/';
     
-    constructor(private httpClient: HttpClient,private http: HttpClient){ }
+    constructor(private httpClient: HttpClient){ }
 
     getAllMembers(): Observable<AppUser[]>{
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"members");

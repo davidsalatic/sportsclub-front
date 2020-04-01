@@ -9,7 +9,6 @@ export class PaymentService{
 
     private readonly PAYMENTS_URL = Routes.SERVER_URL+'/payments/';
 
-    
     constructor(private httpClient: HttpClient){ }
 
     getAllPaymentsForMembershipByUser(membershipId:number,appUserId:number): Observable<Payment[]>{

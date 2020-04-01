@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Membership } from '../models/membership';
-
 import { HttpClient } from '@angular/common/http';
 import { MembershipPrice } from '../models/membership-price';
 import { Period } from '../models/period';

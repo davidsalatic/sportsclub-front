@@ -12,9 +12,7 @@ export class HttpInterceptorService {
   constructor(private _auth: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
       let headers;
-
       if (req.url.includes('auth') || req.url.includes('period')) {
           headers = req.headers.set('Content-Type', 'application/json');
       } else {
