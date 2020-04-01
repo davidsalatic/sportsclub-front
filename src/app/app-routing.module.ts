@@ -29,6 +29,7 @@ import { AddCompetitionFormComponent } from './components/forms/add-competition-
 import { ApplyCompetitionFormComponent } from './components/forms/apply-competition-form/apply-competition-form.component';
 import { EditCompetitionFormComponent } from './components/forms/edit-competition-form/edit-competition-form.component';
 import { AppliedUsersCompetitionComponent } from './components/applied-users-competition/applied-users-competition.component';
+import { MessageboardComponent } from './components/messageboard/messageboard.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -60,7 +61,8 @@ const routes: Routes = [
   {path: 'competitions/add',component:AddCompetitionFormComponent},
   {path: 'competitions/:id/apply',component:ApplyCompetitionFormComponent},
   {path: 'competitions/:id/edit',component:EditCompetitionFormComponent},
-  {path: 'competitions/:id/applications', component:AppliedUsersCompetitionComponent}
+  {path: 'competitions/:id/applications', component:AppliedUsersCompetitionComponent},
+  {path: 'posts', component:MessageboardComponent}
 ];
 
 @NgModule({

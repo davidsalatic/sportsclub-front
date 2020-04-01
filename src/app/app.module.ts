@@ -72,6 +72,8 @@ import { ApplyCompetitionFormComponent } from './components/forms/apply-competit
 import { EditCompetitionFormComponent } from './components/forms/edit-competition-form/edit-competition-form.component';
 import { CompetitionApplicationService } from './services/competition-application-service';
 import { AppliedUsersCompetitionComponent } from './components/applied-users-competition/applied-users-competition.component';
+import { PostService } from './services/post-service';
+import { MessageboardComponent } from './components/messageboard/messageboard.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +110,8 @@ import { AppliedUsersCompetitionComponent } from './components/applied-users-com
     AddCompetitionFormComponent,
     ApplyCompetitionFormComponent,
     EditCompetitionFormComponent,
-    AppliedUsersCompetitionComponent
+    AppliedUsersCompetitionComponent,
+    MessageboardComponent
   ],
   imports: [
     BrowserModule,
@@ -138,7 +141,7 @@ import { AppliedUsersCompetitionComponent } from './components/applied-users-com
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
     TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,CompetitionService,PeriodService
-    ,FileService, CompetitionApplicationService,
+    ,FileService, CompetitionApplicationService,PostService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,

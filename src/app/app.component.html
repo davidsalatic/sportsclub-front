@@ -14,6 +14,7 @@
         <a *ngIf=showCompetitions mat-list-item [routerLink]="['competitions']">Competitions</a>
         <a *ngIf=showStaff mat-list-item [routerLink]="['staff']">Staff</a>
 
+        <a mat-list-item [routerLink]="['posts']">Message board</a>
         <a mat-list-item [routerLink]="['profile']">My profile</a>
         <a mat-list-item (click)=logout();>Logout</a>
       </mat-nav-list>
