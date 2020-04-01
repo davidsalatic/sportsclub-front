@@ -29,6 +29,14 @@
         <input formControlName="phoneNumber" type="text" matInput placeholder="Phone number">
       </mat-form-field>
     </div>
+    <div>
+    <mat-form-field>
+      <mat-label>Date of Birth</mat-label>
+      <input formControlName="dateOfBirth" matInput readonly [matDatepicker]="dateOfBirth">
+      <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+      <mat-datepicker #dateOfBirth></mat-datepicker>
+    </mat-form-field>
+  </div>
     
     
     <div>

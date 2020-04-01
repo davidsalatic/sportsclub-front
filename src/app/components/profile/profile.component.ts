@@ -6,6 +6,7 @@ import { AppUserService } from 'src/app/services/app-user-service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { EditPasswordDialogComponent } from '../dialogs/edit-password-dialog/edit-password-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RegisterDTO } from 'src/app/models/helpers/register-dto';
 
 @Component({
   selector: 'app-profile',
@@ -50,9 +51,11 @@ export class ProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(newPassword=>{
       if(newPassword)
       {
-        this.appUser.password=newPassword;
-        this.appUserService.updateSelf(this.appUser).subscribe(response=>{
-          this.showSnackbar("Password updated.");
+        let registerDTO:RegisterDTO = new RegisterDTO();
+        registerDTO.password=newPassword;
+        registerDTO.token=this.authService.getToken();
+        this.authService.register(registerDTO).subscribe(response=>{
+          this.showSnackbar("Password changed.");
         })
       }
     })

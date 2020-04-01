@@ -22,7 +22,8 @@ export class EditProfileFormComponent implements OnInit {
     surname: new FormControl (''),
     jmbg: new FormControl(''),
     adress: new FormControl(''),
-    phoneNumber: new FormControl('')
+    phoneNumber: new FormControl(''),
+    dateOfBirth: new FormControl ({value:'',disabled:true})
   });
 
   constructor(private router:Router,
@@ -69,7 +70,8 @@ export class EditProfileFormComponent implements OnInit {
       surname:appUser.surname,
       jmbg: appUser.jmbg,
       adress: appUser.address,
-      phoneNumber: appUser.phoneNumber
+      phoneNumber: appUser.phoneNumber,
+      dateOfBirth: appUser.dateOfBirth
     });
   }
 
@@ -83,9 +85,7 @@ export class EditProfileFormComponent implements OnInit {
 
     this.appUserService.getByJmbg(this.profileForm.get('jmbg').value).subscribe(user=>{
       if(user && user.jmbg!=this.appUser.jmbg)
-      {
         this.showSnackbar("User with that JMBG already exists!");
-      }
       else
       {
         this.appUser.jmbg=this.profileForm.get('jmbg').value;

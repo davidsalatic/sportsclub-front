@@ -32,10 +32,8 @@ export class RegistrationComponent implements OnInit {
     tokenDTO.token=this.token;
     this.authService.checkToken(tokenDTO).subscribe(isValid=>{
       if(!isValid)
-      {
         //already registered redirect to login
-        this.router.navigate(['login']); 
-      }
+        this.router.navigate(['login']);
     }) 
   }
   
