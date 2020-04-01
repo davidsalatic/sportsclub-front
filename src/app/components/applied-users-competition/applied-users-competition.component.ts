@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { AppUser } from 'src/app/models/app-user';
+import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/services/auth-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CompetitionApplicationService } from 'src/app/services/competition-application-service';

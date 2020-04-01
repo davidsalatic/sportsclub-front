@@ -1,5 +1,5 @@
-import { MatDialogRef,MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
-import {Component, OnInit, Output, EventEmitter, Inject} from '@angular/core';
+import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {Component, OnInit, Inject} from '@angular/core';
 
 @Component({
   selector: 'app-change-membership-price-dialog',
@@ -8,15 +8,11 @@ import {Component, OnInit, Output, EventEmitter, Inject} from '@angular/core';
 })
 export class ChangeMembershipPriceDialogComponent implements OnInit {
 
-  price:number
-
   constructor(private dialogRef: MatDialogRef<ChangeMembershipPriceDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data:number) { 
-      this.price=data;
+    @Inject(MAT_DIALOG_DATA) private price:number) { 
     }
 
   ngOnInit(): void {
-
   }
 
   getPrice()
@@ -34,5 +30,4 @@ export class ChangeMembershipPriceDialogComponent implements OnInit {
     if(price)
       this.dialogRef.close(price);
   }
-
 }

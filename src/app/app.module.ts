@@ -59,7 +59,6 @@ import { AddTermFormComponent } from './components/forms/add-term-form/add-term-
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { AutoGenerateSessionsDialogComponent } from './components/dialogs/auto-generate-sessions-dialog/auto-generate-sessions-dialog.component';
 import { PeriodService } from './services/period-service';
-import { GuideComponent } from './components/dialogs/guide/guide.component';
 import { FileService } from './services/file-service';
 import { UserAttendanceComponent } from './components/user-attendance/user-attendance.component';
 import { UserPaymentsComponent } from './components/user-payments/user-payments.component';
@@ -101,7 +100,6 @@ import { AppliedUsersCompetitionComponent } from './components/applied-users-com
     TermsComponent,
     AddTermFormComponent,
     AutoGenerateSessionsDialogComponent,
-    GuideComponent,
     UserAttendanceComponent,
     UserPaymentsComponent,
     RegistrationComponent,

@@ -13,8 +13,6 @@ import { Membership } from 'src/app/models/membership';
 import { Payment } from 'src/app/models/payment';
 import { AppUserCondition } from 'src/app/models/helpers/user-condition';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-app-users-in-membership',

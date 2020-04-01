@@ -7,14 +7,11 @@ import { TrainingSessionService } from 'src/app/services/training-session-servic
 import { TrainingSession } from 'src/app/models/training-session';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
-import { MemberGroup } from 'src/app/models/member-group';
 import { AppUser } from 'src/app/models/app-user';
 import { AttendanceService } from 'src/app/services/attendance-service';
 import { AppUserCondition } from 'src/app/models/helpers/user-condition';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-attendances',
@@ -126,11 +123,11 @@ export class AttendancesComponent implements  OnInit {
 
   addAttendance(attendanceClicked:AppUserCondition)
   {
-    this.appUserService.getUserById(attendanceClicked.appUser.id).subscribe(user=>{
+    this.appUserService.getUserById(attendanceClicked.appUser.id).subscribe(()=>{
       let attendance:Attendance= new Attendance();
       attendance.appUser=attendanceClicked.appUser;
       attendance.trainingSession=this.trainingSession;
-      this.attendanceService.addAttendance(attendance).subscribe(response=>{
+      this.attendanceService.addAttendance(attendance).subscribe(()=>{
       })
     })
   }
@@ -138,7 +135,7 @@ export class AttendancesComponent implements  OnInit {
   deleteAttendance(attendanceClicked:AppUserCondition)
   {
     this.attendanceService.getByTrainingSessionAndAppUser(this.trainingSession.id,attendanceClicked.appUser.id).subscribe(attend=>{
-      this.attendanceService.deleteAttendance(attend).subscribe(response=>{
+      this.attendanceService.deleteAttendance(attend).subscribe(()=>{
       })
     })
   }

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AppUserService } from 'src/app/services/app-user-service';
+import { Router } from '@angular/router';
 import { LoginDTO } from 'src/app/models/helpers/login-dto';
 
 @Component({
@@ -18,9 +17,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl('',Validators.compose([Validators.required]))
   });
 
-
   constructor(private snackBar:MatSnackBar,private authService:AuthService
-    ,private route:ActivatedRoute,private appUserService:AppUserService,private router:Router) { }
+    ,private router:Router) { }
 
   ngOnInit(): void {
     if(this.authService.getToken())
@@ -65,5 +63,4 @@ export class LoginComponent implements OnInit {
       duration: 2500
     })
   }
-
 }

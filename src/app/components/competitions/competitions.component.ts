@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import {  MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { Competition } from 'src/app/models/competition';
 import { CompetitionService } from 'src/app/services/competition-service';
 import { AuthService } from 'src/app/services/auth-service';
-import { ThrowStmt } from '@angular/compiler';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CompetitionApplicationService } from 'src/app/services/competition-application-service';
 
 @Component({
   selector: 'app-competitions',
@@ -26,7 +24,7 @@ export class CompetitionsComponent implements OnInit {
   loggedInRole :string;
 
   constructor(private competitionService:CompetitionService,private authService:AuthService,
-    private router:Router,private snackBar:MatSnackBar,private competitionApplicationService:CompetitionApplicationService){}
+    private router:Router,private snackBar:MatSnackBar){}
 
   ngOnInit() {
     this.loadPageIfLoggedIn();
@@ -54,22 +52,19 @@ export class CompetitionsComponent implements OnInit {
 
   sendInvitations(competition:Competition)
   {
-    if(confirm("This will send an email to ALL members!")) {
-      this.competitionService.sendInvitations(competition).subscribe()
-      {
+    if(confirm("This will send an email to ALL members!"))
+      this.competitionService.sendInvitations(competition).subscribe(response=>{
         this.showSnackbar("Email invitations sent.");
-      }
-    }
+      })
   }
 
   deleteCompetition(competition:Competition)
   {
-    if(confirm("Delete competition '"+competition.name+"'?")) {
-      this.competitionService.deleteCompetition(competition.id).subscribe(response=>{
+    if(confirm("Delete competition '"+competition.name+"'?")) 
+      this.competitionService.deleteCompetition(competition.id).subscribe(()=>{
         this.loadCompetitions();
         this.showSnackbar("Competition "+competition.name+" deleted.")
       })
-    }
   }
 
   showSnackbar(message:string)

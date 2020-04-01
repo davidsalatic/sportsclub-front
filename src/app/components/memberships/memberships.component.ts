@@ -10,8 +10,6 @@ import { MembershipPrice } from 'src/app/models/membership-price';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 import { PeriodService } from 'src/app/services/period-service';
 import { Period } from 'src/app/models/period';
 
@@ -25,9 +23,7 @@ export class MembershipsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   dataSource: MatTableDataSource<Membership> = new MatTableDataSource();
-
   defaultMembershipPrice:MembershipPrice;
-
   displayedColumns = ['month','actions'];
 
 constructor(private membershipService:MembershipService,private matDialog:MatDialog,

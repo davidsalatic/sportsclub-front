@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppUser } from 'src/app/models/app-user';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { AuthService } from 'src/app/services/auth-service';
 import { MatSnackBar } from '@angular/material/snack-bar';

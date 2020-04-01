@@ -11,8 +11,6 @@ import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-payments-for-membership-by-app-user',

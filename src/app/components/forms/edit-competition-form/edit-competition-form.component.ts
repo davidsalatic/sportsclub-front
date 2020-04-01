@@ -79,8 +79,6 @@ export class EditCompetitionFormComponent implements OnInit {
     }
     else
       this.competition.dateHeld=this.editCompetitionForm.get('dateHeld').value;
-
-
     this.updateCompetition();
   }
 

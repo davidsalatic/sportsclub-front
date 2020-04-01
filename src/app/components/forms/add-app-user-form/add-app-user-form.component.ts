@@ -10,7 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleService } from 'src/app/services/role-service';
 import { Roles } from 'src/app/const/role-const';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
 
 @Component({
   selector: 'app-add-app-user-form',

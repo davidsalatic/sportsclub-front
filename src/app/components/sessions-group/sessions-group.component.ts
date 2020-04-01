@@ -8,8 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 import { Term } from 'src/app/models/term';
 import { AutoGenerateSessionsDialogComponent } from '../dialogs/auto-generate-sessions-dialog/auto-generate-sessions-dialog.component';
 import { TermService } from 'src/app/services/term-service';

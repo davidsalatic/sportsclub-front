@@ -3,8 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 import { Term } from 'src/app/models/term';
 import { TermService } from 'src/app/services/term-service';
 import { MemberGroupService } from 'src/app/services/member-group-service';

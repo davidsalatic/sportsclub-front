@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AppUser } from 'src/app/models/app-user';
-import { MemberGroup } from 'src/app/models/member-group';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { AuthService } from 'src/app/services/auth-service';
-import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-edit-staff-member-form',
@@ -101,7 +97,7 @@ export class EditStaffMemberFormComponent implements OnInit {
 
   updateUserAndGoToRoute()
   {
-    this.appUserService.updateUser(this.appUser).subscribe(response=>{
+    this.appUserService.updateUser(this.appUser).subscribe(()=>{
       this.router.navigate(['/staff']);
       this.showSnackbar("User edited.")
     });

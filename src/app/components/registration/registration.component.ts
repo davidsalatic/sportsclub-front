@@ -3,8 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppUserService } from 'src/app/services/app-user-service';
-import { AppUser } from 'src/app/models/app-user';
 import { RegisterDTO } from 'src/app/models/helpers/register-dto';
 import { TokenDTO } from 'src/app/models/helpers/token-dto';
 
@@ -31,8 +29,7 @@ export class RegistrationComponent implements OnInit {
     let tokenDTO:TokenDTO = new TokenDTO();
     tokenDTO.token=this.token;
     this.authService.checkToken(tokenDTO).subscribe(isValid=>{
-      if(!isValid)
-        //already registered redirect to login
+      if(!isValid)//already registered redirect to login
         this.router.navigate(['login']);
     }) 
   }

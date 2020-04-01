@@ -6,8 +6,6 @@ import { Attendance } from 'src/app/models/attendance';
 import { AuthService } from 'src/app/services/auth-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AttendanceService } from 'src/app/services/attendance-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-user-attendance',

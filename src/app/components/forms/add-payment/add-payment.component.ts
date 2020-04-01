@@ -9,8 +9,6 @@ import { PaymentService } from 'src/app/services/payment-service';
 import { Payment } from 'src/app/models/payment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-add-payment',

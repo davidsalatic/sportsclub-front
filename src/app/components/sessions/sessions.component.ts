@@ -6,10 +6,7 @@ import { MemberGroup } from 'src/app/models/member-group';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 import { PeriodService } from 'src/app/services/period-service';
-import { Period } from 'src/app/models/period';
 
 @Component({
   selector: 'app-sessions',

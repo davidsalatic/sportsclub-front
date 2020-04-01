@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
-import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleService } from 'src/app/services/role-service';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 import { AppUser } from 'src/app/models/app-user';
 
 @Component({
@@ -28,8 +25,8 @@ export class AddStaffMemberFormComponent implements OnInit {
     role: new FormControl('', Validators.required)
   });
 
-  constructor(private route:ActivatedRoute, private router:Router,
-     private appUserService : AppUserService, private memberGroupService : MemberGroupService,
+  constructor(private router:Router,
+     private appUserService : AppUserService,
      private snackBar:MatSnackBar,private roleService:RoleService,private authService:AuthService) {}
 
   ngOnInit(): void {
@@ -39,11 +36,7 @@ export class AddStaffMemberFormComponent implements OnInit {
   loadPageIfValidRole()
   {
     if(this.authService.getToken())
-      if(this.authService.isManagerLoggedIn())
-      {            
-        
-      }
-      else
+      if(!this.authService.isManagerLoggedIn())
         this.router.navigate(['home']);
     else
       this.router.navigate(['login']);

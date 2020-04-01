@@ -5,8 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Term } from 'src/app/models/term';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 import { TermService } from 'src/app/services/term-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MemberGroupService } from 'src/app/services/member-group-service';
@@ -30,7 +28,7 @@ export class TermsComponent implements OnInit {
 
   constructor(private authService:AuthService,private route:ActivatedRoute,
     private router:Router,private termService:TermService,private snackBar:MatSnackBar,
-    private memberGroupService:MemberGroupService){}
+    ){}
 
   ngOnInit() {
     this.loadPageIfValidRole();

@@ -8,8 +8,6 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 import { AddMemberGroupDialogComponent } from '../dialogs/add-member-group-dialog/add-member-group-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
-import { Claims } from 'src/app/models/helpers/claims';
-import { Roles } from 'src/app/const/role-const';
 import { Router } from '@angular/router';
 import { Guide } from 'src/app/const/guide-csv';
 import { FileService } from 'src/app/services/file-service';
