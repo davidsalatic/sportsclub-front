@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { PostService } from 'src/app/services/post-service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddPostDialogComponent } from '../dialogs/add-post-dialog/add-post-dialog.component';
+import { AppUserService } from 'src/app/services/app-user-service';
 
 @Component({
   selector: 'app-messageboard',
@@ -19,12 +20,15 @@ export class MessageboardComponent implements OnInit {
   displayedColumns = ['user','title','dateTime','actions'];
   dataSource: MatTableDataSource<Post> = new MatTableDataSource();
 
+  loggedInUserId:number;
+  numberOfPosts:number;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private snackBar:MatSnackBar,private matDialog:MatDialog,
     private authService:AuthService,private router:Router
-    ,private postService:PostService)
+    ,private postService:PostService,private appUserService:AppUserService)
   {}
 
   ngOnInit() {
@@ -34,7 +38,10 @@ export class MessageboardComponent implements OnInit {
   loadPageIfValidRole()
   {
     if(this.authService.getToken())
+    {
       this.loadPosts();
+      this.loadLoggedInUserId();
+    }
     else
       this.router.navigate(['login']);
   }
@@ -45,6 +52,14 @@ export class MessageboardComponent implements OnInit {
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.numberOfPosts=data.length;
+    })
+  }
+
+  loadLoggedInUserId()
+  {
+    this.appUserService.getByUsername(this.authService.getLoggedInUsername()).subscribe(user=>{
+      this.loggedInUserId=user.id;
     })
   }
 
