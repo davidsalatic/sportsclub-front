@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
 import { PostService } from 'src/app/services/post-service';
 import { AppUserService } from 'src/app/services/app-user-service';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { AddPostDialogComponent } from '../dialogs/add-post-dialog/add-post-dialog.component';
 
 @Component({
   selector: 'app-messageboard',
@@ -21,7 +23,7 @@ export class MessageboardComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private snackBar:MatSnackBar,
+  constructor(private snackBar:MatSnackBar,private matDialog:MatDialog,
     private authService:AuthService,private router:Router
     ,private postService:PostService,private appUserService:AppUserService)
   {}
@@ -47,21 +49,16 @@ export class MessageboardComponent implements OnInit {
     })
   }
 
-  createPostClick(title:string,text:string)
+  openDialog()
   {
-    this.appUserService.getByUsername(this.authService.getLoggedInUsername()).subscribe(user=>{
-      if(user)
-      {
-        let post:Post = new Post();
-        post.title=title;
-        post.text=text;
-        post.appUser=user;
-        post.dateTime=new Date();
+    const dialogConfig = new MatDialogConfig();
+    let dialogRef = this.matDialog.open(AddPostDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(post=>{
+      if(post)
         this.postService.addPost(post).subscribe(response=>{
           this.showSnackbar("Post created.");
           this.loadPosts();
         })
-      }
     })
   }
 

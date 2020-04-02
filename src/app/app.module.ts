@@ -74,6 +74,7 @@ import { CompetitionApplicationService } from './services/competition-applicatio
 import { AppliedUsersCompetitionComponent } from './components/applied-users-competition/applied-users-competition.component';
 import { PostService } from './services/post-service';
 import { MessageboardComponent } from './components/messageboard/messageboard.component';
+import { AddPostDialogComponent } from './components/dialogs/add-post-dialog/add-post-dialog.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { MessageboardComponent } from './components/messageboard/messageboard.co
     ApplyCompetitionFormComponent,
     EditCompetitionFormComponent,
     AppliedUsersCompetitionComponent,
-    MessageboardComponent
+    MessageboardComponent,
+    AddPostDialogComponent
   ],
   imports: [
     BrowserModule,
