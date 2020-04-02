@@ -16,6 +16,11 @@ export class PostService
         return this.httpClient.get<Post[]>(this.POSTS_URL);
     }
 
+    getPostById(id:number)
+    {
+        return this.httpClient.get<Post>(this.POSTS_URL+"/"+id);
+    }
+
     addPost(post:Post)
     {
         return this.httpClient.post(this.POSTS_URL,post);

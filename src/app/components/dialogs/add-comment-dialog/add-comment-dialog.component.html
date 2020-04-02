@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Add a new comment</h2>
+
+<mat-dialog-content>
+    <div>
+        <mat-form-field>
+            <input #text  matInput placeholder="Text" required>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button" (click)="close()">Close</button>
+    &nbsp;
+    <button class="mat-raised-button" (click)="save(text.value)">Save</button>
+</mat-dialog-actions>

@@ -75,6 +75,9 @@ import { AppliedUsersCompetitionComponent } from './components/applied-users-com
 import { PostService } from './services/post-service';
 import { MessageboardComponent } from './components/messageboard/messageboard.component';
 import { AddPostDialogComponent } from './components/dialogs/add-post-dialog/add-post-dialog.component';
+import { PostComponent } from './components/post/post.component';
+import { CommentService } from './services/comment-service';
+import { AddCommentDialogComponent } from './components/dialogs/add-comment-dialog/add-comment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -113,7 +116,9 @@ import { AddPostDialogComponent } from './components/dialogs/add-post-dialog/add
     EditCompetitionFormComponent,
     AppliedUsersCompetitionComponent,
     MessageboardComponent,
-    AddPostDialogComponent
+    AddPostDialogComponent,
+    PostComponent,
+    AddCommentDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -143,7 +148,7 @@ import { AddPostDialogComponent } from './components/dialogs/add-post-dialog/add
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
     TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,CompetitionService,PeriodService
-    ,FileService, CompetitionApplicationService,PostService,
+    ,FileService, CompetitionApplicationService,PostService,CommentService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,

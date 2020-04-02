@@ -7,7 +7,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
 import { PostService } from 'src/app/services/post-service';
-import { AppUserService } from 'src/app/services/app-user-service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddPostDialogComponent } from '../dialogs/add-post-dialog/add-post-dialog.component';
 
@@ -25,7 +24,7 @@ export class MessageboardComponent implements OnInit {
 
   constructor(private snackBar:MatSnackBar,private matDialog:MatDialog,
     private authService:AuthService,private router:Router
-    ,private postService:PostService,private appUserService:AppUserService)
+    ,private postService:PostService)
   {}
 
   ngOnInit() {
@@ -60,11 +59,6 @@ export class MessageboardComponent implements OnInit {
           this.loadPosts();
         })
     })
-  }
-
-  viewText(post:Post)
-  {
-    alert(post.text);
   }
 
   deletePost(post:Post)
