@@ -21,7 +21,6 @@ export class MessageboardComponent implements OnInit {
   dataSource: MatTableDataSource<Post> = new MatTableDataSource();
 
   loggedInUserId:number;
-  numberOfPosts:number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -52,7 +51,6 @@ export class MessageboardComponent implements OnInit {
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.numberOfPosts=data.length;
     })
   }
 

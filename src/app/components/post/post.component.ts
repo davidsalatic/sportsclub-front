@@ -28,7 +28,6 @@ export class PostComponent implements OnInit {
 
   post:Post;
   loggedInUserId:number;
-  numberOfComments:number;
 
   constructor(private authService:AuthService,private router:Router,private matDialog:MatDialog,
     private route:ActivatedRoute,private postService:PostService,private commentService:CommentService
@@ -89,6 +88,11 @@ export class PostComponent implements OnInit {
           this.addComment(comment);
         })
     })
+  }
+
+  viewComment(comment:Comment)
+  {
+    alert(comment.text);
   }
 
   addComment(comment:Comment)
