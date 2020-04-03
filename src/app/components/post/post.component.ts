@@ -30,7 +30,6 @@ export class PostComponent implements OnInit {
   loggedInUserId:number;
   numberOfComments:number;
 
-
   constructor(private authService:AuthService,private router:Router,private matDialog:MatDialog,
     private route:ActivatedRoute,private postService:PostService,private commentService:CommentService
     ,private appUserService:AppUserService, private snackBar:MatSnackBar){}
@@ -98,11 +97,6 @@ export class PostComponent implements OnInit {
       this.showSnackbar("Comment posted.");
       this.loadComments(this.post.id);
     })
-  }
-
-  viewComment(comment:Comment)
-  {
-    alert(comment.text);
   }
 
   deleteComment(comment:Comment)
