@@ -1,16 +1,22 @@
-<form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
-    <div>
-        <mat-form-field>
-        <input formControlName="password" type="password" matInput placeholder="Password" required>
-        </mat-form-field>
+<div class="toolbar">
+    Sports Club
+</div>
+<div class="login-box">
+<h1>Set your password</h1>
+    <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+
+    <div class="textbox">
+        <i class="fas fa-lock"></i>
+        <input formControlName="password" type="password" matInput required placeholder="Password">
+    </div>
+
+    <div class="textbox">
+        <i class="fas fa-lock"></i>
+        <input formControlName="confirmPassword" type="password" matInput required placeholder="Confirm password">
     </div>
     <div>
-        <mat-form-field>
-            <input formControlName="confirmPassword" type="password" matInput placeholder="Confirm password" required>
-        </mat-form-field>
+        <button class="btn-submit" type="submit" [disabled]="!passwordForm.valid">Register</button>
     </div>
  
-    <div>
-      <button type="submit" [disabled]="!passwordForm.valid">Submit</button>
-    </div>
   </form>
+  </div>
