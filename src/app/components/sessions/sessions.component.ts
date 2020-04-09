@@ -7,6 +7,7 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service';
 import { PeriodService } from 'src/app/services/period-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-sessions',
@@ -19,12 +20,14 @@ export class SessionsComponent implements  OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   dataSource: MatTableDataSource<MemberGroup> = new MatTableDataSource();
-  displayedColumns = ['name','actions'];
+  displayedColumns = ['name'];
   currentMonth:number = new Date().getMonth()+1;
   currentYear:number = new Date().getFullYear();
 
   constructor(private memberGroupService:MemberGroupService,private router:Router,
-    private authService:AuthService,private periodService:PeriodService){}
+    private authService:AuthService,private periodService:PeriodService,private titleService:TitleService){
+      titleService.changeTitle("Training sessions")
+    }
 
   ngOnInit() {
     this.loadPageIfValidRole();

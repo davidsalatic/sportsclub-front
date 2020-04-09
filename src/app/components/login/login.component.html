@@ -1,28 +1,21 @@
-<div>
-    <div class="toolbar">
-        Sports Club
-    </div>
-    <div class="login-box">
-        <h1>Login</h1>
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    
-                <div class="textbox">
-                    <i class="fas fa-user"></i>
-                    <input formControlName="username" type="email" matInput required placeholder="Email">
-                </div>
-    
-                <div class="textbox">
-                    <i class="fas fa-lock"></i>
-                    <input formControlName="password" type="password" matInput required placeholder="Password">
-                </div>
-                <div>
-                    <button class="btn-submit" type="submit" [disabled]="!loginForm.valid">Sign in</button>
-                </div>
-            </form>
-    </div>
+<div class="login-box">
+    <h1>Login</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <div class="textbox">
+            <i class="fas fa-user"></i>
+            <input formControlName="username" type="email" matInput required placeholder="Email">
+        </div>
+
+        <div class="textbox">
+            <i class="fas fa-lock"></i>
+            <input formControlName="password" type="password" matInput required placeholder="Password">
+        </div>
+        <div>
+            <button class="btn-submit" type="submit" [disabled]="!loginForm.valid">Sign in</button>
+        </div>
+    </form>
 </div>
-
-
 
 
   

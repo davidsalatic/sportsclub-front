@@ -1,13 +1,22 @@
 .sidenav-container {
     height: 100%;
+    position: fixed;
+    min-width: 100%;
+    background-image: url("/assets/images/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    background-size: cover;
+    color: rgb(211, 195, 195);
   }
   
   .sidenav {
     width: 200px;
+    background-color: rgba(11, 11, 20, 0.61);
   }
   
   .sidenav .mat-toolbar {
-    background: inherit;
+    background-color: inherit;
   }
   
   .mat-toolbar.mat-primary {
@@ -15,4 +24,57 @@
     top: 0;
     z-index: 1;
   }
-  
+
+  .mat-toolbar.mat-primary{background:rgba(11, 11, 20, 0.61);color:#fff}  
+
+  .menu-text{
+    color:rgb(216, 216, 175);
+    
+  }
+
+ a :hover{
+   color: rgb(80, 79, 32);
+ }
+
+ .mat-toolbar{
+   color: rgb(80, 79, 32);
+ }
+
+ .mat-table{
+  left: 50%;
+  color: white;
+  background-color: rgba(186, 186, 219, 0.671);
+  width: 80%;
+
+  border-collapse: collapse;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+  overflow: hidden;
+}
+
+.mat-elevation-z8{
+  margin-top: 2%;
+  top: auto;
+  width: 70%;
+  margin-left:auto; 
+  margin-right:auto;
+  text-align: center;
+}
+
+.mat-paginator{
+  background-color: rgba(186, 186, 219, 0.671);
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+
+/* .spacer{
+  flex: 1 1 auto;
+} */
+
+tr.mat-row:hover, tr.mat-footer-row:hover {
+  background-color: rgb(139, 138, 201);
+}
+
+.mat-cell :hover{
+  color: #fff;
+}

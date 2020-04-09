@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
 import { PeriodService } from 'src/app/services/period-service';
 import { Period } from 'src/app/models/period';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-memberships',
@@ -28,8 +29,10 @@ export class MembershipsComponent implements OnInit {
 
 constructor(private membershipService:MembershipService,private matDialog:MatDialog,
   private snackBar:MatSnackBar,private authService:AuthService,private router:Router
-  ,private periodService:PeriodService)
-{}
+  ,private periodService:PeriodService,private titleService:TitleService)
+{
+  this.titleService.changeTitle("Memberships");
+}
 
   ngOnInit() {
     this.loadPageIfValidRole();

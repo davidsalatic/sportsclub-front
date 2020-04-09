@@ -1,3 +1,9 @@
 .full-width-table {
   width: 100%;
 }
+
+.mat-row :hover{
+  color: #fff;
+  font-size: large;
+  background-color: rgb(32, 31, 105);
+}

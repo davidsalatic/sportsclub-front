@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
 import { LoginDTO } from 'src/app/models/helpers/login-dto';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,9 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(private snackBar:MatSnackBar,private authService:AuthService
-    ,private router:Router) { }
+    ,private router:Router,private titleService:TitleService) {
+      this.titleService.changeTitle("Sports Club");
+     }
 
   ngOnInit(): void {
     if(this.authService.getToken())

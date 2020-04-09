@@ -2,3 +2,12 @@
     width: 100%;
   }
   
+  th.mat-header-cell {
+    text-align: center;    
+}
+
+.mat-toolbar.mat-primary{background:rgba(11, 11, 20, 0);color:#fff; padding: 0;}  
+
+.spacer{
+  flex: 1 1 auto;
+}

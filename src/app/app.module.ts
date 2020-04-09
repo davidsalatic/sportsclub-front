@@ -78,6 +78,9 @@ import { AddPostDialogComponent } from './components/dialogs/add-post-dialog/add
 import { PostComponent } from './components/post/post.component';
 import { CommentService } from './services/comment-service';
 import { AddCommentDialogComponent } from './components/dialogs/add-comment-dialog/add-comment-dialog.component';
+import { InfoComponent } from './components/info/info.component';
+import { TitleService } from './services/title-service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -118,7 +121,8 @@ import { AddCommentDialogComponent } from './components/dialogs/add-comment-dial
     MessageboardComponent,
     AddPostDialogComponent,
     PostComponent,
-    AddCommentDialogComponent
+    AddCommentDialogComponent,
+    InfoComponent
   ],
   imports: [
     BrowserModule,
@@ -142,13 +146,14 @@ import { AddCommentDialogComponent } from './components/dialogs/add-comment-dial
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
+    MatTooltipModule,
     MatRadioModule,
     MatCardModule,
     NgxMaterialTimepickerModule
   ],
   providers: [MemberGroupService,AppUserService,MembershipService,PaymentService,
     TrainingSessionService,AttendanceService,AuthService,RoleService,TermService,CompetitionService,PeriodService
-    ,FileService, CompetitionApplicationService,PostService,CommentService,
+    ,FileService, CompetitionApplicationService,PostService,CommentService,TitleService,  
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,

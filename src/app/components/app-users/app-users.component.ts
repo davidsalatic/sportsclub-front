@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-app-users',
@@ -26,7 +27,8 @@ export class AppUsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private appUsersService:AppUserService,private memberGroupService:MemberGroupService, 
-     private route:ActivatedRoute,private router:Router,private snackBar:MatSnackBar,private authService:AuthService){
+     private route:ActivatedRoute,private router:Router,private snackBar:MatSnackBar,
+     private authService:AuthService,private titleService:TitleService){
   }
 
   ngOnInit() {
@@ -40,7 +42,7 @@ export class AppUsersComponent implements OnInit {
       {
         let memberGroupId=this.route.snapshot.params['id'];
         this.loadMemberGroup(memberGroupId);
-        this.loadUsersInGroup(memberGroupId)
+        this.loadUsersInGroup(memberGroupId);
       }
       else
         this.router.navigate(['home']);
@@ -52,6 +54,7 @@ export class AppUsersComponent implements OnInit {
   {
     this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
       this.memberGroup=group;
+      this.titleService.changeTitle(group.name+" members")
     })
   }
 

@@ -1,51 +1,52 @@
-<mat-sidenav-container  class="sidenav-container" >
-    <mat-sidenav *ngIf=isLoggedIn #drawer class="sidenav" fixedInViewport
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="(isHandset$ | async) ? 'over' : 'side'"
-        [opened]="(isHandset$ | async) === false">
-
-      <mat-toolbar>Menu</mat-toolbar>
-
-      <mat-nav-list *ngIf=isLoggedIn>
-        <a mat-list-item [routerLink]="['home']">Home</a>
-        <a *ngIf=showTrainingSessions mat-list-item [routerLink]="['sessions']">Training sessions</a>
-        <a *ngIf=showMemberships mat-list-item [routerLink]="['memberships']">Memberships</a>
-        <a *ngIf=showMembers mat-list-item [routerLink]="['members']">Members</a>
-        <a *ngIf=showCompetitions mat-list-item [routerLink]="['competitions']">Competitions</a>
-        <a *ngIf=showStaff mat-list-item [routerLink]="['staff']">Staff</a>
-
-        <a mat-list-item [routerLink]="['posts']">Message board</a>
-        <a mat-list-item [routerLink]="['profile']">My profile</a>
-        <a mat-list-item (click)=logout();>Logout</a>
-      </mat-nav-list>
-      
-      <mat-nav-list *ngIf=!isLoggedIn>
-        <a mat-list-item [routerLink]="['login']" >Login</a>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content >
-
-      <div *ngIf=isLoggedIn>
-        <mat-toolbar color="primary">
-          <button 
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-          *ngIf="isHandset$ | async">
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span> Sports Club</span>
-      </mat-toolbar>
-      </div>
-      
-      <router-outlet ></router-outlet>
-      
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-
-
-
-
-
+    <mat-sidenav-container class="sidenav-container" >
+      <mat-sidenav #drawer class="sidenav" fixedInViewport
+          [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+          [mode]="(isHandset$ | async) ? 'over' : 'side'"
+          [opened]="(isHandset$ | async) === true">
   
+        <mat-toolbar>Menu</mat-toolbar>
+  
+        <mat-nav-list *ngIf=isLoggedIn>
+          <a mat-list-item [routerLink]="['home']"><span class="menu-text">Home</span></a>
+          <a *ngIf=showTrainingSessions mat-list-item [routerLink]="['sessions']"><span class="menu-text">Training sessions</span></a>
+          <a *ngIf=showMemberships mat-list-item [routerLink]="['memberships']"><span class="menu-text">Memberships</span></a>
+          <a *ngIf=showMembers mat-list-item [routerLink]="['members']"><span class="menu-text">Members</span></a>
+          <a *ngIf=showCompetitions mat-list-item [routerLink]="['competitions']"><span class="menu-text">Competitions</span></a>
+          <a *ngIf=showStaff mat-list-item [routerLink]="['staff']"><span class="menu-text">Staff</span></a>
+  
+          <a mat-list-item [routerLink]="['posts']"><span class="menu-text">Message board</span></a>
+          <a mat-list-item [routerLink]="['profile']"><span class="menu-text">My profile</span></a>
+          <a mat-list-item (click)=logout();><span class="menu-text">Logout</span></a>
+        </mat-nav-list>
+        
+        <mat-nav-list *ngIf=!isLoggedIn>
+          <a mat-list-item [routerLink]="['login']" ><span class="menu-text">Login</span></a>
+          <a mat-list-item [routerLink]="['info']" ><span class="menu-text">Info</span></a>
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+  
+        <mat-toolbar color="primary">
+          
+            <button 
+            type="button"
+            aria-label="Toggle sidenav"
+            mat-icon-button
+            (click)="drawer.toggle()"
+            >
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          </button>
+
+        <span> {{title}}</span>
+        </mat-toolbar>
+        <router-outlet ></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+
+    <!-- <md-toolbar>
+      <div class="md-toolbar-tools">
+          <h3>You text</h3>
+
+          <ANY>your right content</ANY>
+      </div>
+  </md-toolbar> -->

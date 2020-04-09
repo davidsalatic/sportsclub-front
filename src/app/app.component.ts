@@ -7,6 +7,7 @@ import { Roles } from './const/role-const';
 import { Router } from '@angular/router';
 import { PeriodService } from './services/period-service';
 import { Period } from './models/period';
+import { TitleService } from './services/title-service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import { Period } from './models/period';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
-  title = 'Sports Club';
+  
+  title:string='Sports Club';
 
   showTrainingSessions:boolean=false;
   showMemberships:boolean=false;
@@ -33,11 +35,19 @@ export class AppComponent implements OnInit {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,private authService:AuthService,
-    private router:Router,private periodService:PeriodService) {
+    private router:Router,private periodService:PeriodService,private titleService:TitleService) {
   }
 
   ngOnInit() {
     this.createPeriodIfNotExistAndShowMenuItems();
+    this.trackTitleChange();
+  }
+
+  trackTitleChange()
+  {
+    this.titleService.title.subscribe(changedTitle=>{
+      this.title=changedTitle;
+    })
   }
 
   createPeriodIfNotExistAndShowMenuItems()

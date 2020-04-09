@@ -13,6 +13,8 @@ import { AutoGenerateSessionsDialogComponent } from '../dialogs/auto-generate-se
 import { TermService } from 'src/app/services/term-service';
 import { PeriodService } from 'src/app/services/period-service';
 import { Period } from 'src/app/models/period';
+import { TitleService } from 'src/app/services/title-service';
+import { MemberGroupService } from 'src/app/services/member-group-service';
 
 
 @Component({
@@ -25,7 +27,7 @@ export class SessionsGroupComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   dataSource: MatTableDataSource<TrainingSession>= new MatTableDataSource();
-  displayedColumns = ['date','time','actions'];
+  displayedColumns = ['date','time'];
   memberGroupId:number;
   terms:Term[];
   allPeriods:Period[];
@@ -39,7 +41,8 @@ export class SessionsGroupComponent implements OnInit {
   constructor(private trainingSessionService: TrainingSessionService,private route:ActivatedRoute
     ,private matDialog:MatDialog,
     private snackBar:MatSnackBar,private authService:AuthService,private router:Router,
-    private termService:TermService,private periodService:PeriodService){}
+    private termService:TermService,private periodService:PeriodService,
+    private titleService:TitleService, private memberGroupService:MemberGroupService){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -55,11 +58,24 @@ export class SessionsGroupComponent implements OnInit {
         this.loadAllPeriods();
         this.loadAllTermsInGroup();
         this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId);
+        this.setTitle();
       }
       else
         this.router.navigate(['home']);
     else
       this.router.navigate(['login']);
+  }
+
+  setTitle()
+  {
+    this.memberGroupService.getGroupById(this.memberGroupId).subscribe(group=>{
+      this.titleService.changeTitle(group.name+" training sessions")
+    })
+  }
+
+  viewTrainingClick(trainingSession:TrainingSession)
+  {
+    this.router.navigate(['/sessions/'+ trainingSession.id +'/attendances']);
   }
 
   loadAllPeriods()

@@ -50,11 +50,3 @@ body{
   font-size: 18px;
   margin: 12px 0;
 }
-
-.toolbar{
-  width: 100%;
-  padding: 1%;
-  background-color:#673ab7;
-  color: white;
-  font:500 20px/32px Roboto, "Helvetica Neue", sans-serif;margin:0
-}
