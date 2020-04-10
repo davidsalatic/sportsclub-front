@@ -1,13 +1,17 @@
-<h2 mat-dialog-title>Choose type</h2>
+<h2 mat-dialog-title>Generate type</h2>
 
 <mat-dialog-content>
-
+    <p>Select auto generation type:</p>
+    <p>
+        <button class="mat-raised-button" (click)="generateFromToday()">1. Today->End of month</button>
+    </p>
+    <p>
+        <button class="mat-raised-button" (click)="generateThisMonth()">2. This month</button>
+    </p>
 </mat-dialog-content>
-
 <mat-dialog-actions>
-    <button class="mat-raised-button" (click)="close()">Close</button>
-    &nbsp;
-    <button class="mat-raised-button" (click)="generateFromToday()">Today->End of month</button>
-    &nbsp;
-    <button class="mat-raised-button" (click)="generateThisMonth()">This month</button>
+
+    <div>
+        <button class="mat-raised-button" (click)="close()">Close</button>
+    </div>
 </mat-dialog-actions>

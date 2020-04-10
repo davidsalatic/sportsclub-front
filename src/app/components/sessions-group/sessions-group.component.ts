@@ -121,16 +121,6 @@ export class SessionsGroupComponent implements OnInit {
     return period.month==currentMonth && period.year==currentYear;
   }
 
-  deleteTrainingSession(trainingSession:TrainingSession)
-  {
-    if(confirm("Delete training session and all connected attendances?")) {
-      this.trainingSessionService.deleteTrainingSession(trainingSession).subscribe(()=>{
-        this.loadTrainingSessionsInGroupInPeriod(this.memberGroupId,this.periodId);
-        this.showSnackbar("Training session deleted.")
-      })
-    }
-  }
-
   openDialog()
   {
     if(this.memberGroupHasTerms())

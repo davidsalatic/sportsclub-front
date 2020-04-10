@@ -25,7 +25,7 @@ export class MembershipsComponent implements OnInit {
 
   dataSource: MatTableDataSource<Membership> = new MatTableDataSource();
   defaultMembershipPrice:MembershipPrice;
-  displayedColumns = ['month','actions'];
+  displayedColumns = ['month'];
 
 constructor(private membershipService:MembershipService,private matDialog:MatDialog,
   private snackBar:MatSnackBar,private authService:AuthService,private router:Router
@@ -110,6 +110,11 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
     this.membershipService.setMembershipPrice(this.defaultMembershipPrice).subscribe(response=>{
       this.showSnackbar("Default price of membership changed to "+this.defaultMembershipPrice.price+".")
     });
+  }
+
+  viewMembershipClick(membership:Membership)
+  {
+    this.router.navigate(['/memberships/'+membership.id]);
   }
 
   showSnackbar(message:string)

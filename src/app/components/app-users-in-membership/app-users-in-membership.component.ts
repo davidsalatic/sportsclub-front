@@ -13,6 +13,7 @@ import { Membership } from 'src/app/models/membership';
 import { Payment } from 'src/app/models/payment';
 import { AppUserCondition } from 'src/app/models/helpers/user-condition';
 import { AuthService } from 'src/app/services/auth-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-app-users-in-membership',
@@ -33,7 +34,7 @@ export class AppUsersInMembershipComponent implements OnInit {
   displayedColumns = [ 'name','group','settled','actions'];
   
   constructor(private route:ActivatedRoute, private appUserService : AppUserService,
-    private paymentService:PaymentService,private matDialog:MatDialog,
+    private paymentService:PaymentService,private matDialog:MatDialog,private titleService:TitleService,
     private membershipService:MembershipService,private router:Router,private authService:AuthService)
   {}
 
@@ -60,6 +61,7 @@ export class AppUsersInMembershipComponent implements OnInit {
   {
     this.membershipService.getMembershipById(membershipId).subscribe(membership=>{
       this.membership=membership;
+      this.titleService.changeTitle("Membership "+membership.period.month+"-"+membership.period.year);
     })
   }
 

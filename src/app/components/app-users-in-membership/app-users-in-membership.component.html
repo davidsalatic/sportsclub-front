@@ -1,7 +1,28 @@
-<div *ngIf =membership>
-   Price: {{membership.price}}
-  <button type="button" (click)="openDialog()">Change</button>
-</div>
+<mat-toolbar color="primary" class="actions">
+
+  <a 
+  [routerLink]="['/memberships']" class="back-icon">
+    <button class="back-icon" 
+    type="button"
+    aria-label="Back to period choose"
+    mat-icon-button
+    >
+    <mat-icon matTooltip="Back to period choose" aria-label="Back to period choose">arrow_back_ios</mat-icon>
+  </button>
+  </a>
+
+  <span class="spacer"></span>
+  
+  <div *ngIf=membership class="actions-panel" >
+    <button (click)="openDialog();"
+    type="button"
+    aria-label="Change membership price"
+    mat-icon-button
+    >
+    <mat-icon matTooltip="Change membership price" aria-label="Change membership price">local_offer</mat-icon>
+  </button>
+  </div>
+</mat-toolbar>
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Elements">

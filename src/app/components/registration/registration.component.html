@@ -1,20 +1,25 @@
-
-<div class="login-box">
-<h1>Set password</h1>
-    <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
-
-    <div class="textbox">
-        <i class="fas fa-lock"></i>
-        <input formControlName="password" type="password" matInput required placeholder="Password">
-    </div>
-
-    <div class="textbox">
-        <i class="fas fa-lock"></i>
-        <input formControlName="confirmPassword" type="password" matInput required placeholder="Confirm password">
-    </div>
+<mat-card class="centered">
+    <mat-card-title>Registration</mat-card-title>
+<mat-card-content>
+<form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
     <div>
-        <button class="btn-submit" type="submit" [disabled]="!passwordForm.valid">Register</button>
+        <p>
+        <mat-form-field>
+            <input type="password" matInput placeholder="Password" formControlName="password" required>
+        </mat-form-field>
+        </p>
+        <p>
+        <mat-form-field>
+            <input type="password" matInput placeholder="Confirm password" formControlName="confirmPassword" required>
+        </mat-form-field>
+        </p>
     </div>
- 
-  </form>
+
+
+  <div class="button">
+    <button class="btn-submit" type="submit" [disabled]="!passwordForm.valid">Set password</button>
   </div>
+
+</form>
+</mat-card-content>
+</mat-card>

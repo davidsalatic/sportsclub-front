@@ -12,6 +12,7 @@ import { AttendanceService } from 'src/app/services/attendance-service';
 import { AppUserCondition } from 'src/app/models/helpers/user-condition';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-attendances',
@@ -24,7 +25,7 @@ export class AttendancesComponent implements  OnInit {
 
   dataSource: MatTableDataSource<AppUserCondition> = new MatTableDataSource();
 
-  displayedColumns = [ 'name','present'];
+  displayedColumns = [ 'name','surname','present'];
 
   trainingId:number;
   trainingSession:TrainingSession;
@@ -33,7 +34,7 @@ export class AttendancesComponent implements  OnInit {
   appUsers:AppUser[];
   
   constructor(private route:ActivatedRoute,private appUserService:AppUserService
-    ,private attendanceService:AttendanceService,
+    ,private attendanceService:AttendanceService,private titleService:TitleService,
     private trainingSessionService:TrainingSessionService,
     private snackBar:MatSnackBar,private router:Router,private authService:AuthService)
   {}
@@ -60,6 +61,7 @@ export class AttendancesComponent implements  OnInit {
   {
     this.trainingSessionService.getById(trainingId).subscribe(training=>{
       this.trainingSession=training;
+      this.titleService.changeTitle(training.dayOfWeek+" - " +training.dateHeld+ " "+training.timeHeld);
       this.loadAppUsersInMemberGroup(training.memberGroup.id);
     })
   }
@@ -138,6 +140,17 @@ export class AttendancesComponent implements  OnInit {
       this.attendanceService.deleteAttendance(attend).subscribe(()=>{
       })
     })
+  }
+
+  deleteTrainingSession()
+  {
+    if(confirm("Delete training session?")) {
+      this.trainingSessionService.deleteTrainingSession(this.trainingSession).subscribe(()=>{
+        this.showSnackbar("Training session deleted.");
+        this.router.navigate(['/sessions/group/'+this.trainingSession.memberGroup.id+'/period/'+
+        this.trainingSession.period.id]);
+      })
+    }
   }
 
   showSnackbar(message:string)

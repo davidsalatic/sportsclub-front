@@ -29,7 +29,6 @@
 
   .menu-text{
     color:rgb(216, 216, 175);
-    
   }
 
  a :hover{
@@ -67,14 +66,51 @@
   border-bottom-right-radius: 1em;
 }
 
-/* .spacer{
-  flex: 1 1 auto;
-} */
-
 tr.mat-row:hover, tr.mat-footer-row:hover {
   background-color: rgb(139, 138, 201);
 }
 
 .mat-cell :hover{
   color: #fff;
+}
+
+.mat-toolbar.mat-primary button :hover{
+  color: bisque;
+}
+
+.mat-toolbar a :active :visited{
+  color:white;
+}
+
+.mat-toolbar a{
+  color:white
+}
+
+.mat-toolbar a :hover{
+  color: bisque;
+}
+
+.mat-toolbar.mat-primary.actions{
+  background:rgba(11, 11, 20, 0.0);
+  color:#fff; 
+  padding: 0;
+  position: relative;
+  top: 11%;
+  z-index: 0;
+}
+
+.mat-toolbar.mat-primary.actions a{
+  margin-left: 1%;
+}
+
+span.spacer{
+  flex: 1 1 auto;
+}
+
+div.actions-panel{
+  margin-right: 1%;
+  border-width: 1pt;
+  border-color: white;
+  border-style: solid;
+  border-radius: 4pt;
 }
