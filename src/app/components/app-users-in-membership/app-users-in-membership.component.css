@@ -1,3 +1,15 @@
 .full-width-table {
   width: 100%;
 }
+
+.mat-elevation-z8{
+  text-align: left;
+}
+
+th.mat-header-cell {
+  text-align: center;    
+}
+
+td.mat-cell.settled{
+  text-align: center;
+}

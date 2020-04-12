@@ -15,4 +15,9 @@ export class TitleService{
         this.pageTitle.next(title)
         this.browserTitle.setTitle(title+ " - Sports Club")
     }
+
+    getTitle()
+    {
+        return this.pageTitle.value;
+    }
 }

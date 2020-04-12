@@ -1,0 +1,51 @@
+<mat-toolbar color="primary" class="actions">
+
+    <a *ngIf=payment [routerLink]="['/payments/membership',payment.membership.id,'user',payment.appUser.id]">
+      <button 
+      type="button"
+      aria-label="Back to payments"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Back to payments" aria-label="Back to payments">arrow_back_ios</mat-icon>
+    </button>
+    </a>
+
+    <span class="spacer"></span>
+
+    <div *ngIf=payment class="actions-panel" >
+      <button (click)="deletePayment();"
+      type="button"
+      aria-label="Delete payment"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Delete payment" aria-label="Delete payment">delete</mat-icon>
+    </button>
+    
+    </div>
+  </mat-toolbar>
+  
+    <mat-card class="centered">
+      <mat-card-title *ngIf=payment>Edit payment for {{payment.appUser.name}} {{payment.appUser.surname}} </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="editPaymentForm" (ngSubmit)="onSubmit()">
+      <div>
+        <mat-form-field>
+          <input formControlName="amount" type="number" matInput placeholder="Amount"  required  minlength="1">
+        </mat-form-field>
+      </div>
+  
+      <div>
+        <mat-form-field>
+          <mat-label>Payment Date</mat-label>
+          <input formControlName="dateOfPayment" matInput readonly required [matDatepicker]="dateOfPayment">
+          <mat-datepicker-toggle matSuffix [for]="dateOfPayment"></mat-datepicker-toggle>
+          <mat-datepicker #dateOfPayment></mat-datepicker>
+        </mat-form-field>
+      </div>
+  
+      <div>
+        <button type="submit" class="btn-submit" [disabled]="!editPaymentForm.valid">Save</button>
+      </div>
+    </form>
+  </mat-card-content>
+  </mat-card>

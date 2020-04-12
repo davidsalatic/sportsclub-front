@@ -81,6 +81,7 @@ import { AddCommentDialogComponent } from './components/dialogs/add-comment-dial
 import { InfoComponent } from './components/info/info.component';
 import { TitleService } from './services/title-service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EditPaymentFormComponent } from './components/forms/edit-payment-form/edit-payment-form.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AddPostDialogComponent,
     PostComponent,
     AddCommentDialogComponent,
-    InfoComponent
+    InfoComponent,
+    EditPaymentFormComponent
   ],
   imports: [
     BrowserModule,

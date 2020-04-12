@@ -47,17 +47,17 @@
     <!-- Date Column -->
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Date</th>
-      <td (click)="viewTrainingClick(row);" mat-cell *matCellDef="let row">{{row.dateHeld | date:'d.M.'}} {{row.dayOfWeek}}</td>
+      <td mat-cell *matCellDef="let row">{{row.dateHeld | date:'d.M.'}} {{row.dayOfWeek}}</td>
     </ng-container>
 
     <!-- Time Column -->
     <ng-container matColumnDef="time">
       <th mat-header-cell *matHeaderCellDef >Time</th>
-      <td (click)="viewTrainingClick(row);" mat-cell *matCellDef="let row">{{row.timeHeld}}</td>
+      <td mat-cell *matCellDef="let row">{{row.timeHeld}}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr (click)="viewTrainingClick(row);" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   
   <mat-paginator #paginator

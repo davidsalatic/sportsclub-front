@@ -34,6 +34,10 @@ export class PaymentService{
         return this.httpClient.post(this.PAYMENTS_URL,payment);
     }
 
+    updatePayment(payment: Payment) {
+        return this.httpClient.put(this.PAYMENTS_URL,payment);
+      }
+
     deletePayment(payment: Payment) {
         return this.httpClient.delete(this.PAYMENTS_URL+payment.id);
     }

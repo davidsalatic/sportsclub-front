@@ -32,6 +32,7 @@ import { AppliedUsersCompetitionComponent } from './components/applied-users-com
 import { MessageboardComponent } from './components/messageboard/messageboard.component';
 import { PostComponent } from './components/post/post.component';
 import { InfoComponent } from './components/info/info.component';
+import { EditPaymentFormComponent } from './components/forms/edit-payment-form/edit-payment-form.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -45,6 +46,7 @@ const routes: Routes = [
   {path: 'memberships/:id',component:AppUsersInMembershipComponent},
   {path: 'payments/membership/:membershipId/user/:appUserId',component:PaymentsForMembershipByAppUserComponent},
   {path: 'payments/membership/:membershipId/user/:appUserId/add',component:AddPaymentComponent},
+  {path: 'payments/:id',component:EditPaymentFormComponent},
   {path: 'payments/member/:appUserId',component:UserPaymentsComponent},
   {path: 'sessions',component:SessionsComponent},
   {path: 'sessions/group/:groupId/period/:periodId',component:SessionsGroupComponent},

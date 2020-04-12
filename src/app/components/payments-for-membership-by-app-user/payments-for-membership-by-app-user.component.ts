@@ -11,6 +11,7 @@ import { AppUser } from 'src/app/models/app-user';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-payments-for-membership-by-app-user',
@@ -23,14 +24,14 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
 
   dataSource: MatTableDataSource<Payment> = new MatTableDataSource();
 
-  displayedColumns = [ 'date','amount','actions'];
+  displayedColumns = [ 'date','amount'];
 
   membership:Membership;
   appUser:AppUser;
   total:number=0;
 
   constructor(private paymentService:PaymentService,private membershipService:MembershipService,
-    private appUserService:AppUserService, private route:ActivatedRoute,
+    private appUserService:AppUserService, private route:ActivatedRoute,private titleService:TitleService,
     private snackBar:MatSnackBar,private authService:AuthService,private router:Router){}
 
   ngOnInit() {
@@ -44,8 +45,7 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
       {
         let membershipId=this.route.snapshot.params['membershipId'];
         let appUserId = this.route.snapshot.params['appUserId'];
-        this.loadMembership(membershipId);
-        this.loadAppUser(appUserId);
+        this.loadMembershipAndAppUser(membershipId,appUserId);
         this.loadPayments(membershipId,appUserId);
       }
       else
@@ -54,10 +54,11 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
       this.router.navigate(['login']);
   }
 
-  loadMembership(membershipId:number)
+  loadMembershipAndAppUser(membershipId:number,appUserId:number)
   {
     this.membershipService.getMembershipById(membershipId).subscribe(membership=>{
       this.membership=membership;
+      this.loadAppUser(appUserId);
     })
   }
 
@@ -65,6 +66,7 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
   {
     this.appUserService.getUserById(appUserId).subscribe(appUser=>{
       this.appUser=appUser;
+      this.titleService.changeTitle(appUser.name+" "+appUser.surname+" - Payments for "+this.membership.period.month+"-"+this.membership.period.year)
     })
   }
 
@@ -87,15 +89,10 @@ export class PaymentsForMembershipByAppUserComponent implements OnInit {
       this.total+=payment.amount
     }
   }
-
-  deletePayment(payment:Payment)
+  
+  viewPaymentClick(payment:Payment)
   {
-    if(confirm("Delete payment?")) {
-      this.paymentService.deletePayment(payment).subscribe(response=>{
-        this.loadPayments(this.membership.id,this.appUser.id);
-        this.showSnackbar("Payment deleted.")
-      })
-    }
+    this.router.navigate(['/payments/'+payment.id]);
   }
 
   showSnackbar(message:string)

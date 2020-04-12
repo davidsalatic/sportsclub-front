@@ -70,10 +70,6 @@ tr.mat-row:hover, tr.mat-footer-row:hover {
   background-color: rgb(139, 138, 201);
 }
 
-.mat-cell :hover{
-  color: #fff;
-}
-
 .mat-toolbar.mat-primary button :hover{
   color: bisque;
 }
@@ -100,7 +96,7 @@ tr.mat-row:hover, tr.mat-footer-row:hover {
 }
 
 .mat-toolbar.mat-primary.actions a{
-  margin-left: 1%;
+  margin-left: 2%;
 }
 
 span.spacer{
@@ -114,3 +110,47 @@ div.actions-panel{
   border-style: solid;
   border-radius: 4pt;
 }
+
+.mat-row :hover{
+  cursor: pointer;
+}
+
+.mat-row.no-link-row :hover{
+  cursor: auto;
+}
+
+.centered{
+  width: 50%;
+  margin:auto;
+  margin-top: 5%;
+  text-align: center;
+  border-radius: 10pt;
+  background-color: rgba(197, 184, 245, 0.932);
+}
+
+.mat-form-field {
+  margin-top: 1%;
+  display: inherit;
+  position: relative;
+  text-align: left;
+  font-size: medium;
+  color: rgb(20, 13, 56);
+  width: 70%;
+  }
+
+  .mat-card-title{
+    color: rgb(20, 13, 56);
+    margin-bottom: 2%;
+  }
+  
+  .mat-input-element {
+    caret-color: rgb(20, 13, 56);
+  }
+  
+  .btn-submit{
+  padding: 5px;
+  width: 40%;
+  font-size: 14pt;
+  margin: 12px 0;
+  color:rgb(20, 13, 56);  
+  }

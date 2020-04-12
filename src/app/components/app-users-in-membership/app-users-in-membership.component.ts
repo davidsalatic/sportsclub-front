@@ -31,7 +31,7 @@ export class AppUsersInMembershipComponent implements OnInit {
   appUsers:AppUser[];
   usersWithCondition:AppUserCondition[]= new Array();
   membershipId:number;
-  displayedColumns = [ 'name','group','settled','actions'];
+  displayedColumns = [ 'name','group','settled'];
   
   constructor(private route:ActivatedRoute, private appUserService : AppUserService,
     private paymentService:PaymentService,private matDialog:MatDialog,private titleService:TitleService,
@@ -127,5 +127,11 @@ export class AppUsersInMembershipComponent implements OnInit {
       this.usersWithCondition.length=0;
       this.loadAppUsersAndPayments();
     })
+  }
+
+  viewPaymentsClick(appUserCondition:AppUserCondition)
+  {
+    this.router.navigate(['/payments/membership/'+this.membership.id+
+    "/user/"+appUserCondition.appUser.id]);
   }
 }

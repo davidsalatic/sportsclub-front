@@ -9,6 +9,7 @@ import { PaymentService } from 'src/app/services/payment-service';
 import { Payment } from 'src/app/models/payment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-add-payment',
@@ -19,6 +20,7 @@ export class AddPaymentComponent implements OnInit {
 
   constructor(private route:ActivatedRoute,private membershipService:MembershipService,
     private appUserService:AppUserService,private paymentService: PaymentService,
+    private titleService:TitleService,
     private router:Router,private snackBar:MatSnackBar,private authService:AuthService) { }
 
   membership:Membership;
@@ -53,6 +55,7 @@ export class AddPaymentComponent implements OnInit {
   {
     this.membershipService.getMembershipById(membershipId).subscribe(membership=>{
       this.membership=membership;
+      this.titleService.changeTitle("Add payment for "+membership.period.month+"-"+membership.period.year);
     })
   }
 
