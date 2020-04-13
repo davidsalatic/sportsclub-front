@@ -7,6 +7,7 @@ import { AppUserService } from 'src/app/services/app-user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-ungrouped-users',
@@ -19,10 +20,12 @@ export class UngroupedUsersComponent implements OnInit {
 
   dataSource: MatTableDataSource<AppUser> = new MatTableDataSource();
 
-  displayedColumns = ['name','actions'];
+  displayedColumns = ['name'];
 
   constructor(private appUserService:AppUserService,private snackBar:MatSnackBar,
-    private router:Router,private authService:AuthService){}
+    private router:Router,private authService:AuthService,private titleService:TitleService){
+      this.titleService.changeTitle("Ungrouped members");
+    }
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -49,13 +52,9 @@ export class UngroupedUsersComponent implements OnInit {
     })
   }
 
-  deleteUser(appUser:AppUser)
+  viewMemberClick(appUser:AppUser)
   {
-    if(confirm("Delete user '"+appUser.name+" "+ appUser.surname+" and all payments and attendances connected?"))
-    this.appUserService.deleteUser(appUser).subscribe(response=>{
-      this.loadAppUsers();
-      this.showSnackbar("User "+appUser.name+" "+appUser.surname+" deleted.");
-    })
+    this.router.navigate(['/members/user/'+appUser.id+'/edit']);
   }
 
   showSnackbar(message:string)

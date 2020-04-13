@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleService } from 'src/app/services/role-service';
 import { Roles } from 'src/app/const/role-const';
 import { AuthService } from 'src/app/services/auth-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-add-app-user-form',
@@ -30,9 +31,11 @@ export class AddAppUserFormComponent implements OnInit {
     dateJoined: new FormControl('')
   });
 
-  constructor(private route:ActivatedRoute, private router:Router,
+  constructor(private route:ActivatedRoute, private router:Router,private titleService:TitleService,
      private appUserService : AppUserService, private memberGroupService : MemberGroupService,
-     private snackBar:MatSnackBar,private roleService:RoleService,private authService:AuthService) {}
+     private snackBar:MatSnackBar,private roleService:RoleService,private authService:AuthService) {
+       this.titleService.changeTitle("Add member")
+     }
 
   ngOnInit(): void {
     this.loadPageIfValidRole()

@@ -1,43 +1,61 @@
-<form [formGroup]="appUserForm" (ngSubmit)="onSubmit()">
-  <div>
-    <mat-form-field>
-      <input formControlName="username" type="email" matInput placeholder="Email">
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <input formControlName="name" type="text" matInput placeholder="Name" required>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <input formControlName="surname" type="text" matInput placeholder="Surname"required>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <input formControlName="jmbg" type="text" matInput placeholder="Jmbg"  pattern="[0-9 ]*"required  minlength="13" maxlength="13">
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <input formControlName="adress" type="text" matInput placeholder="Adress">
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <input formControlName="phoneNumber" type="text" matInput placeholder="Phone number">
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <mat-label>Date Joined</mat-label>
-      <input formControlName="dateJoined" matInput readonly [matDatepicker]="dateJoined">
-      <mat-datepicker-toggle matSuffix [for]="dateJoined"></mat-datepicker-toggle>
-      <mat-datepicker #dateJoined></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div>
-    <button type="submit" [disabled]="!appUserForm.valid">Submit</button>
-  </div>
-</form>
+<mat-toolbar color="primary" class="actions">
+
+  <a *ngIf=memberGroup [routerLink]="['/members',memberGroup.id]">
+    <button 
+    type="button"
+    aria-label="Back to members"
+    mat-icon-button
+    >
+    <mat-icon matTooltip="Back to members" aria-label="Back to members">arrow_back_ios</mat-icon>
+  </button>
+  </a>
+</mat-toolbar>
+
+  <mat-card class="centered">
+    <mat-card-title *ngIf=memberGroup>Add a new member</mat-card-title>
+<mat-card-content>
+  <form [formGroup]="appUserForm" (ngSubmit)="onSubmit()">
+    <div>
+      <mat-form-field>
+        <input formControlName="username" type="email" matInput placeholder="Email">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input formControlName="name" type="text" matInput placeholder="Name" required>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input formControlName="surname" type="text" matInput placeholder="Surname"required>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input formControlName="jmbg" type="text" matInput placeholder="Jmbg"  pattern="[0-9 ]*"required  minlength="13" maxlength="13">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input formControlName="adress" type="text" matInput placeholder="Adress">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input formControlName="phoneNumber" type="text" matInput placeholder="Phone number">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Date Joined</mat-label>
+        <input formControlName="dateJoined" matInput readonly [matDatepicker]="dateJoined">
+        <mat-datepicker-toggle matSuffix [for]="dateJoined"></mat-datepicker-toggle>
+        <mat-datepicker #dateJoined></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div>
+      <button type="submit" class="btn-submit" [disabled]="!appUserForm.valid">Add</button>
+    </div>
+  </form>
+</mat-card-content>
+</mat-card>

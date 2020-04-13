@@ -10,6 +10,8 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { TitleService } from 'src/app/services/title-service';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { AddMemberGroupDialogComponent } from '../dialogs/add-member-group-dialog/add-member-group-dialog.component';
 
 @Component({
   selector: 'app-app-users',
@@ -18,7 +20,7 @@ import { TitleService } from 'src/app/services/title-service';
 })
 export class AppUsersComponent implements OnInit {
 
-  displayedColumns = ['name','actions','view'];
+  displayedColumns = ['name'];
   dataSource: MatTableDataSource<AppUser> = new MatTableDataSource();
 
   memberGroup: MemberGroup;
@@ -28,7 +30,7 @@ export class AppUsersComponent implements OnInit {
 
   constructor(private appUsersService:AppUserService,private memberGroupService:MemberGroupService, 
      private route:ActivatedRoute,private router:Router,private snackBar:MatSnackBar,
-     private authService:AuthService,private titleService:TitleService){
+     private authService:AuthService,private titleService:TitleService,private matDialog:MatDialog){
   }
 
   ngOnInit() {
@@ -66,12 +68,6 @@ export class AppUsersComponent implements OnInit {
     });
   }
 
-  renameClick(newGroupName: string)
-  {
-    if(newGroupName)
-      this.updateMemberGroup(newGroupName);
-  }
-
   updateMemberGroup(newGroupName:string)
   {
     this.memberGroup.name=newGroupName;
@@ -89,6 +85,36 @@ export class AppUsersComponent implements OnInit {
          this.showSnackbar("User "+appUser.name+" "+appUser.surname+" deleted.");
        })
   }
+
+  deleteGroup()
+  {
+    if(confirm("Delete group '"+this.memberGroup.name+"'?")) {
+      this.memberGroupService.deleteGroup(this.memberGroup).subscribe(response=>{
+        this.showSnackbar("Group "+this.memberGroup.name+" deleted.");
+        this.router.navigate(['/members']);
+      })
+    }
+  }
+
+  renameGroup()
+  {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data=this.memberGroup.name;
+    let dialogRef = this.matDialog.open(AddMemberGroupDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(groupName=>{
+      if(groupName)
+      {
+        this.memberGroup.name=groupName;
+        this.updateMemberGroup(groupName);
+      }
+    })
+  }
+
+  viewMemberClick(id:number)
+  {
+    this.router.navigate(['/members/user/'+id+'/edit']);
+  }
+
 
   showSnackbar(message:string)
   {

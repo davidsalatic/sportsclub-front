@@ -2,6 +2,11 @@
   width: 100%;
 }
 
-#ungrouped{
-  font-size: smaller;
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload :hover{
+  color:bisque;
+  cursor: pointer;
 }

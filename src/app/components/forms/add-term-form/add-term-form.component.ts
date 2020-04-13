@@ -7,6 +7,7 @@ import { Term } from 'src/app/models/term';
 import { TermService } from 'src/app/services/term-service';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-add-term-form',
@@ -26,7 +27,10 @@ export class AddTermFormComponent implements OnInit {
   });
 
   constructor(private router:Router,private snackBar:MatSnackBar,private authService:AuthService
-    ,private termService:TermService,private route:ActivatedRoute,private memberGroupService:MemberGroupService) { }
+    ,private termService:TermService,private route:ActivatedRoute,
+    private memberGroupService:MemberGroupService,private titleService:TitleService) { 
+      this.titleService.changeTitle("Add a new term")
+    }
 
   ngOnInit(): void {
     this.loadPageIfValidRole();

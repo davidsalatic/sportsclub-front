@@ -33,6 +33,7 @@ import { MessageboardComponent } from './components/messageboard/messageboard.co
 import { PostComponent } from './components/post/post.component';
 import { InfoComponent } from './components/info/info.component';
 import { EditPaymentFormComponent } from './components/forms/edit-payment-form/edit-payment-form.component';
+import { EditTermFormComponent } from './components/forms/edit-term-form/edit-term-form.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
@@ -59,6 +60,7 @@ const routes: Routes = [
   {path: 'attendances/member/:appUserId',component:UserAttendanceComponent},
   {path: 'terms/group/:groupId',component:TermsComponent},
   {path: 'terms/group/:groupId/add',component:AddTermFormComponent},
+  {path: 'terms/:id',component:EditTermFormComponent},
   {path: 'register/:token',component:RegistrationComponent},
   {path: 'login',component:LoginComponent},
   {path: 'competitions',component:CompetitionsComponent},

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -11,7 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AddMemberGroupDialogComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<AddMemberGroupDialogComponent>
-    ,private memberGroupService:MemberGroupService,private snackBar:MatSnackBar) { }
+    ,private memberGroupService:MemberGroupService,private snackBar:MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public existingName:string) { }
 
   ngOnInit(): void {
   }

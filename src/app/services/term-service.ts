@@ -15,9 +15,18 @@ export class TermService{
         return this.httpClient.get<Term[]>(this.TERMS_URL+"/group/"+memberGroupId);
     }
 
+    getById(termId: number) {
+        return this.httpClient.get<Term>(this.TERMS_URL+"/"+termId);
+      }
+
     addTerm(term:Term)
     {
         return this.httpClient.post(this.TERMS_URL,term);
+    }
+
+    updateTerm(term:Term)
+    {
+        return this.httpClient.put(this.TERMS_URL,term);
     }
 
     deleteTerm(term:Term)

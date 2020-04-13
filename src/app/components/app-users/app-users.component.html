@@ -1,12 +1,57 @@
-<div *ngIf=memberGroup>
-  <a [routerLink]="['/members/group', memberGroup.id,'add']"><button md-raised-button>Add Member</button></a>
-</div>
-<div *ngIf ="memberGroup">
-  <mat-form-field>
-    <input #groupName type="text" matInput placeholder="Group Name"  value="{{memberGroup.name}}">
-  </mat-form-field>
-  <button type="button" (click)="renameClick(groupName.value);" >Rename</button>
-</div>
+<mat-toolbar color="primary" class="actions">
+
+  <a [routerLink]="['/members']">
+    <button 
+    type="button"
+    aria-label="Back to groups"
+    mat-icon-button
+    >
+    <mat-icon matTooltip="Back to groups" aria-label="Back to groups">arrow_back_ios</mat-icon>
+  </button>
+  </a>
+
+  <span class="spacer"></span>
+  
+  <div class="actions-panel" *ngIf=memberGroup>
+
+    <a [routerLink]="['/members/group',memberGroup.id,'add']">
+      <button
+      type="button"
+      aria-label="Add member"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Add member" aria-label="Add member">person_add</mat-icon>
+    </button>
+    </a>
+
+
+    <a [routerLink]="['/terms/group',memberGroup.id]">
+      <button
+      type="button"
+      aria-label="Terms"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Terms" aria-label="Terms">event_note</mat-icon>
+    </button>
+    </a> 
+
+    <button (click)="renameGroup();"
+    type="button"
+    aria-label="Rename group"
+    mat-icon-button
+    >
+    <mat-icon matTooltip="Rename group" aria-label="Rename group">create</mat-icon>
+  </button>
+  
+  <button (click)="deleteGroup();"
+  type="button"
+  aria-label="Delete group"
+  mat-icon-button
+  >
+  <mat-icon matTooltip="Delete group"  aria-label="Delete group">delete</mat-icon>
+  </button>
+  </div>
+</mat-toolbar>
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" class="full-width-table sspor" matSort aria-label="Elements">
@@ -17,25 +62,8 @@
       <td mat-cell *matCellDef="let row">{{row.name}} {{row.surname}}</td>
     </ng-container>
 
-    <!-- Actions colums-->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
-      <td mat-cell *matCellDef="let row">
-        <a [routerLink]="['/members/user', row.id,'edit']"><button md-raised-button>Edit</button></a>
-        <button md-raised-button (click)="deleteUser(row);">Delete</button> </td>
-    </ng-container> 
-
-    <!-- View column-->
-    <ng-container matColumnDef="view">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>View</th>
-      <td mat-cell *matCellDef="let row">
-        <a [routerLink]="['/attendances/member',row.id]"> <button md-raised-button>Attendances</button> </a>
-        <a [routerLink]="['/payments/member',row.id]"> <button md-raised-button>Payments</button> </a>
-      </td>
-    </ng-container> 
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row (click)="viewMemberClick(row.id);" *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
   <mat-paginator #paginator

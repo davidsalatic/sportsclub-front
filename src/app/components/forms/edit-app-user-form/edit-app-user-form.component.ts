@@ -7,6 +7,7 @@ import { MemberGroupService } from 'src/app/services/member-group-service';
 import { MemberGroup } from 'src/app/models/member-group';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-edit-app-user-form',
@@ -33,7 +34,7 @@ export class EditAppUserFormComponent implements OnInit {
     gender: new FormControl({value:'',disabled:true})
   });
 
-  constructor(private route:ActivatedRoute, private router:Router,
+  constructor(private route:ActivatedRoute, private router:Router,private titleService:TitleService,
     private appUserService : AppUserService, private authService:AuthService,
     private memberGroupService: MemberGroupService,private snackBar:MatSnackBar) { 
     
@@ -61,6 +62,7 @@ export class EditAppUserFormComponent implements OnInit {
   {
     this.appUserService.getUserById(appUserId).subscribe(appUser=>{
       this.appUser=appUser;
+      this.titleService.changeTitle(appUser.name+" "+appUser.surname);
       if(appUser.memberGroup!=null)
         this.idOfOriginalGroup=this.appUser.memberGroup.id;
       this.updateFormWithUserData();

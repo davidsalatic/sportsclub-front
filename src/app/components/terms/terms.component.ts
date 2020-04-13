@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/services/auth-service';
 import { TermService } from 'src/app/services/term-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MemberGroupService } from 'src/app/services/member-group-service';
+import { TitleService } from 'src/app/services/title-service';
+import { MemberGroup } from 'src/app/models/member-group';
 
 @Component({
   selector: 'app-terms',
@@ -22,12 +24,14 @@ export class TermsComponent implements OnInit {
 
   daysOfWeek=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-  displayedColumns = ['day','time','actions'];
+  displayedColumns = ['day','time'];
 
   memberGroupId:number;
+  memberGroup:MemberGroup;
 
-  constructor(private authService:AuthService,private route:ActivatedRoute,
+  constructor(private authService:AuthService,private route:ActivatedRoute,private titleService:TitleService,
     private router:Router,private termService:TermService,private snackBar:MatSnackBar,
+    private memberGroupService:MemberGroupService
     ){}
 
   ngOnInit() {
@@ -40,12 +44,20 @@ export class TermsComponent implements OnInit {
       if(this.authService.isCoachOrManagerLoggedIn())
       {
         this.memberGroupId=this.route.snapshot.params['groupId'];
+        this.loadMemberGroup(this.memberGroupId);
         this.loadTermsInGroup(this.memberGroupId);
       }
       else
         this.router.navigate(['home']);
     else
       this.router.navigate(['login']);
+  }
+
+  loadMemberGroup(memberGroupId:number){
+    this.memberGroupService.getGroupById(memberGroupId).subscribe(group=>{
+      this.titleService.changeTitle(group.name+" terms");
+      this.memberGroup=group;
+    })
   }
 
   loadTermsInGroup(memberGroupId:number)
@@ -57,13 +69,9 @@ export class TermsComponent implements OnInit {
     })
   }
 
-  deleteTerm(term:Term)
+  viewTermClick(termId:number)
   {
-    if(confirm("Delete term on '"+this.daysOfWeek[term.dayOfWeek]+" "+ term.startTime))
-    this.termService.deleteTerm(term).subscribe(response=>{
-      this.loadTermsInGroup(this.memberGroupId);
-      this.showSnackbar("Term deleted.");
-    })
+    this.router.navigate(['/terms/'+termId]);
   }
 
   showSnackbar(message:string)

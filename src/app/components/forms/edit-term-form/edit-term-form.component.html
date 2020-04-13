@@ -1,21 +1,33 @@
-
 <mat-toolbar color="primary" class="actions">
 
-  <a *ngIf=memberGroup [routerLink]="['/terms/group',memberGroup.id]">
+  <a *ngIf=term [routerLink]="['/terms/group',term.memberGroup.id]">
     <button 
     type="button"
-    aria-label="Back to members"
+    aria-label="Back to terms"
     mat-icon-button
     >
-    <mat-icon matTooltip="Back to members" aria-label="Back to members">arrow_back_ios</mat-icon>
+    <mat-icon matTooltip="Back to terms" aria-label="Back to terms">arrow_back_ios</mat-icon>
   </button>
   </a>
+
+  <span class="spacer"></span>
+
+  <div *ngIf=term class="actions-panel" >
+    <button (click)="deleteTerm();"
+    type="button"
+    aria-label="Delete term"
+    mat-icon-button
+    >
+    <mat-icon matTooltip="Delete term" aria-label="Delete term">delete</mat-icon>
+  </button>
+  
+  </div>
 </mat-toolbar>
 
   <mat-card class="centered">
-    <mat-card-title *ngIf=memberGroup>Add a term for {{memberGroup.name}}</mat-card-title>
+    <mat-card-title *ngIf=term>Edit term for {{term.memberGroup.name}} </mat-card-title>
 <mat-card-content>
-  <form [formGroup]="addTermForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="editTermForm" (ngSubmit)="onSubmit()">
     <div>
       <label for="daysOfWeek">Day of week</label>
       <select formControlName="daysOfWeek" id="daysOfWeek">
@@ -40,9 +52,8 @@
     </div>
   
     <div>
-      <button type="submit" class="btn-submit" [disabled]="!addTermForm.valid">Add</button>
+      <button type="submit" class="btn-submit" [disabled]="!editTermForm.valid">Save</button>
     </div>
   </form>
-  
 </mat-card-content>
 </mat-card>

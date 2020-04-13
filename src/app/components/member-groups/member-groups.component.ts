@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { Guide } from 'src/app/const/guide-csv';
 import { FileService } from 'src/app/services/file-service';
 import { FileDTO } from 'src/app/models/helpers/file-dto';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-member-groups',
@@ -20,16 +21,18 @@ import { FileDTO } from 'src/app/models/helpers/file-dto';
 })
 export class MemberGroupsComponent implements OnInit {
 
-  displayedColumns = ['name','actions'];
+  displayedColumns = ['name'];
   dataSource: MatTableDataSource<MemberGroup> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private memberGroupService:MemberGroupService, 
-    private matDialog:MatDialog,private snackBar:MatSnackBar,
+    private matDialog:MatDialog,private snackBar:MatSnackBar,private titleService:TitleService,
     private authService:AuthService,private router:Router,private fileService:FileService)
-  {}
+  {
+    this.titleService.changeTitle("Member groups");
+  }
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -98,14 +101,9 @@ export class MemberGroupsComponent implements OnInit {
       }
   }
 
-  deleteGroup(memberGroup:MemberGroup)
+  viewGroupClick(memberGroup:MemberGroup)
   {
-    if(confirm("Delete group '"+memberGroup.name+"'?")) {
-      this.memberGroupService.deleteGroup(memberGroup).subscribe(response=>{
-        this.loadGroups();
-        this.showSnackbar("Group "+memberGroup.name+" deleted.")
-      })
-    }
+    this.router.navigate(['/members/'+memberGroup.id]);
   }
 
   showGuide()

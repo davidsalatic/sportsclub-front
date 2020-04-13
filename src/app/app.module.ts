@@ -82,6 +82,7 @@ import { InfoComponent } from './components/info/info.component';
 import { TitleService } from './services/title-service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditPaymentFormComponent } from './components/forms/edit-payment-form/edit-payment-form.component';
+import { EditTermFormComponent } from './components/forms/edit-term-form/edit-term-form.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { EditPaymentFormComponent } from './components/forms/edit-payment-form/e
     PostComponent,
     AddCommentDialogComponent,
     InfoComponent,
-    EditPaymentFormComponent
+    EditPaymentFormComponent,
+    EditTermFormComponent
   ],
   imports: [
     BrowserModule,
