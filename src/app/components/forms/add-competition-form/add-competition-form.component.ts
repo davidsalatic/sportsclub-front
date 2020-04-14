@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Competition } from 'src/app/models/competition';
 import { CompetitionService } from 'src/app/services/competition-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-add-competition-form',
@@ -21,8 +22,10 @@ export class AddCompetitionFormComponent implements OnInit {
     startTime:new FormControl('',Validators.required),
   });
 
-  constructor(private authService:AuthService,private router:Router,
-    private competitionService:CompetitionService,private snackBar:MatSnackBar) { }
+  constructor(private authService:AuthService,private router:Router,private titleService:TitleService,
+    private competitionService:CompetitionService,private snackBar:MatSnackBar) {
+      this.titleService.changeTitle("Create a competition");
+     }
 
   ngOnInit(): void {
     this.redirrectIfNotLoggedIn();

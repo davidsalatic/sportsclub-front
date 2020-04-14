@@ -9,6 +9,7 @@ import { Competition } from 'src/app/models/competition';
 import { CompetitionApplication } from 'src/app/models/competition-application';
 import { CompetitionApplicationService } from 'src/app/services/competition-application-service';
 import { AppUser } from 'src/app/models/app-user';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-apply-competition-form',
@@ -27,7 +28,7 @@ export class ApplyCompetitionFormComponent implements OnInit {
 
   constructor(private authService:AuthService,private snackBar:MatSnackBar
     ,private route:ActivatedRoute,private router:Router,private appUserService:AppUserService,
-    private competitionService:CompetitionService,
+    private competitionService:CompetitionService,private titleService:TitleService,
     private competitionApplicationService:CompetitionApplicationService) { }
 
   ngOnInit(): void {
@@ -57,6 +58,7 @@ export class ApplyCompetitionFormComponent implements OnInit {
   {
     this.competitionService.getCompetitionById(id).subscribe(comp=>{
       this.competition=comp;
+      this.titleService.changeTitle("Apply for competition '"+this.competition.name+"'");
     })
   }
 
@@ -77,7 +79,6 @@ export class ApplyCompetitionFormComponent implements OnInit {
         }
       })
     })
-
   }
 
   onSubmit()
@@ -95,7 +96,7 @@ export class ApplyCompetitionFormComponent implements OnInit {
         application.competition=this.competition;
         this.competitionApplicationService.addCompetitionApplication(application).subscribe(response=>{
           this.showSnackbar("Applied for competition.");
-          this.router.navigate(['home']);
+          this.router.navigate(['competitions']);
         })
       })
     })
@@ -119,5 +120,4 @@ export class ApplyCompetitionFormComponent implements OnInit {
       duration: 3000
     })
   }
-
 }

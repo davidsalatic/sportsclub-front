@@ -1,34 +1,52 @@
-<form [formGroup]="addCompetitionForm" (ngSubmit)="onSubmit()">
-    <div>
-      <mat-form-field>
-        <input formControlName="name" type="text" matInput placeholder="Name" required>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="description" type="text" matInput placeholder="Description">
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="location" type="text" matInput placeholder="Location" required>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <mat-label>Date</mat-label>
-        <input formControlName="dateHeld" matInput readonly [matDatepicker]="dateHeld" required>
-        <mat-datepicker-toggle matSuffix [for]="dateHeld"></mat-datepicker-toggle>
-        <mat-datepicker #dateHeld></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <div>
+<mat-toolbar color="primary" class="actions">
+
+    <a [routerLink]="['/competitions']">
+      <button 
+      type="button"
+      aria-label="Back to competitions"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Back to competitions" aria-label="Back to competitions">arrow_back_ios</mat-icon>
+    </button>
+    </a>
+  </mat-toolbar>
+  
+    <mat-card class="centered">
+      <mat-card-title>Create a competition</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="addCompetitionForm" (ngSubmit)="onSubmit()">
+      <div>
         <mat-form-field>
-            <input matInput formControlName="startTime" placeholder="Start time" [format]="24" aria-label="12hr format" [ngxTimepicker]="startTime" required readonly>
-            <ngx-material-timepicker #startTime></ngx-material-timepicker>
+          <input formControlName="name" type="text" matInput placeholder="Name" required>
         </mat-form-field>
-    </div>
-    <div>
-      <button type="submit" [disabled]="!addCompetitionForm.valid">Submit</button>
-    </div>
-  </form>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="description" type="text" matInput placeholder="Description">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="location" type="text" matInput placeholder="Location" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Date</mat-label>
+          <input formControlName="dateHeld" matInput readonly [matDatepicker]="dateHeld" required>
+          <mat-datepicker-toggle matSuffix [for]="dateHeld"></mat-datepicker-toggle>
+          <mat-datepicker #dateHeld></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div>
+          <mat-form-field>
+              <input matInput formControlName="startTime" placeholder="Start time" [format]="24" aria-label="12hr format" [ngxTimepicker]="startTime" required readonly>
+              <ngx-material-timepicker #startTime></ngx-material-timepicker>
+          </mat-form-field>
+      </div>
+      <div>
+        <button type="submit" class="btn-submit" [disabled]="!addCompetitionForm.valid">Create</button>
+      </div>
+    </form>
+  </mat-card-content>
+  </mat-card>

@@ -1,5 +1,23 @@
+<mat-toolbar color="primary" class="actions">
+
+  <span class="spacer"></span>
+  
+  <div class="actions-panel">
+
+    <a [routerLink]="['/staff/add']">
+      <button
+      type="button"
+      aria-label="Add staff member"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Add staff member" aria-label="Add staff member">person_add</mat-icon>
+    </button>
+    </a>
+
+  </div>
+</mat-toolbar>
+
 <div class="mat-elevation-z8">
-    <a [routerLink]="['/staff/add']"><button md-raised-button>Add Staff Member</button></a>
   <table [dataSource]="dataSource" mat-table class="full-width-table" matSort aria-label="Elements">
 
     <!-- Name Column -->
@@ -8,16 +26,14 @@
       <td mat-cell *matCellDef="let row">{{row.name}} {{row.surname}}</td>
     </ng-container>
 
-    <!-- Actions colums-->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
-      <td mat-cell *matCellDef="let row">
-        <a [routerLink]="['/staff', row.id,'edit']" *ngIf="row.role.name==='COACH'"><button md-raised-button>Edit</button></a>
-        <button *ngIf="row.role.name==='COACH'" (click)="deleteUser(row)" md-raised-button>Delete</button> </td>
-    </ng-container> 
+    <!-- Name Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef >Role</th>
+      <td mat-cell *matCellDef="let row">{{row.role.name}}</td>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr (click)="viewStaffClick(row);" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
   <mat-paginator #paginator

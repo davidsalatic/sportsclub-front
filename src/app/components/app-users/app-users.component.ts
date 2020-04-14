@@ -77,15 +77,6 @@ export class AppUsersComponent implements OnInit {
     });
   }
 
-  deleteUser(appUser:AppUser)
-   {
-     if(confirm("Delete user '"+appUser.name+" "+ appUser.surname+" and all payments and attendances connected?"))
-       this.appUsersService.deleteUser(appUser).subscribe(response=>{
-         this.loadUsersInGroup(this.memberGroup.id);
-         this.showSnackbar("User "+appUser.name+" "+appUser.surname+" deleted.");
-       })
-  }
-
   deleteGroup()
   {
     if(confirm("Delete group '"+this.memberGroup.name+"'?")) {

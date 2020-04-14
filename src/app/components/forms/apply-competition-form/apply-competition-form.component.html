@@ -1,4 +1,21 @@
-<form *ngIf="!alreadyApplied" [formGroup]="applyForm" (ngSubmit)="onSubmit()">
+<mat-toolbar color="primary" class="actions">
+
+  <a *ngIf=competition [routerLink]="['/competitions',competition.id,'edit']">
+    <button 
+    type="button"
+    aria-label="Back to competition"
+    mat-icon-button
+    >
+    <mat-icon matTooltip="Back to competition" aria-label="Back to competition">arrow_back_ios</mat-icon>
+  </button>
+  </a>
+
+</mat-toolbar>
+
+  <mat-card class="centered">
+    <mat-card-title *ngIf=competition>Apply for '{{competition.name}}' </mat-card-title>
+<mat-card-content>
+  <form *ngIf="!alreadyApplied" [formGroup]="applyForm" (ngSubmit)="onSubmit()">
     <div>
       <mat-form-field>
         <input formControlName="message" type="text" matInput placeholder="Message (optional)">
@@ -6,13 +23,14 @@
     </div>
   
     <div>
-      <button type="submit" [disabled]="!applyForm.valid">Apply</button>
+      <button type="submit" class="btn-submit" [disabled]="!applyForm.valid">Apply</button>
     </div>
 </form>
-
 <div *ngIf="alreadyApplied">
   <p>You already applied for this competition.</p>
   <div>
-    <button md-raised-button (click)="cancelApplication()">Cancel application</button>
+    <button md-raised-button class="btn-submit" (click)="cancelApplication()">Cancel application</button>
   </div>
 </div>
+</mat-card-content>
+</mat-card>

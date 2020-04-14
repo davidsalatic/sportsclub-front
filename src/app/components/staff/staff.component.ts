@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TitleService } from 'src/app/services/title-service';
+import { Roles } from 'src/app/const/role-const';
 
 @Component({
   selector: 'app-staff',
@@ -19,10 +21,12 @@ export class StaffComponent implements OnInit {
 
   dataSource: MatTableDataSource<AppUser> = new MatTableDataSource();
 
-  displayedColumns = ['name','actions'];
+  displayedColumns = ['name','role'];
 
-  constructor(private authService:AuthService,private router:Router,
-    private appUserService:AppUserService,private snackBar:MatSnackBar){}
+  constructor(private authService:AuthService,private router:Router,private titleService:TitleService,
+    private appUserService:AppUserService,private snackBar:MatSnackBar){
+      this.titleService.changeTitle("Staff members")
+    }
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -48,13 +52,12 @@ export class StaffComponent implements OnInit {
     })
   }
 
-  deleteUser(appUser:AppUser)
-  {
-    if(confirm("Delete staff member '"+appUser.name+" "+ appUser.surname+"?"))
-      this.appUserService.deleteUser(appUser).subscribe(response=>{
-        this.loadStaff();
-        this.showSnackbar("User "+appUser.name+" "+appUser.surname+" deleted.");
-      })
+ viewStaffClick(appUser:AppUser)
+ {
+   if(appUser.role.name===Roles.COACH)
+   {
+     this.router.navigate(['/staff/'+appUser.id+'/edit']);
+   }
  }
 
  showSnackbar(message:string)

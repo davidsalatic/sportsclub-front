@@ -1,36 +1,67 @@
-<form [formGroup]="staffMemberForm" (ngSubmit)="onSubmit()">
-    <div>
-      <mat-form-field>
-        <input formControlName="username" type="text" matInput placeholder="Username" required>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="name" type="text" matInput placeholder="Name" required>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="surname" type="text" matInput placeholder="Surname"required>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="jmbg" type="text" matInput placeholder="Jmbg" pattern="[0-9 ]*" required minlength="13" maxlength="13">
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="adress" type="text" matInput placeholder="Adress">
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="phoneNumber" type="text" matInput placeholder="Phone number">
-      </mat-form-field>
-    </div>
+  <mat-toolbar color="primary" class="actions">
+
+    <a *ngIf=appUser [routerLink]="['/staff']">
+      <button 
+      type="button"
+      aria-label="Back to staff"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Back to staff" aria-label="Back to staff">arrow_back_ios</mat-icon>
+    </button>
+    </a>
+
+    <span class="spacer"></span>
+
+    <div *ngIf=appUser class="actions-panel" >
+      <button (click)="deleteStaffMember();"
+      type="button"
+      aria-label="Delete staff member"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Delete staff member" aria-label="Delete staff member">delete</mat-icon>
+    </button>
     
-    <div>
-      <button type="submit" [disabled]="!staffMemberForm.valid">Submit</button>
     </div>
-  </form>
+  </mat-toolbar>
+  
+    <mat-card class="centered">
+      <mat-card-title *ngIf=appUser>Staff member info</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="staffMemberForm" (ngSubmit)="onSubmit()">
+      <div>
+        <mat-form-field>
+          <input formControlName="username" type="text" matInput placeholder="Username" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="name" type="text" matInput placeholder="Name" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="surname" type="text" matInput placeholder="Surname"required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="jmbg" type="text" matInput placeholder="Jmbg" pattern="[0-9 ]*" required minlength="13" maxlength="13">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="adress" type="text" matInput placeholder="Adress">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="phoneNumber" type="text" matInput placeholder="Phone number">
+        </mat-form-field>
+      </div>
+      
+      <div>
+        <button type="submit" class="btn-submit" [disabled]="!staffMemberForm.valid">Save</button>
+      </div>
+    </form>
+  </mat-card-content>
+  </mat-card>

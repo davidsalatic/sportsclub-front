@@ -163,13 +163,27 @@ export class EditAppUserFormComponent implements OnInit {
   {
     this.appUser.username=this.appUserForm.get('username').value;
     this.appUserService.updateUser(this.appUser).subscribe(()=>{
-      if(this.idOfOriginalGroup!=null)
-        this.router.navigate(['/members/'+this.idOfOriginalGroup]);
-      else
-        this.router.navigate(['/members/users/ungrouped']);
+      this.navigateBack();
       this.showSnackbar("User edited.")
     });
   }
+
+  navigateBack()
+  {
+    if(this.idOfOriginalGroup!=null)
+      this.router.navigate(['/members/'+this.idOfOriginalGroup]);
+    else
+      this.router.navigate(['/members/users/ungrouped']);
+  }
+
+  deleteMember()
+  {
+    if(confirm("Delete user '"+this.appUser.name+" "+ this.appUser.surname+" and all payments and attendances connected?"))
+      this.appUserService.deleteUser(this.appUser).subscribe(response=>{
+        this.showSnackbar("User "+this.appUser.name+" "+this.appUser.surname+" deleted.");
+        this.navigateBack();
+      })
+ }
 
   showSnackbar(message:string)
   {

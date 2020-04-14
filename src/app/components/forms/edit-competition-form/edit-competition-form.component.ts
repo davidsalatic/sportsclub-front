@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CompetitionService } from 'src/app/services/competition-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Competition } from 'src/app/models/competition';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-edit-competition-form',
@@ -14,16 +15,17 @@ import { Competition } from 'src/app/models/competition';
 export class EditCompetitionFormComponent implements OnInit {
 
   competition:Competition;
+  loggedIn:string;
 
   editCompetitionForm = new FormGroup({
     name: new FormControl('',Validators.required),
     description: new FormControl(''),
     location: new FormControl('',Validators.required),
     dateHeld:new FormControl('',Validators.required),
-    startTime:new FormControl('',Validators.required),
+    startTime:new FormControl('',Validators.required)
   });
 
-  constructor(private authService:AuthService,private router:Router,
+  constructor(private authService:AuthService,private router:Router,private titleService:TitleService,
     private competitionService:CompetitionService,private snackBar:MatSnackBar,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -33,21 +35,32 @@ export class EditCompetitionFormComponent implements OnInit {
   loadPageIfValidRole()
   {
     if(this.authService.getToken())
-      if(this.authService.isCoachOrManagerLoggedIn())
-      {            
-        let competitionId=this.route.snapshot.params['id'];
-        this.loadCompetition(competitionId);
-      }
-      else
-        this.router.navigate(['home']);
+    {
+      this.loggedIn=this.authService.getLoggedInRole();
+      if(this.authService.isMemberLoggedIn())
+        this.disableFormFields();
+      let competitionId=this.route.snapshot.params['id'];
+      this.loadCompetition(competitionId);
+    }
     else
       this.router.navigate(['login']);
+  }
+
+  disableFormFields(){
+    this.editCompetitionForm = new FormGroup({
+      name: new FormControl({value:'',disabled:true}),
+      description: new FormControl({value:'',disabled:true}),
+      location: new FormControl({value:'',disabled:true}),
+      dateHeld:new FormControl({value:'',disabled:true}),
+      startTime:new FormControl({value:'',disabled:true})
+    });
   }
 
   loadCompetition(competitionId:number)
   {
     this.competitionService.getCompetitionById(competitionId).subscribe(comp=>{
       this.competition=comp;
+      this.titleService.changeTitle(""+this.competition.name);
       this.updateFormWithCompetitionData();
     })
   }
@@ -82,12 +95,35 @@ export class EditCompetitionFormComponent implements OnInit {
     this.updateCompetition();
   }
 
+  deleteCompetition()
+  {
+    if(confirm("Delete competition '"+this.competition.name+"'?")) 
+      this.competitionService.deleteCompetition(this.competition.id).subscribe(()=>{
+        this.showSnackbar("Competition "+this.competition.name+" deleted.");
+        this.navigateToCompetitions();
+      })
+  }
+
   updateCompetition()
   {
     this.competitionService.updateCompetition(this.competition).subscribe(response=>{
-      this.showSnackbar("Competition updated.")
-      this.router.navigate(['competitions']);
+      this.showSnackbar("Competition updated.");
+      this.navigateToCompetitions();
     })
+  }
+
+  navigateToCompetitions()
+  {
+    this.router.navigate(['competitions']);
+  }
+
+  sendInvitations()
+  {
+    if(confirm("Invite all members to competition '"+this.competition.name+"'?"))
+      this.competitionService.sendInvitations(this.competition).subscribe(response=>{
+        this.showSnackbar("Email invitations sent.");
+        this.navigateToCompetitions();
+      })
   }
 
   showSnackbar(message:string)

@@ -7,6 +7,7 @@ import { CompetitionService } from 'src/app/services/competition-service';
 import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-competitions',
@@ -19,12 +20,14 @@ export class CompetitionsComponent implements OnInit {
 
   dataSource: MatTableDataSource<Competition> = new MatTableDataSource();
 
-  displayedColumns = ['name','location','dateHeld','timeHeld','actions'];
+  displayedColumns = ['dateHeld','name','location','timeHeld'];
 
   loggedInRole :string;
 
   constructor(private competitionService:CompetitionService,private authService:AuthService,
-    private router:Router,private snackBar:MatSnackBar){}
+    private router:Router,private snackBar:MatSnackBar,private titleService:TitleService){
+      this.titleService.changeTitle("Competitions");
+    }
 
   ngOnInit() {
     this.loadPageIfLoggedIn();
@@ -50,21 +53,9 @@ export class CompetitionsComponent implements OnInit {
     })
   }
 
-  sendInvitations(competition:Competition)
+  viewCompetitionClick(competitionId:number)
   {
-    if(confirm("This will send an email to ALL members!"))
-      this.competitionService.sendInvitations(competition).subscribe(response=>{
-        this.showSnackbar("Email invitations sent.");
-      })
-  }
-
-  deleteCompetition(competition:Competition)
-  {
-    if(confirm("Delete competition '"+competition.name+"'?")) 
-      this.competitionService.deleteCompetition(competition.id).subscribe(()=>{
-        this.loadCompetitions();
-        this.showSnackbar("Competition "+competition.name+" deleted.")
-      })
+    this.router.navigate(['competitions/'+competitionId+"/edit"]);
   }
 
   showSnackbar(message:string)

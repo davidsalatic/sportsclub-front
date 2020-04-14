@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { AuthService } from 'src/app/services/auth-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-edit-staff-member-form',
@@ -27,7 +28,7 @@ export class EditStaffMemberFormComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private router:Router,
     private appUserService : AppUserService, private authService:AuthService,
-    private snackBar:MatSnackBar) { 
+    private snackBar:MatSnackBar,private titleService:TitleService) { 
  }
 
   ngOnInit(): void {
@@ -53,6 +54,7 @@ export class EditStaffMemberFormComponent implements OnInit {
     this.appUserService.getUserById(appUserId).subscribe(appUser=>{
       this.appUser=appUser;
       this.updateFormWithUserData(this.appUser);
+      this.titleService.changeTitle(this.appUser.name+" "+this.appUser.surname);
     })
   }
 
@@ -98,9 +100,23 @@ export class EditStaffMemberFormComponent implements OnInit {
   updateUserAndGoToRoute()
   {
     this.appUserService.updateUser(this.appUser).subscribe(()=>{
-      this.router.navigate(['/staff']);
+      this.navigateToStaffMembers();
       this.showSnackbar("User edited.")
     });
+  }
+
+  navigateToStaffMembers()
+  {
+    this.router.navigate(['/staff']);
+  }
+
+  deleteStaffMember()
+  {
+    if(confirm("Delete staff member '"+this.appUser.name+" "+ this.appUser.surname+"?"))
+    this.appUserService.deleteUser(this.appUser).subscribe(response=>{
+      this.navigateToStaffMembers();
+      this.showSnackbar("User "+this.appUser.name+" "+this.appUser.surname+" deleted.");
+    })
   }
 
   showSnackbar(message:string)

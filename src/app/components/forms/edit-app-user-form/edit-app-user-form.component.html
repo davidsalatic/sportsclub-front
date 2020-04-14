@@ -1,7 +1,4 @@
-
-
-
-  <mat-toolbar color="primary" class="actions">
+<mat-toolbar color="primary" class="actions">
 
     <a *ngIf=appUser&&appUser.memberGroup [routerLink]="['/members',appUser.memberGroup.id]">
       <button 
@@ -22,6 +19,19 @@
       <mat-icon matTooltip="Back to members" aria-label="Back to members">arrow_back_ios</mat-icon>
     </button>
     </a>
+
+    <span class="spacer"></span>
+
+    <div *ngIf=appUser class="actions-panel" >
+      <button (click)="deleteMember();"
+      type="button"
+      aria-label="Delete member"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Delete member" aria-label="Delete member">delete</mat-icon>
+    </button>
+    
+    </div>
   </mat-toolbar>
   
     <mat-card class="centered">

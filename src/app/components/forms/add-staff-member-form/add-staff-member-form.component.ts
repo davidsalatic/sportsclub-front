@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleService } from 'src/app/services/role-service';
 import { AuthService } from 'src/app/services/auth-service';
 import { AppUser } from 'src/app/models/app-user';
+import { Roles } from 'src/app/const/role-const';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-add-staff-member-form',
@@ -26,8 +28,10 @@ export class AddStaffMemberFormComponent implements OnInit {
   });
 
   constructor(private router:Router,
-     private appUserService : AppUserService,
-     private snackBar:MatSnackBar,private roleService:RoleService,private authService:AuthService) {}
+     private appUserService : AppUserService,private titleService:TitleService,
+     private snackBar:MatSnackBar,private roleService:RoleService,private authService:AuthService) {
+       this.titleService.changeTitle("Add staff member")
+     }
 
   ngOnInit(): void {
     this.loadPageIfValidRole()
@@ -35,9 +39,12 @@ export class AddStaffMemberFormComponent implements OnInit {
 
   loadPageIfValidRole()
   {
-    if(this.authService.getToken())
-      if(!this.authService.isManagerLoggedIn())
+
+    if(this.authService.getToken()){
+      if(this.authService.getLoggedInRole()!=Roles.MANAGER)
         this.router.navigate(['home']);
+    }
+
     else
       this.router.navigate(['login']);
   }

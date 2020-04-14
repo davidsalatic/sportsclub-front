@@ -6,6 +6,9 @@ import { AuthService } from 'src/app/services/auth-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CompetitionApplicationService } from 'src/app/services/competition-application-service';
 import { CompetitionApplication } from 'src/app/models/competition-application';
+import { CompetitionService } from 'src/app/services/competition-service';
+import { Competition } from 'src/app/models/competition';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-applied-users-competition',
@@ -18,10 +21,13 @@ export class AppliedUsersCompetitionComponent implements OnInit {
   
   dataSource: MatTableDataSource<CompetitionApplication> = new MatTableDataSource();
 
-  displayedColumns = ['name','group','phone'];
+  competition:Competition;
+
+  displayedColumns = ['group','name','phone'];
 
   constructor(private authService:AuthService,private router:Router,private route:ActivatedRoute
-    ,private competitionApplicationService:CompetitionApplicationService){}
+    ,private competitionApplicationService:CompetitionApplicationService,
+    private competitionService:CompetitionService,private titleService:TitleService){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -33,6 +39,7 @@ export class AppliedUsersCompetitionComponent implements OnInit {
       if(this.authService.isCoachOrManagerLoggedIn())
       {
         let competitionId:number = this.route.snapshot.params['id']; 
+        this.loadCompetition(competitionId);
         this.competitionApplicationService.getAllByCompetition(competitionId).subscribe(data=>{
           this.dataSource.data=data;
           this.dataSource.paginator = this.paginator;
@@ -43,5 +50,13 @@ export class AppliedUsersCompetitionComponent implements OnInit {
         this.router.navigate(['home']);
     else
       this.router.navigate(['login']);
+  }
+
+  loadCompetition(competitionId:number)
+  {
+    this.competitionService.getCompetitionById(competitionId).subscribe(comp=>{
+      this.competition=comp;
+      this.titleService.changeTitle("Applied users for "+this.competition.name);
+    })
   }
 }

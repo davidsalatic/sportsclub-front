@@ -1,39 +1,58 @@
-<form [formGroup]="addStaffUserForm" (ngSubmit)="onSubmit()">
-    <div>
-      <input type="radio" value='COACH' formControlName="role" >COACH
-      <input type="radio" value='MANAGER' formControlName="role">MANAGER
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="username" type="email" matInput placeholder="Email" required>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="name" type="text" matInput placeholder="Name" required>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="surname" type="text" matInput placeholder="Surname"required>
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="jmbg" type="text" matInput placeholder="Jmbg"  pattern="[0-9 ]*"required  minlength="13" maxlength="13">
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="adress" type="text" matInput placeholder="Adress">
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <input formControlName="phoneNumber" type="text" matInput placeholder="Phone number">
-      </mat-form-field>
-    </div>
-    <div>
-      <button type="submit" [disabled]="!addStaffUserForm.valid">Submit</button>
-    </div>
-  </form>
+  <mat-toolbar color="primary" class="actions">
+
+    <a [routerLink]="['/staff']">
+      <button 
+      type="button"
+      aria-label="Back to staff"
+      mat-icon-button
+      >
+      <mat-icon matTooltip="Back to staff" aria-label="Back to staff">arrow_back_ios</mat-icon>
+    </button>
+    </a>
+  
+  </mat-toolbar>
+  
+    <mat-card class="centered">
+      <mat-card-title >New staff member</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="addStaffUserForm" (ngSubmit)="onSubmit()">
+      <div>
+        <input type="radio" value='COACH' formControlName="role" >COACH
+        <input type="radio" value='MANAGER' formControlName="role">MANAGER
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="username" type="email" matInput placeholder="Email" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="name" type="text" matInput placeholder="Name" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="surname" type="text" matInput placeholder="Surname"required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="jmbg" type="text" matInput placeholder="Jmbg"  pattern="[0-9 ]*"required  minlength="13" maxlength="13">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="adress" type="text" matInput placeholder="Adress">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input formControlName="phoneNumber" type="text" matInput placeholder="Phone number">
+        </mat-form-field>
+      </div>
+      <div>
+        <button type="submit" class="btn-submit" [disabled]="!addStaffUserForm.valid">Add</button>
+      </div>
+    </form>
+  </mat-card-content>
+  </mat-card>
