@@ -7,6 +7,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { EditPasswordDialogComponent } from '../dialogs/edit-password-dialog/edit-password-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RegisterDTO } from 'src/app/models/helpers/register-dto';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-profile',
@@ -17,8 +18,10 @@ export class ProfileComponent implements OnInit {
 
   appUser:AppUser;
 
-  constructor(private authService:AuthService,private router:Router,
-    private appUserService:AppUserService,private matDialog:MatDialog,private snackBar:MatSnackBar) { }
+  constructor(private authService:AuthService,private router:Router,private titleService:TitleService,
+    private appUserService:AppUserService,private matDialog:MatDialog,private snackBar:MatSnackBar) { 
+      this.titleService.changeTitle("My profile");
+    }
 
   ngOnInit(): void {
     this.loadPageIfValidRole();

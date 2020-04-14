@@ -6,6 +6,7 @@ import { Payment } from 'src/app/models/payment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service';
 import { PaymentService } from 'src/app/services/payment-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-user-payments',
@@ -21,7 +22,7 @@ export class UserPaymentsComponent implements OnInit {
   displayedColumns = ['date','amount','membership'];
 
   constructor(private authService:AuthService,private activatedRoute:ActivatedRoute,
-    private router:Router,private paymentService:PaymentService){}
+    private router:Router,private paymentService:PaymentService,private titleService:TitleService){}
 
   ngOnInit(): void {
     this.loadPageIfValidRole();
@@ -42,6 +43,7 @@ export class UserPaymentsComponent implements OnInit {
   loadPaymentsForUser(appUserId:number)
   {
     this.paymentService.getAllPaymentsByAppUser(appUserId).subscribe(data=>{
+      this.titleService.changeTitle(data[0].appUser.name+" "+data[0].appUser.surname+" payments");
       this.dataSource.data=data;
       this.dataSource.paginator=this.paginator;
       this.dataSource.sort=this.sort;

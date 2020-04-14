@@ -1,13 +1,23 @@
 
-<div>
-  <a [routerLink]="['/profile/edit']"><button md-raised-button>Edit info</button></a>
+<div class="centered">
+
+  <div>
+    <div>
+      <a [routerLink]="['/profile/edit']"><button class="btn-submit" md-raised-button>Edit info</button></a>
+    </div>
+    <div>
+    <button md-raised-button (click)="openDialog()" class="btn-submit">Edit password</button>
+    </div>
+  </div>
+  
+  <div *ngIf="appUser&& appUser.role.name==='MEMBER'">
+    <div >
+      <a><button class="btn-submit" md-raised-button [routerLink]="['/attendances/member',appUser.id]">My Attendances</button></a>
+      </div>
+      <div >
+      <a><button class="btn-submit" md-raised-button [routerLink]="['/payments/member',appUser.id]">My Payments</button></a>
+      </div>
+  </div>
+
 </div>
-<div>
-<button md-raised-button (click)="openDialog()">Edit password</button>
-</div>
-<div *ngIf="appUser && appUser.role.name==='MEMBER'">
-<a><button md-raised-button [routerLink]="['/attendances/member',appUser.id]">My Attendances</button></a>
-</div>
-<div *ngIf="appUser && appUser.role.name==='MEMBER'">
-<a><button md-raised-button [routerLink]="['/payments/member',appUser.id]">My Payments</button></a>
-</div>
+

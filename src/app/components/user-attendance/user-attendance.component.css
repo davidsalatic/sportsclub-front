@@ -1,3 +1,12 @@
 .full-width-table {
   width: 100%;
 }
+
+.mat-row :hover{
+  cursor: auto;
+}
+
+th.mat-header-cell
+{
+  text-align: center;
+}

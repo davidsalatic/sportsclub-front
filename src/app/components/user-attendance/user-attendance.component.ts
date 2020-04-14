@@ -6,6 +6,7 @@ import { Attendance } from 'src/app/models/attendance';
 import { AuthService } from 'src/app/services/auth-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AttendanceService } from 'src/app/services/attendance-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-user-attendance',
@@ -20,7 +21,7 @@ export class UserAttendanceComponent implements OnInit {
 
   displayedColumns = ['date'];
 
-  constructor(private authService:AuthService,private router:Router,
+  constructor(private authService:AuthService,private router:Router,private titleService:TitleService,
     private attendanceService:AttendanceService,private activatedRoute:ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -41,6 +42,7 @@ export class UserAttendanceComponent implements OnInit {
   loadAttendancesForUser(appUserId:number)
   {
     this.attendanceService.getByAppUser(appUserId).subscribe(data=>{
+      this.titleService.changeTitle(data[0].appUser.name+" "+data[0].appUser.surname+" attendance")
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

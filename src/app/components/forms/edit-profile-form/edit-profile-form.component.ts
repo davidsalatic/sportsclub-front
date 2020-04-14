@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { AuthService } from 'src/app/services/auth-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-edit-profile-form',
@@ -26,9 +27,10 @@ export class EditProfileFormComponent implements OnInit {
     dateOfBirth: new FormControl ({value:'',disabled:true})
   });
 
-  constructor(private router:Router,
+  constructor(private router:Router,private titleService:TitleService,
     private appUserService : AppUserService, private authService:AuthService,
     private snackBar:MatSnackBar) { 
+      this.titleService.changeTitle("My info");
  }
 
   ngOnInit(): void {
@@ -98,7 +100,7 @@ export class EditProfileFormComponent implements OnInit {
   {
     this.appUserService.updateSelf(this.appUser).subscribe(()=>{
       this.router.navigate(['/profile']);
-      this.showSnackbar("User edited.")
+      this.showSnackbar("Info updated.");
     });
   }
 
