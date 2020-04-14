@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -26,6 +26,7 @@ export class MemberGroupsComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('uploadCsv') uploadCsvInputElement: ElementRef;
 
   constructor(private memberGroupService:MemberGroupService, 
     private matDialog:MatDialog,private snackBar:MatSnackBar,private titleService:TitleService,
@@ -47,6 +48,22 @@ export class MemberGroupsComponent implements OnInit {
         this.router.navigate(['home']);
     else
       this.router.navigate(['login']);
+  }
+
+  public fileChosen(files: FileList){
+    if(files && files.length > 0) {
+       let file : File = files.item(0); 
+         let reader: FileReader = new FileReader();
+         reader.readAsText(file);
+         reader.onload = (e) => {
+            let fileDTO:FileDTO = new FileDTO();
+            fileDTO.csvText=reader.result as string;
+            this.fileService.upload(fileDTO).subscribe(response=>{
+              alert(response);
+            })
+         }
+         this.uploadCsvInputElement.nativeElement.value='';
+      }
   }
 
   loadGroups()
@@ -83,22 +100,6 @@ export class MemberGroupsComponent implements OnInit {
   isValidInput(groupName:string)
   {
     return groupName && groupName.trim().length>0;
-  }
-
-  public fileChosen(files: FileList){
-    if(files && files.length > 0) {
-       let file : File = files.item(0); 
-         let reader: FileReader = new FileReader();
-         reader.readAsText(file);
-         reader.onload = (e) => {
-            let fileDTO:FileDTO = new FileDTO();
-            fileDTO.csvText=reader.result as string;;
-            this.fileService.upload(fileDTO).subscribe(response=>{
-              this.loadGroups();
-              alert(response);
-            })
-         }
-      }
   }
 
   viewGroupClick(memberGroup:MemberGroup)

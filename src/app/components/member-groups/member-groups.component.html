@@ -26,12 +26,8 @@
 
   <div class="actions-panel">
 
-    <input  type="file" (change)="fileChosen($event.target.files)">
-
-    <label for="file-upload" class="custom-file-upload">
-      <mat-icon matTooltip="Upload from CSV file" aria-label="Upload from CSV file">publish</mat-icon>
-    </label>
-    <input id="file-upload" type="file"/>
+  <label class="custom-file-upload" for="upload-csv"><mat-icon matTooltip="Upload from CSV">publish</mat-icon></label>
+  <input type="file" id="upload-csv"  #uploadCsv accept=".csv" (change)="fileChosen($event.target.files)"/>
   
   <button (click)="showGuide();"
   type="button"
@@ -42,6 +38,7 @@
   </button>
   </div>
 </mat-toolbar>
+
 
 <div class="mat-elevation-z8">
 
