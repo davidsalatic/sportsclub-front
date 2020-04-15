@@ -26,7 +26,7 @@ export class SessionsComponent implements  OnInit {
 
   constructor(private memberGroupService:MemberGroupService,private router:Router,
     private authService:AuthService,private periodService:PeriodService,private titleService:TitleService){
-      titleService.changeTitle("Training sessions")
+      this.titleService.changeTitle("Training sessions")
     }
 
   ngOnInit() {

@@ -10,7 +10,6 @@ import { MembershipPrice } from 'src/app/models/membership-price';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service';
 import { Router } from '@angular/router';
-import { PeriodService } from 'src/app/services/period-service';
 import { Period } from 'src/app/models/period';
 import { TitleService } from 'src/app/services/title-service';
 
@@ -29,7 +28,7 @@ export class MembershipsComponent implements OnInit {
 
 constructor(private membershipService:MembershipService,private matDialog:MatDialog,
   private snackBar:MatSnackBar,private authService:AuthService,private router:Router
-  ,private periodService:PeriodService,private titleService:TitleService)
+  ,private titleService:TitleService)
 {
   this.titleService.changeTitle("Memberships");
 }
@@ -42,36 +41,22 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
   {
     if(this.authService.getToken())
       if(this.authService.isManagerLoggedIn())
-      this.loadDefaultPriceAndCreateMembershipIfNotExist();
+      {
+        this.loadDefaultPrice();
+        this.loadMemberships();
+      }
+
       else
         this.router.navigate(['home']);
     else
       this.router.navigate(['login']);
   }
 
-  loadDefaultPriceAndCreateMembershipIfNotExist()
+  loadDefaultPrice()
   {
     this.membershipService.getMembershipPrice().subscribe(data=>{
       this.defaultMembershipPrice=data;
-      this.createMembershipInPeriodIfNotExists();
   });
-  }
-
-  createMembershipInPeriodIfNotExists()
-  {
-    let today:Date = new Date();
-    let currentMonth:number = today.getMonth()+1;
-    let currentYear:number = today.getFullYear();
-
-    this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
-      if(period)
-        this.membershipService.getMembershipByPeriod(period.id).subscribe(membership=>{
-          if(membership)
-            this.loadMemberships();
-          else
-            this.addMembership(period);
-        })
-    })
   }
 
   addMembership(period:Period)

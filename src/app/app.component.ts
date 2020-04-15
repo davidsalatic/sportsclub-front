@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createPeriodIfNotExistAndShowMenuItems();
+    this.trackLoginStatusAndHandleMenuItems();
     this.trackTitleChange();
   }
 
@@ -48,29 +48,6 @@ export class AppComponent implements OnInit {
     this.titleService.title.subscribe(changedTitle=>{
       this.title=changedTitle;
     })
-  }
-
-  createPeriodIfNotExistAndShowMenuItems()
-  {
-    let date:Date = new Date();
-    let currentMonth:number = date.getMonth()+1;
-    let currentYear:number = date.getFullYear();
-    this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
-      if(period){
-        //exists
-      }
-      else
-      {
-        let newPeriod:Period = new Period();
-        newPeriod.month=currentMonth;
-        newPeriod.year=currentYear;
-        this.periodService.addPeriod(newPeriod).subscribe(response=>{
-          //period added for this month
-        })
-      }
-      this.trackLoginStatusAndHandleMenuItems();
-    })
-
   }
 
   trackLoginStatusAndHandleMenuItems()
