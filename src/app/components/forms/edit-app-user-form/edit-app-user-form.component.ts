@@ -20,6 +20,7 @@ export class EditAppUserFormComponent implements OnInit {
   //for returning back to the original group component
   idOfOriginalGroup : number;
   memberGroups :MemberGroup[];
+  loggedInRole:string;
 
   appUserForm = new FormGroup({
     username: new FormControl('',Validators.email),
@@ -51,6 +52,7 @@ export class EditAppUserFormComponent implements OnInit {
       {            
         let appUserId=this.route.snapshot.params['id'];
         this.loadAppUser(appUserId);
+        this.loggedInRole=this.authService.getLoggedInRole();
       }
       else
         this.router.navigate(['home']);

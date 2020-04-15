@@ -21,8 +21,27 @@
     </a>
 
     <span class="spacer"></span>
-
     <div *ngIf=appUser class="actions-panel" >
+      <a [routerLink]="['/attendances/member',appUser.id]">
+        <button
+        type="button"
+        aria-label="Training attendance"
+        mat-icon-button
+        >
+        <mat-icon matTooltip="Training attendance" aria-label="Training attendance">sports_kabaddi</mat-icon>
+        </button>
+      </a>
+
+      <a *ngIf="loggedInRole==='MANAGER'" [routerLink]="['/payments/member',appUser.id]">
+        <button
+        type="button"
+        aria-label="Payments"
+        mat-icon-button
+        >
+        <mat-icon matTooltip="Payments" aria-label="Payments">monetization_on</mat-icon>
+      </button>
+      </a>
+
       <button (click)="deleteMember();"
       type="button"
       aria-label="Delete member"
@@ -30,7 +49,6 @@
       >
       <mat-icon matTooltip="Delete member" aria-label="Delete member">delete</mat-icon>
     </button>
-    
     </div>
   </mat-toolbar>
   

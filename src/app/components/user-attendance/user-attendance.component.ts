@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,9 +20,14 @@ export class UserAttendanceComponent implements OnInit {
   dataSource: MatTableDataSource<Attendance> = new MatTableDataSource();
 
   displayedColumns = ['date'];
+  loggedInRole:string;
+  appUserId:number;
 
-  constructor(private authService:AuthService,private router:Router,private titleService:TitleService,
-    private attendanceService:AttendanceService,private activatedRoute:ActivatedRoute) { }
+  constructor(private authService:AuthService,private titleService:TitleService,
+    private router:Router,private attendanceService:AttendanceService,
+    private activatedRoute:ActivatedRoute) {
+      this.titleService.changeTitle("Member attendance");
+     }
 
   ngOnInit(): void {
     this.loadPageIfValidRole();
@@ -32,8 +37,9 @@ export class UserAttendanceComponent implements OnInit {
   {
     if(this.authService.getToken())
     {
-      let appUserId = this.activatedRoute.snapshot.params['appUserId'];
-      this.loadAttendancesForUser(appUserId);
+      this.appUserId = this.activatedRoute.snapshot.params['appUserId'];
+      this.loadAttendancesForUser(this.appUserId);
+      this.loggedInRole=this.authService.getLoggedInRole();
     }
     else
       this.router.navigate(['login']);
@@ -42,11 +48,9 @@ export class UserAttendanceComponent implements OnInit {
   loadAttendancesForUser(appUserId:number)
   {
     this.attendanceService.getByAppUser(appUserId).subscribe(data=>{
-      this.titleService.changeTitle(data[0].appUser.name+" "+data[0].appUser.surname+" attendance")
       this.dataSource.data=data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
   }
-
 }

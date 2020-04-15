@@ -20,9 +20,13 @@ export class UserPaymentsComponent implements OnInit {
   dataSource: MatTableDataSource<Payment> = new MatTableDataSource();
 
   displayedColumns = ['date','amount','membership'];
+  appUserId:number;
+  loggedInRole:string;
 
   constructor(private authService:AuthService,private activatedRoute:ActivatedRoute,
-    private router:Router,private paymentService:PaymentService,private titleService:TitleService){}
+    private router:Router,private paymentService:PaymentService,private titleService:TitleService){
+      this.titleService.changeTitle("Member payments");
+    }
 
   ngOnInit(): void {
     this.loadPageIfValidRole();
@@ -32,8 +36,9 @@ export class UserPaymentsComponent implements OnInit {
   {
     if(this.authService.getToken())
     {
-      let appUserId = this.activatedRoute.snapshot.params['appUserId'];
-      this.loadPaymentsForUser(appUserId);
+      this.appUserId = this.activatedRoute.snapshot.params['appUserId'];
+      this.loadPaymentsForUser(this.appUserId);
+      this.loggedInRole=this.authService.getLoggedInRole();
     }
     else
       this.router.navigate(['login']);
@@ -43,7 +48,6 @@ export class UserPaymentsComponent implements OnInit {
   loadPaymentsForUser(appUserId:number)
   {
     this.paymentService.getAllPaymentsByAppUser(appUserId).subscribe(data=>{
-      this.titleService.changeTitle(data[0].appUser.name+" "+data[0].appUser.surname+" payments");
       this.dataSource.data=data;
       this.dataSource.paginator=this.paginator;
       this.dataSource.sort=this.sort;

@@ -28,9 +28,4 @@ export class PeriodService{
     {
         return this.httpClient.post(this.PERIOD_URL,period);
     }
-
-    notifyManagersIfPassedDeadline(period:Period)
-    {
-        return this.httpClient.post(this.PERIOD_URL+"notify",period);
-    }
 }

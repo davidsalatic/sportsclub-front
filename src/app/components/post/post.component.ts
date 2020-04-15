@@ -12,6 +12,7 @@ import { AddCommentDialogComponent } from '../dialogs/add-comment-dialog/add-com
 import { Post } from 'src/app/models/post';
 import { AppUserService } from 'src/app/services/app-user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-post',
@@ -31,7 +32,7 @@ export class PostComponent implements OnInit {
 
   constructor(private authService:AuthService,private router:Router,private matDialog:MatDialog,
     private route:ActivatedRoute,private postService:PostService,private commentService:CommentService
-    ,private appUserService:AppUserService, private snackBar:MatSnackBar){}
+    ,private appUserService:AppUserService, private snackBar:MatSnackBar,private titleService:TitleService){}
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -54,6 +55,7 @@ export class PostComponent implements OnInit {
   {
     this.postService.getPostById(postId).subscribe(post=>{
       this.post=post;
+      this.titleService.changeTitle(post.title);
     })
   }
 
@@ -64,6 +66,15 @@ export class PostComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
+  }
+
+  deletePost()
+  {
+    if(confirm("Delete post?")) 
+      this.postService.deletePost(this.post.id).subscribe(()=>{
+        this.showSnackbar("Post deleted.");
+        this.router.navigate(['/posts']);
+      })
   }
 
   loadLoggedInUserId()
@@ -92,7 +103,7 @@ export class PostComponent implements OnInit {
 
   viewComment(comment:Comment)
   {
-    alert(comment.text);
+    alert(comment.appUser.name+" "+comment.appUser.surname+" wrote:\n\n" +comment.text);
   }
 
   addComment(comment:Comment)

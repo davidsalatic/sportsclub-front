@@ -1,3 +1,14 @@
 .full-width-table {
   width: 100%;
 }
+
+.post-card{
+  background-color: blanchedalmond;
+  border-radius: 10pt;
+  color: black;
+  text-align: center;
+}
+
+.mat-elevation-z8{
+  text-align: left;
+}

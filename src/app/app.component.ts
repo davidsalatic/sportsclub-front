@@ -57,10 +57,8 @@ export class AppComponent implements OnInit {
     let currentYear:number = date.getFullYear();
     this.periodService.getPeriodByMonthAndYear(currentMonth,currentYear).subscribe(period=>{
       if(period){
-        if(!period.notifiedManagersOfMembershipDebts)
-          this.periodService.notifyManagersIfPassedDeadline(period).subscribe(response=>{
-            //notified staff
-          })}
+        //exists
+      }
       else
       {
         let newPeriod:Period = new Period();

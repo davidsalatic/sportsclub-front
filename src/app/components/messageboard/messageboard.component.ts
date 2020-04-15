@@ -10,6 +10,7 @@ import { PostService } from 'src/app/services/post-service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddPostDialogComponent } from '../dialogs/add-post-dialog/add-post-dialog.component';
 import { AppUserService } from 'src/app/services/app-user-service';
+import { TitleService } from 'src/app/services/title-service';
 
 @Component({
   selector: 'app-messageboard',
@@ -17,7 +18,7 @@ import { AppUserService } from 'src/app/services/app-user-service';
   styleUrls: ['./messageboard.component.css']
 })
 export class MessageboardComponent implements OnInit {
-  displayedColumns = ['user','title','dateTime','actions'];
+  displayedColumns = ['user','title','dateTime'];
   dataSource: MatTableDataSource<Post> = new MatTableDataSource();
 
   loggedInUserId:number;
@@ -26,9 +27,11 @@ export class MessageboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private snackBar:MatSnackBar,private matDialog:MatDialog,
-    private authService:AuthService,private router:Router
-    ,private postService:PostService,private appUserService:AppUserService)
-  {}
+    private authService:AuthService,private router:Router,private titleService:TitleService,
+    private postService:PostService,private appUserService:AppUserService)
+  {
+    this.titleService.changeTitle("Message board");
+  }
 
   ngOnInit() {
     this.loadPageIfValidRole();
@@ -74,13 +77,9 @@ export class MessageboardComponent implements OnInit {
     })
   }
 
-  deletePost(post:Post)
+  viewPostClick(postId:number)
   {
-    if(confirm("Delete post?")) 
-      this.postService.deletePost(post.id).subscribe(()=>{
-        this.showSnackbar("Post deleted.");
-        this.loadPosts();
-      })
+    this.router.navigate(['/posts/'+postId+"/comments"]);
   }
 
   showSnackbar(message:string)
