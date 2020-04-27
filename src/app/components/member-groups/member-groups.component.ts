@@ -60,6 +60,7 @@ export class MemberGroupsComponent implements OnInit {
             fileDTO.csvText=reader.result as string;
             this.fileService.upload(fileDTO).subscribe(response=>{
               alert(response);
+              this.loadGroups();
             })
          }
          this.uploadCsvInputElement.nativeElement.value='';

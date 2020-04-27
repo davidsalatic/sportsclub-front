@@ -1,3 +1,3 @@
 export class Routes{
-    static SERVER_URL:string = "http://192.168.1.4:8082";
+    static SERVER_URL:string = "http://localhost:8082";
 }
