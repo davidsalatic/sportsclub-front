@@ -28,10 +28,9 @@ export class MemberGroupsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('uploadCsv') uploadCsvInputElement: ElementRef;
 
-  constructor(private memberGroupService:MemberGroupService, 
-    private matDialog:MatDialog,private snackBar:MatSnackBar,private titleService:TitleService,
-    private authService:AuthService,private router:Router,private fileService:FileService)
-  {
+  constructor(private memberGroupService: MemberGroupService,
+    private matDialog: MatDialog, private snackBar: MatSnackBar, private titleService: TitleService,
+    private authService: AuthService, private router: Router, private fileService: FileService) {
     this.titleService.changeTitle("Member groups");
   }
 
@@ -39,10 +38,9 @@ export class MemberGroupsComponent implements OnInit {
     this.loadPageIfValidRole();
   }
 
-  loadPageIfValidRole()
-  {
-    if(this.authService.getToken())
-      if(this.authService.isCoachOrManagerLoggedIn())
+  loadPageIfValidRole() {
+    if (this.authService.getToken())
+      if (this.authService.isCoachOrManagerLoggedIn())
         this.loadGroups();
       else
         this.router.navigate(['home']);
@@ -50,72 +48,64 @@ export class MemberGroupsComponent implements OnInit {
       this.router.navigate(['login']);
   }
 
-  public fileChosen(files: FileList){
-    if(files && files.length > 0) {
-       let file : File = files.item(0); 
-         let reader: FileReader = new FileReader();
-         reader.readAsText(file);
-         reader.onload = (e) => {
-            let fileDTO:FileDTO = new FileDTO();
-            fileDTO.csvText=reader.result as string;
-            this.fileService.upload(fileDTO).subscribe(response=>{
-              alert(response);
-              this.loadGroups();
-            })
-         }
-         this.uploadCsvInputElement.nativeElement.value='';
+  public fileChosen(files: FileList) {
+    if (files && files.length > 0) {
+      let file: File = files.item(0);
+      let reader: FileReader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (e) => {
+        let fileDTO: FileDTO = new FileDTO();
+        fileDTO.csvText = reader.result as string;
+        this.fileService.upload(fileDTO).subscribe(response => {
+          alert(response);
+          this.loadGroups();
+        })
       }
+      this.uploadCsvInputElement.nativeElement.value = '';
+    }
   }
 
-  loadGroups()
-  {
+  loadGroups() {
     this.memberGroupService.getAllGroups().subscribe(data => {
-      this.dataSource.data=data;
+      this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
-  openDialog()
-  {
+  openDialog() {
     const dialogConfig = new MatDialogConfig();
     let dialogRef = this.matDialog.open(AddMemberGroupDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(groupName=>{
+    dialogRef.afterClosed().subscribe(groupName => {
       this.addGroup(groupName)
     })
   }
 
-  addGroup(groupName:string)
-  {
-    if(this.isValidInput(groupName))
-    {
+  addGroup(groupName: string) {
+    if (this.isValidInput(groupName)) {
       let memberGroup = new MemberGroup();
-      memberGroup.name=groupName;
-      this.memberGroupService.addGroup(memberGroup).subscribe(response=>{
+      memberGroup.name = groupName;
+      this.memberGroupService.addGroup(memberGroup).subscribe(response => {
         this.loadGroups();
-        this.showSnackbar("Group "+memberGroup.name+" created.");
-      });   
+        this.showSnackbar("Group " + memberGroup.name + " created.");
+      });
     }
   }
 
-  isValidInput(groupName:string)
-  {
-    return groupName && groupName.trim().length>0;
+  isValidInput(groupName: string) {
+    return groupName && groupName.trim().length > 0;
   }
 
-  viewGroupClick(memberGroup:MemberGroup)
-  {
-    this.router.navigate(['/members/'+memberGroup.id]);
+  viewGroupClick(memberGroup: MemberGroup) {
+    this.router.navigate(['/members/' + memberGroup.id]);
   }
 
-  showGuide()
-  {
+  showGuide() {
     alert(Guide.TEXT)
   }
 
-  showSnackbar(message:string)
-  {
-    this.snackBar.open(message, "X",{
+  showSnackbar(message: string) {
+    this.snackBar.open(message, "X", {
       duration: 1500
     })
   }

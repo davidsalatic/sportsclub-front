@@ -7,38 +7,34 @@ import { Routes } from '../const/routes';
 @Injectable()
 export class MemberGroupService {
 
-    private readonly GROUPS_URL = Routes.SERVER_URL+'/groups';
+    private readonly GROUPS_URL = Routes.SERVER_URL + '/groups';
 
-    constructor(private httpClient: HttpClient){ }
+    constructor(private httpClient: HttpClient) { }
 
-    getAllGroups(): Observable<MemberGroup[]>{
+    getAllGroups(): Observable<MemberGroup[]> {
         return this.httpClient.get<MemberGroup[]>(this.GROUPS_URL)
     }
 
-    getGroupById(id:number) : Observable<MemberGroup>
-    {
-        return this.httpClient.get<MemberGroup>(this.GROUPS_URL+"/"+id);
+    getGroupById(id: number): Observable<MemberGroup> {
+        return this.httpClient.get<MemberGroup>(this.GROUPS_URL + "/" + id);
     }
 
-    getGroupByName(name:string)
-    {
+    getGroupByName(name: string) {
         let params = new HttpParams();
         params = params.append('name', name);
-        return this.httpClient.get<MemberGroup>(this.GROUPS_URL+"/search/name", {params: params})
+        return this.httpClient.get<MemberGroup>(this.GROUPS_URL + "/search/name", { params: params })
     }
 
 
-    addGroup(memberGroup:MemberGroup)
-    {
+    addGroup(memberGroup: MemberGroup) {
         return this.httpClient.post(this.GROUPS_URL, memberGroup);
     }
 
-    updateGroup(memberGroup: MemberGroup)
-    {
-        return this.httpClient.put(this.GROUPS_URL,memberGroup);
+    updateGroup(memberGroup: MemberGroup) {
+        return this.httpClient.put(this.GROUPS_URL, memberGroup);
     }
 
     deleteGroup(memberGroup: MemberGroup) {
-        return this.httpClient.delete(this.GROUPS_URL+"/"+memberGroup.id);
+        return this.httpClient.delete(this.GROUPS_URL + "/" + memberGroup.id);
     }
 }

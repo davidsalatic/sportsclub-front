@@ -23,25 +23,22 @@ export class MembershipsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   dataSource: MatTableDataSource<Membership> = new MatTableDataSource();
-  defaultMembershipPrice:MembershipPrice;
+  defaultMembershipPrice: MembershipPrice;
   displayedColumns = ['month'];
 
-constructor(private membershipService:MembershipService,private matDialog:MatDialog,
-  private snackBar:MatSnackBar,private authService:AuthService,private router:Router
-  ,private titleService:TitleService)
-{
-  this.titleService.changeTitle("Memberships");
-}
+  constructor(private membershipService: MembershipService, private matDialog: MatDialog,
+    private snackBar: MatSnackBar, private authService: AuthService, private router: Router
+    , private titleService: TitleService) {
+    this.titleService.changeTitle("Memberships");
+  }
 
   ngOnInit() {
     this.loadPageIfValidRole();
   }
 
-  loadPageIfValidRole()
-  {
-    if(this.authService.getToken())
-      if(this.authService.isManagerLoggedIn())
-      {
+  loadPageIfValidRole() {
+    if (this.authService.getToken())
+      if (this.authService.isManagerLoggedIn()) {
         this.loadDefaultPrice();
         this.loadMemberships();
       }
@@ -52,59 +49,52 @@ constructor(private membershipService:MembershipService,private matDialog:MatDia
       this.router.navigate(['login']);
   }
 
-  loadDefaultPrice()
-  {
-    this.membershipService.getMembershipPrice().subscribe(data=>{
-      this.defaultMembershipPrice=data;
-  });
+  loadDefaultPrice() {
+    this.membershipService.getMembershipPrice().subscribe(data => {
+      this.defaultMembershipPrice = data;
+    });
   }
 
-  addMembership(period:Period)
-  {
-    let membership:Membership = new Membership();
-    membership.period=period;
-    membership.price=this.defaultMembershipPrice.price;
-    this.membershipService.addMembership(membership).subscribe(response=>{
+  addMembership(period: Period) {
+    let membership: Membership = new Membership();
+    membership.period = period;
+    membership.price = this.defaultMembershipPrice.price;
+    this.membershipService.addMembership(membership).subscribe(response => {
       this.loadMemberships();
     });
   }
 
-  loadMemberships()
-  {
-    this.membershipService.getAllMemberships().subscribe(data=>{
-      this.dataSource.data=data;
+  loadMemberships() {
+    this.membershipService.getAllMemberships().subscribe(data => {
+      this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
   }
-  
-  openDialog()
-  {
+
+  openDialog() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data=this.defaultMembershipPrice.price;
+    dialogConfig.data = this.defaultMembershipPrice.price;
     let dialogRef = this.matDialog.open(ChangeMembershipPriceDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(price=>{
-      if(price)
+    dialogRef.afterClosed().subscribe(price => {
+      if (price)
         this.setDefaultMembershipPrice(price);
     })
   }
 
-  setDefaultMembershipPrice(price:number)
-  {
-    this.defaultMembershipPrice.price=price;
-    this.membershipService.setMembershipPrice(this.defaultMembershipPrice).subscribe(response=>{
-      this.showSnackbar("Default price of membership changed to "+this.defaultMembershipPrice.price+".")
+  setDefaultMembershipPrice(price: number) {
+    this.defaultMembershipPrice.price = price;
+    this.membershipService.setMembershipPrice(this.defaultMembershipPrice).subscribe(response => {
+      this.showSnackbar("Default price of membership changed to " + this.defaultMembershipPrice.price + ".")
     });
   }
 
-  viewMembershipClick(membership:Membership)
-  {
-    this.router.navigate(['/memberships/'+membership.id]);
+  viewMembershipClick(membership: Membership) {
+    this.router.navigate(['/memberships/' + membership.id]);
   }
 
-  showSnackbar(message:string)
-  {
-    this.snackBar.open(message, "X",{
+  showSnackbar(message: string) {
+    this.snackBar.open(message, "X", {
       duration: 1500
     })
   }

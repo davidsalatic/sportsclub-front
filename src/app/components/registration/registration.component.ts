@@ -13,45 +13,45 @@ import { TokenDTO } from 'src/app/models/helpers/token-dto';
 })
 export class RegistrationComponent implements OnInit {
 
-  token:string;
+  token: string;
 
   passwordForm = new FormGroup({
-    password: new FormControl('',Validators.required),
-    confirmPassword: new FormControl('',Validators.required)
+    password: new FormControl('', Validators.required),
+    confirmPassword: new FormControl('', Validators.required)
   });
 
-  constructor(private snackBar:MatSnackBar,private authService:AuthService
-    ,private route:ActivatedRoute,private router:Router) { }
+  constructor(private snackBar: MatSnackBar, private authService: AuthService
+    , private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.token = this.route.snapshot.params['token'];
 
-    let tokenDTO:TokenDTO = new TokenDTO();
-    tokenDTO.token=this.token;
-    this.authService.checkToken(tokenDTO).subscribe(isValid=>{
-      if(!isValid)//already registered redirect to login
+    let tokenDTO: TokenDTO = new TokenDTO();
+    tokenDTO.token = this.token;
+    this.authService.checkToken(tokenDTO).subscribe(isValid => {
+      if (!isValid) {
         this.router.navigate(['login']);
-    }) 
+        this.showSnackbar("Token invalid. Redirecting to login page...");
+      }
+    })
   }
-  
+
   onSubmit() {
-    let password:string = this.passwordForm.get('password').value;
-    let confirm:string = this.passwordForm.get('confirmPassword').value;
+    let password: string = this.passwordForm.get('password').value;
+    let confirm: string = this.passwordForm.get('confirmPassword').value;
 
-    if(password===confirm)
-    {
-      let registerDTO:RegisterDTO = new RegisterDTO();
-      registerDTO.token=this.token;
-      registerDTO.password=password;
+    if (password === confirm) {
+      let registerDTO: RegisterDTO = new RegisterDTO();
+      registerDTO.token = this.token;
+      registerDTO.password = password;
 
-      this.authService.register(registerDTO).subscribe(response=>{
+      this.authService.register(registerDTO).subscribe(response => {
         this.showSnackbar("Registration complete. Redirecting to login page...");
         this.passwordForm.disable();
-        setTimeout(() => 
-        {
-            this.router.navigate(['login'])
+        setTimeout(() => {
+          this.router.navigate(['login'])
         },
-        2500);
+          2500);
       })
 
     }
@@ -59,9 +59,8 @@ export class RegistrationComponent implements OnInit {
       this.showSnackbar("Password do not match!")
   }
 
-  showSnackbar(message:string)
-  {
-    this.snackBar.open(message, "X",{
+  showSnackbar(message: string) {
+    this.snackBar.open(message, "X", {
       duration: 2500
     })
   }
