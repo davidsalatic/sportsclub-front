@@ -28,7 +28,7 @@
   
     <div>
       <mat-form-field>
-        <input matInput formControlName="startTime" placeholder="Start time" [format]="24" aria-label="12hr format" [ngxTimepicker]="startTime" readonly>
+        <input matInput formControlName="startTime" placeholder="Start time" [format]="24" aria-label="12hr format" [ngxTimepicker]="startTime" required readonly>
         <ngx-material-timepicker #startTime></ngx-material-timepicker>
       </mat-form-field>
     </div>
