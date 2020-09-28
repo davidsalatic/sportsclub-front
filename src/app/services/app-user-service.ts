@@ -5,69 +5,62 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Routes } from '../const/routes';
 
 @Injectable()
-export class AppUserService{
+export class AppUserService {
 
-    private readonly APP_USERS_URL = Routes.SERVER_URL+'/users/';
-    
-    constructor(private httpClient: HttpClient){ }
+    private readonly APP_USERS_URL = Routes.SERVER_URL + '/users/';
 
-    getAllMembers(): Observable<AppUser[]>{
-        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"members");
+    constructor(private httpClient: HttpClient) { }
+
+    getAllMembers(): Observable<AppUser[]> {
+        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL + "members");
     }
 
-    getStaff()
-    {
-        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"staff");
+    getStaff() {
+        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL + "staff");
     }
 
-    getAllUsers(): Observable<AppUser[]>{
-        
+    getAllUsers(): Observable<AppUser[]> {
+
         return this.httpClient.get<AppUser[]>(this.APP_USERS_URL);
     }
 
     getUngroupedMembers() {
-        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"members/ungrouped");
+        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL + "members/ungrouped");
     }
 
-    getAllUsersInGroup(id:number): Observable<AppUser[]>{
-        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL+"group/"+id);
+    getAllUsersInGroup(id: number): Observable<AppUser[]> {
+        return this.httpClient.get<AppUser[]>(this.APP_USERS_URL + "group/" + id);
     }
 
-    getUserById(id:number) : Observable<AppUser>
-    {
-        return this.httpClient.get<AppUser>(this.APP_USERS_URL+id);
+    getUserById(id: number): Observable<AppUser> {
+        return this.httpClient.get<AppUser>(this.APP_USERS_URL + id);
     }
 
-    getByUsername(username:string)
-    {
+    getByUsername(username: string) {
         let params = new HttpParams();
         params = params.append('username', username);
-        return this.httpClient.get<AppUser>(this.APP_USERS_URL+"search/username", {params: params})
+        return this.httpClient.get<AppUser>(this.APP_USERS_URL + "search/username", { params: params })
     }
 
-    getByJmbg(jmbg:string)
-    {
+    getByJmbg(jmbg: string) {
         let params = new HttpParams();
         params = params.append('jmbg', jmbg);
-        return this.httpClient.get<AppUser>(this.APP_USERS_URL+"search/jmbg", {params: params})
+        return this.httpClient.get<AppUser>(this.APP_USERS_URL + "search/jmbg", { params: params })
     }
 
-    addUser(appUser: AppUser)
-    {
-        return this.httpClient.post(this.APP_USERS_URL,appUser);
-    }
-    
-    updateUser(appUser: AppUser)
-    {
-        return this.httpClient.put(this.APP_USERS_URL,appUser);
+    addUser(appUser: AppUser) {
+        return this.httpClient.post(this.APP_USERS_URL, appUser);
     }
 
-    updateSelf(appUser:AppUser)
-    {
-        return this.httpClient.put(this.APP_USERS_URL+"update-self",appUser);
+    updateUser(appUser: AppUser) {
+        return this.httpClient.put(this.APP_USERS_URL, appUser);
+    }
+
+    updateSelf(appUser: AppUser) {
+        return this.httpClient.put(this.APP_USERS_URL + "update-self", appUser);
     }
 
     deleteUser(appUser: AppUser) {
-        return this.httpClient.delete(this.APP_USERS_URL+appUser.id);
+        return this.httpClient.delete(this.APP_USERS_URL + appUser.id);
     }
 }

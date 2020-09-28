@@ -93,8 +93,8 @@ export class AddAppUserFormComponent implements OnInit {
       else {
         let username: string = this.appUserForm.get('username').value;
         if (username)
-          this.appUserService.getByUsername(username).subscribe(data => {
-            if (data)
+          this.appUserService.getByUsername(username).subscribe(usersByUsername => {
+            if (usersByUsername)
               this.showSnackbar("A user with that username already exists!");
             else
               this.addAppUser(appUser);
